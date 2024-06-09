@@ -4,6 +4,10 @@
   font-weight: 500;
   font-family: var(--subheading-3-medium);
   text-align: left;
+  width: 400px;
+}
+.Loginparent{
+  margin-top: 144px;
 }
 .alreadyHaveAn,
 .createAnAccount {
@@ -48,10 +52,16 @@
   align-items: flex-start;
   justify-content: flex-start;
 }
+.gotoLogin{
+  /* on hover change to cursor */
+  cursor: pointer;
+
+}
 .frameWrapper {
   flex-direction: column;
   padding: 0 var(--padding-xl) 0 0;
   z-index: 1;
+  width: 300px;
 }
 .emailInputContainer {
   width: 454.2px;

@@ -1,4 +1,4 @@
-import TextField from "./TextField";
+import LoginTextField from "./LoginTextField";  
 import PropTypes from "prop-types";
 import styles from "./FrameComponent2.module.css";
 import { useNavigate } from 'react-router-dom';
@@ -8,27 +8,28 @@ const FrameComponent2 = ({ className = "" }) => {
   return (
     <form className={[styles.frameParent, className].join(" ")}>
       <div className={styles.frameWrapper}>
-        <div className={styles.createAnAccountParent}>
-          <div className={styles.createAnAccount}>Create an account</div>
+        <div className={styles.Loginparent}>
+          <div className={styles.createAnAccount}>Login To your Account</div>
           <div className={styles.haveAnAccountLogin}>
             <div className={styles.alreadyHaveAnContainer}>
               <span className={styles.alreadyHaveAn}>
-                Already have an account?
+                Dont have an account?
               </span>
-              <span 
-              onClick={
-                () => {
-                  navigate('/login');
-                }
+              <span className={styles.gotoLogin}
+              onClick={() => {
+                
+                navigate('/form-register');
+
+
               }
-              
-              className={styles.gotoLogin}> &nbsp; Login</span>
+              }
+              > &nbsp; register</span>
             </div>
           </div>
         </div>
       </div>
       <div className={styles.emailInputContainerParent}>
-        <TextField/>
+        <LoginTextField/>
       </div>
 
     </form>

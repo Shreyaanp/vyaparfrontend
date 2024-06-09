@@ -1,4 +1,5 @@
-import FrameComponent2 from "../components/FrameComponent2";
+import React from "react";
+import LoginComponent from "../components/LoginComponent";
 import styles from "./FormRegister.module.css";
 
 const FormRegister = () => {
@@ -131,7 +132,7 @@ const FormRegister = () => {
           </div>
         </div>
         <div className={styles.frameContainer}>
-          <FrameComponent2 />
+          <LoginComponent />
         </div>
       </section>
     </div>

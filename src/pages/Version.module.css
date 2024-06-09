@@ -185,7 +185,7 @@
   gap: var(--gap-lgi-5);
 }
 .pageHeader {
-  width: 1086px;
+justify-content: center;
   flex-direction: row;
   padding: 0 var(--padding-3xl);
   box-sizing: border-box;
@@ -203,10 +203,9 @@
   justify-content: flex-start;
 }
 .topNavContainer {
-  width: 1126px;
   flex-direction: column;
   gap: var(--gap-5xs);
-  max-width: 100%;
+  width: 100%;
 }
 .version3 {
   position: relative;

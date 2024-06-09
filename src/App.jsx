@@ -16,6 +16,7 @@ import Version from "./pages/Version";
 import Version1 from "./pages/Version1";
 import Version2 from "./pages/Version2";
 import Product from "./pages/Product";
+import Login from "./pages/Login";
 
 function App() {
   const action = useNavigationType();
@@ -102,10 +103,12 @@ function App() {
       <Route path="/form-register" element={<FormRegister />} />
       <Route path="/root" element={<Root />} />
       <Route path="/root1" element={<Root1 />} />
+      <Route path="/frame-285" element={<Frame11 />} />
       <Route path="/version-3" element={<Version />} />
       <Route path="/version-4" element={<Version1 />} />
       <Route path="/version-9" element={<Version2 />} />
-      <Route path="/product" element={<Product />} /> */}
+      <Route path="/product" element={<Product />} />
+      <Route path="/Login" element={<Login/>}/>
     </Routes>
   );
 }
