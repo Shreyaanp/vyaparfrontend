@@ -1,0 +1,68 @@
+.productsLanguage {
+  position: relative;
+  line-height: 18px;
+  font-weight: 500;
+  z-index: 1;
+}
+.frameChild {
+  height: 56.9px;
+  width: 244.9px;
+  position: relative;
+  box-shadow: 0 1.7px 5.17px rgba(19, 18, 66, 0.07);
+  border-radius: 39.67px;
+  background-color: var(--background-jnt-primary-background);
+  border: 0.9px solid var(--neutral-300);
+  box-sizing: border-box;
+  display: none;
+}
+.frameItem {
+  width: 37px;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  height: 19.4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-11xs-4) 0 0;
+  box-sizing: border-box;
+  font-family: var(--font-dm-sans);
+  font-size: var(--font-size-base-5);
+  color: var(--neutral-600);
+}
+.groupIcon {
+  align-self: stretch;
+  width: 12.7px;
+  position: relative;
+  max-height: 100%;
+  min-height: 22px;
+  z-index: 2;
+}
+.productsLanguageParent,
+.rectangleParent {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+}
+.rectangleParent {
+  box-shadow: 0 1.7px 5.17px rgba(19, 18, 66, 0.07);
+  border-radius: 39.67px;
+  background-color: var(--background-jnt-primary-background);
+  border: 0.9px solid var(--neutral-300);
+  flex-direction: row;
+  justify-content: space-between;
+  padding: var(--padding-base) var(--padding-lg) var(--padding-base)
+    var(--padding-mid);
+  gap: var(--gap-xl);
+  z-index: 1;
+}
+.productsLanguageParent {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap-sm-9);
+  text-align: left;
+  font-size: var(--font-size-base-5);
+  color: var(--neutral-800);
+  font-family: var(--font-dm-sans);
+}

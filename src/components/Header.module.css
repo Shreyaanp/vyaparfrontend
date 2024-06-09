@@ -1,0 +1,130 @@
+.pad,
+.par {
+  color: var(--color-gold-100);
+}
+.vyaparLaunchpad {
+  height: 34px;
+  width: 263px;
+  position: relative;
+  line-height: 35px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.frameChild {
+  width: 4.3px;
+  height: 4.3px;
+  position: relative;
+  border-radius: 50%;
+  background-color: var(--color-gold-100);
+}
+.ellipseWrapper {
+  flex-direction: column;
+  padding: var(--padding-5xl) 0 0;
+}
+.ellipseWrapper,
+.frameWrapper,
+.vyaparLaunchpadParent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.vyaparLaunchpadParent {
+  align-self: stretch;
+  flex-direction: row;
+  gap: var(--gap-12xs-7);
+}
+.frameWrapper {
+  width: 268px;
+  flex-direction: column;
+  padding: var(--padding-4xl) 0 0;
+  box-sizing: border-box;
+}
+.menuIcon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.menuWrapper {
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xl) 0 0;
+  box-sizing: border-box;
+}
+.searchIcon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.searchWrapper {
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xl) 0 0;
+  box-sizing: border-box;
+}
+.divider {
+  align-self: stretch;
+  width: 1px;
+  position: relative;
+  background-color: var(--french-grey);
+}
+.shoppingCartIcon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.shoppingCartWrapper {
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xl) 0 0;
+  box-sizing: border-box;
+}
+.frameGroup,
+.frameParent,
+.productInner {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.frameGroup {
+  align-self: stretch;
+  width: 193px;
+  justify-content: flex-start;
+  gap: var(--gap-21xl);
+}
+.frameParent,
+.productInner {
+  max-width: 100%;
+}
+.frameParent {
+  align-self: stretch;
+  flex: 1;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+  text-align: left;
+  font-size: var(--font-size-10xl-9);
+  color: var(--color-black);
+  font-family: var(--font-ubuntu);
+}
+.productInner {
+  width: 1422px;
+  height: 80px;
+  justify-content: flex-end;
+  padding: 0 var(--padding-21xl);
+  box-sizing: border-box;
+}

@@ -1,0 +1,102 @@
+.uploadAreaChild {
+  height: 43.9px;
+  width: 43.9px;
+  position: relative;
+}
+.uploadArea {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 0 0 var(--padding-12xs);
+}
+.browseFile,
+.chooseAFile {
+  position: relative;
+  font-weight: 500;
+}
+.browseFile {
+  font-size: var(--font-size-sm-5);
+  font-family: var(--label-1-regular);
+  color: var(--color-dimgray-200);
+  text-align: center;
+  display: inline-block;
+  min-width: 75px;
+}
+.browseButtonContainer,
+.browseButtonWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.browseButtonWrapper {
+  cursor: pointer;
+  border: 0.9px solid var(--color-lightgray-100);
+  padding: var(--padding-3xs) var(--padding-smi) var(--padding-3xs)
+    var(--padding-sm);
+  background-color: var(--background-jnt-primary-background);
+  border-radius: var(--br-5xs-2);
+  overflow: hidden;
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+.browseButtonWrapper:hover {
+  background-color: var(--color-gainsboro-100);
+  border: 0.9px solid var(--color-silver-100);
+  box-sizing: border-box;
+}
+.browseButtonContainer {
+  align-self: stretch;
+  justify-content: flex-end;
+  padding: 0 var(--padding-41xl) 0 var(--padding-42xl);
+}
+.fileInput {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: var(--gap-xs-8);
+}
+.frameChild {
+  width: 371.2px;
+  height: 155px;
+  position: relative;
+  border-radius: 26.05px;
+  border: 1.3px dashed var(--color-gold-100);
+  box-sizing: border-box;
+  display: none;
+  max-width: 100%;
+}
+.label {
+  cursor: pointer;
+}
+.input {
+  display: none;
+}
+.parent {
+  flex: 1;
+  border-radius: 26.05px;
+  border: 1.3px dashed var(--color-gold-100);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: var(--padding-xl) var(--padding-53xl) var(--padding-mid);
+  gap: var(--gap-8xs-7);
+  max-width: 100%;
+  z-index: 1;
+  text-align: center;
+  font-size: var(--font-size-sm-5);
+  color: var(--color-gold-100);
+  font-family: var(--label-1-regular);
+}
+@media screen and (max-width: 450px) {
+  .parent {
+    padding-left: var(--padding-xl);
+    padding-right: var(--padding-xl);
+    box-sizing: border-box;
+  }
+}

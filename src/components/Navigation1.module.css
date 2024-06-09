@@ -1,0 +1,129 @@
+.navigationChild {
+  height: 607px;
+  width: 610px;
+  position: relative;
+  background-color: var(--color-floralwhite-200);
+  display: none;
+  max-width: 100%;
+}
+.home {
+  text-decoration: none;
+  position: relative;
+  font-weight: 700;
+  color: inherit;
+  display: inline-block;
+  min-width: 73px;
+  z-index: 2;
+}
+.homeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs-5) 0 0;
+}
+.about {
+  text-decoration: none;
+  position: relative;
+  font-weight: 700;
+  color: inherit;
+  display: inline-block;
+  min-width: 76px;
+  z-index: 2;
+}
+.navigationItems {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs-5) 0 0;
+}
+.pricing {
+  text-decoration: none;
+  position: relative;
+  font-weight: 700;
+  color: inherit;
+  display: inline-block;
+  min-width: 85px;
+  z-index: 2;
+}
+.navigationItems1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--padding-9xs-5) 0 0;
+}
+.frameChild {
+  height: 39px;
+  width: 114.9px;
+  position: relative;
+  box-shadow: 0 4px 35px rgba(252, 189, 1, 0.4);
+  border-radius: var(--br-3xs);
+  background-color: var(--color-gold-100);
+  display: none;
+}
+.tryNow {
+  text-decoration: none;
+  position: relative;
+  font-size: var(--font-size-3xl-9);
+  font-weight: 700;
+  font-family: var(--font-lato);
+  color: var(--background-jnt-primary-background);
+  text-align: left;
+  display: inline-block;
+  min-width: 87px;
+  z-index: 1;
+}
+.navigation,
+.rectangleParent {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.rectangleParent {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-7xs-4) var(--padding-smi) var(--padding-7xs-6)
+    var(--padding-sm);
+  background-color: var(--color-gold-100);
+  box-shadow: 0 4px 35px rgba(252, 189, 1, 0.4);
+  border-radius: var(--br-3xs);
+  justify-content: flex-start;
+  white-space: nowrap;
+  z-index: 2;
+}
+.rectangleParent:hover {
+  background-color: var(--color-darkgoldenrod-100);
+}
+.navigation {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--color-floralwhite-200);
+  width: 610px;
+  justify-content: space-between;
+  padding: var(--padding-11xl-5) var(--padding-51xl) var(--padding-11xl)
+    var(--padding-74xl);
+  box-sizing: border-box;
+  min-height: 607px;
+  gap: var(--gap-xl);
+  max-width: 100%;
+  z-index: 1;
+  text-align: left;
+  font-size: var(--font-size-7xl-9);
+  color: var(--color-black);
+  font-family: var(--font-lato);
+}
+@media screen and (max-width: 675px) {
+  .navigation {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 450px) {
+  .about,
+  .home,
+  .pricing {
+    font-size: var(--font-size-3xl);
+  }
+}

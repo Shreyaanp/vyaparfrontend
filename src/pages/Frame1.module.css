@@ -1,0 +1,82 @@
+.base {
+  width: 1440px;
+  height: 800px;
+  position: relative;
+  background-color: var(--color-palegoldenrod-100);
+  display: none;
+  max-width: 100%;
+}
+.pad,
+.par {
+  color: var(--color-gold-100);
+}
+.vyaparLaunchpad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 35px;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+.frameChild {
+  position: absolute;
+  top: 24px;
+  left: 130px;
+  border-radius: 50%;
+  background-color: var(--color-gold-100);
+  width: 4.3px;
+  height: 4.3px;
+  z-index: 2;
+}
+.vyaparLaunchpadParent {
+  height: 34px;
+  width: 263px;
+  position: relative;
+}
+.baseParent,
+.frameWrapper {
+  display: flex;
+  align-items: flex-start;
+}
+.frameWrapper {
+  width: 567.3px;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 100%;
+}
+.baseParent {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-palegoldenrod-100);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: var(--padding-26xl) 409px var(--padding-109xl);
+  box-sizing: border-box;
+  gap: 56px;
+  letter-spacing: normal;
+  line-height: normal;
+  text-align: left;
+  font-size: var(--font-size-10xl-9);
+  color: var(--color-black);
+  font-family: var(--font-ubuntu);
+}
+@media screen and (max-width: 900px) {
+  .baseParent {
+    gap: var(--gap-9xl);
+    padding-left: var(--padding-185xl);
+    padding-right: var(--padding-185xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .vyaparLaunchpad {
+    font-size: var(--font-size-5xl);
+  }
+  .baseParent {
+    padding-left: var(--padding-xl);
+    padding-right: var(--padding-xl);
+    box-sizing: border-box;
+  }
+}
