@@ -97,7 +97,7 @@ function App() {
     <Routes>
       <Route path="/frame-285" element={<Frame11 />} />
       <Route path="/frame-278" element={<Frame2 />} />
-      <Route path="/frame-281" element={<Frame2 />} />
+      {/*<Route path="/frame-281" element={<Frame2 />} />
       <Route path="/" element={<Frame />} />
       <Route path="/form-register" element={<FormRegister />} />
       <Route path="/root" element={<Root />} />
@@ -105,7 +105,7 @@ function App() {
       <Route path="/version-3" element={<Version />} />
       <Route path="/version-4" element={<Version1 />} />
       <Route path="/version-9" element={<Version2 />} />
-      <Route path="/product" element={<Product />} />
+      <Route path="/product" element={<Product />} /> */}
     </Routes>
   );
 }

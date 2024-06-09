@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from 'react';
-import styles from "./GroupComponent.module.css";
+import styles from "./GroupComponent2.module.css";
 
 const GroupComponent = ({ className = "" }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('Marathi');
