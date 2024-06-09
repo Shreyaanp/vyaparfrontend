@@ -1,13 +1,27 @@
 import PropTypes from "prop-types";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "./GroupComponent2.module.css";
 
 const GroupComponent = ({ className = "" }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState('Marathi');
+  const [primaryButtonText, setPrimaryButtonText] = useState('Previous Step');
 
-  const handleLanguageChange = (language) => {
-    setSelectedLanguage(language);
+  // Function to update primary button text based on screen size
+  const updatePrimaryButtonText = () => {
+    if (window.innerWidth <= 450) {
+      setPrimaryButtonText('Prev. Step');
+    } else {
+      setPrimaryButtonText('Previous step');
+    }
   };
+
+  // Update primary button text on component mount and window resize
+  useEffect(() => {
+    updatePrimaryButtonText();
+    window.addEventListener('resize', updatePrimaryButtonText);
+    return () => {
+      window.removeEventListener('resize', updatePrimaryButtonText);
+    };
+  }, []);
 
   return (
     <form className={[styles.rectangleParent, className].join(" ")}>
@@ -72,10 +86,10 @@ const GroupComponent = ({ className = "" }) => {
          <div className={styles.buttonsWrapper}>
            <div className={styles.buttons}>
              <button className={styles.secondaryBtn}>
-               <div className={styles.buttonText}>Previous step</div>
+               <div className={styles.buttonText}>{primaryButtonText}</div>
              </button>
              <button className={styles.primaryBtn}>
-               <b className={styles.buttonText1}>Next step</b>
+               <b className={styles.buttonText1}>Next Step</b>
              </button>
            </div>
          </div>

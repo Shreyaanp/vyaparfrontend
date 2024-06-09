@@ -249,12 +249,15 @@
 }
 .languageSelection,
 .selectLanguageYou {
+   margin-left: 5%;
   position: relative;
   font-family: var(--font-dm-sans);
   text-align: left;
   z-index: 1;
 }
 .selectLanguageYou{
+    /* border: solid red 5px; */
+    margin-left: 5% !important;
     margin-bottom: 10px !important;
 }
 .languageSelection {
@@ -367,12 +370,11 @@
   
   .label,
   .label1,
-  .label2,
   .label3 {
     padding-left: 15px;
     width: 100%;
     border: 1.7px solid var(--color-gainsboro-200);
-    align-self:flex-start;
+    align-self: flex-start;
     height: 45.2px;
     border-radius: 13.64px;
     background-color: var(--background-jnt-primary-background);
@@ -385,13 +387,15 @@
     max-width: 100%;
     box-sizing: border-box;
     position: relative;
+    /* Added text color to ensure visibility */
+    color: var(--color-black); /* Adjust as needed */
   }
   
-  .b {
-    /* border: solid red 50px !important; */
-    margin: 0;
-    padding: var(--padding-smi-4) var(--padding-base);
-    text-align: left;
+  .label:hover,
+  .label1:hover,
+  .label2:hover,
+  .label3:hover {
+    background-color: var(--background-jnt-primary-background); /* Set to same as normal state */
   }
   
   .label2 {
@@ -421,9 +425,6 @@
     overflow: hidden; /* Prevent overflow */
   }
   
-
-  
-  
   .languageToggleOptions {
     /* border: solid red 5px; */
     height: 160px;
@@ -448,17 +449,17 @@
     background-color: var(--background-selected);
   }
   
-.buttonText {
-  position: relative;
-  font-size: var(--font-size-base-5);
-  line-height: 17.25px;
-  font-weight: 700;
-  font-family: var(--font-dm-sans);
-  color: var(--color-black);
-  text-align: center;
-  display: inline-block;
-  min-width: 74px;
-}
+  .buttonText {
+    position: relative;
+    font-size: var(--font-size-base-5);
+    line-height: 17.25px;
+    font-weight: 700;
+    font-family: var(--font-dm-sans);
+    color: var(--color-black);
+    text-align: center;
+    display: inline-block;
+    min-width: 74px;
+  }
 .primaryBtn,
 .rectangleParent {
   display: flex;
@@ -528,5 +529,13 @@
       font-size: 16px; /* Adjust font size as needed */
     }
   }
-  
 
+  @media screen and (max-width: 600px) {
+    .languageSelection{
+          margin-left: 10% !important;
+     }
+     .selectLanguageYou{
+        margin-left: 16% !important;
+     }
+  }
+  

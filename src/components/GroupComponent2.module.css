@@ -237,126 +237,9 @@
     gap: var(--gap-9xl);
     max-width: 100%;
   }
-  .languageInput {
-    align-self: stretch;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-end;
-    padding: 0 var(--padding-smi) var(--padding-mid-9) var(--padding-12xs);
-    box-sizing: border-box;
-    max-width: 100%;
-  }
-  .languageSelection,
-  .selectLanguageYou {
-    position: relative;
-    font-family: var(--font-dm-sans);
-    text-align: left;
-    z-index: 1;
-  }
-  .selectLanguageYou{
-      margin-bottom: 10px !important;
-  }
-  .languageSelection {
-    text-decoration: none;
-    width: 227px;
-    font-size: var(--font-size-xl-7);
-    line-height: 31px;
-    font-weight: 700;
-    color: var(--neutral-800);
-    display: inline-block;
-  }
-  .selectLanguageYou {
-    margin: 0;
-    font-size: var(--font-size-base-5);
-    line-height: 26px;
-    color: var(--neutral-600);
-  }
-  .selectionInstructions {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 0 0 var(--padding-10xs-6);
-    box-sizing: border-box;
-    max-width: 100%;
-  }
-  .searchicon {
-    width: 16px;
-    height: 16px;
-    position: relative;
-  }
-  .searchField {
-      display: flex;
-      align-items: center; /* Align items vertically */
-    }
-    
-    .searchBar {
-      flex: 1; /* Take up remaining space */
-      background-color: inherit;
-      border: none;
-      padding: 8px 12px;
-      font-size: 14px;
-      width: 25%;
-    }
-    
-    .searchicon {
-      margin-right: 8px; /* Adjust margin as needed */
-    }
-      /* Additional styling for placeholder text */
-      .searchBar::placeholder {
-        color: #000; /* Placeholder text color */
-      }
-  
-    
-  .language,
-  .search {
-    color: var(--color-gray-100);
-  }
-  .placeholder {
-    position: relative;
-    font-size: var(--primarytext-size);
-    line-height: 130%;
-    font-family: var(--label-1-regular);
-    text-align: left;
-    display: inline-block;
-    min-width: 116px;
-  }
-  
-  .selectItem {
-      /* border: solid red 5px; */
-    flex: 1;
-    border-radius: var(--br-sm);
-    background-color: var(--color-gold-200);
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: var(--padding-base);
-    position: relative;
-    gap: var(--gap-5xs);
-    z-index: 1;
-  }
-  /* .dropdownContainer,
-  .labelafter,
-  .selectItem {
-      
-    box-sizing: border-box;
-    max-width: 100%;
-  } */
-  
-  .dropdownContainer {
-      /* border: solid red 5px; */
-      align-self: stretch;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding: 0 var(--padding-12xs) var(--padding-6xs-8) var(--padding-15xl);
-    }
-    
-    .productInput {
-      /* border: solid 5px red; */
+
+    .productDetailsOuterWrapper {
+      /* border: solid 5px red !important; */
       display: flex;
       flex-direction: column; /* Change flex direction to column */
       align-items: stretch; /* Allow items to stretch to full width */
@@ -364,120 +247,105 @@
       padding: 0 var(--padding-5xl) 0 var(--padding-7xl);
       max-width: 100%;
     }
-    
-    .label,
-    .label1,
-    .label2,
-    .label3 {
-      padding-left: 15px;
-      width: 100%;
-      border: 1.7px solid var(--color-gainsboro-200);
-      align-self:flex-start;
-      height: 45.2px;
-      border-radius: 13.64px;
-      background-color: var(--background-jnt-primary-background);
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-start;
-      gap: var(--gap-318xl-8);
-      flex-shrink: 0;
-      text-align: left;
-      max-width: 100%;
-      box-sizing: border-box;
-      position: relative;
-    }
-    
-    .b {
-      /* border: solid red 50px !important; */
-      margin: 0;
-      padding: var(--padding-smi-4) var(--padding-base);
-      text-align: left;
-    }
-    
-    .label2 {
-      color: #FCBD01;
-      border-radius: 6.82px;
-      border: 1.7px solid var(--color-gold-100);
-    }
-    
-    .svgIcon {
-      width: 20.9px;
-      height: 20.9px;
-      position: absolute;
-      right: 10px;
-    }
-    
-    .frameChild {
-      width: 618.5px;
-      height: 537px;
-      position: relative;
-      box-shadow: 0 4.4px 14.18px rgba(8, 15, 52, 0.06);
-      border-radius: 30.13px;
-      background-color: var(--background-jnt-primary-background);
-      border: 0.9px solid var(--neutral-300);
-      box-sizing: border-box;
-      display: none;
-      max-width: 100%;
-      overflow: hidden; /* Prevent overflow */
-    }
-    
+.productDetails,
+.enterDetailsOf {
+    margin-bottom: 3% !important;
+  position: relative;
+  font-family: var(--font-dm-sans);
+  text-align: left;
+  z-index: 1;
+}
+.enterDetailsOf {
+    margin: 0;
+    font-size: var(--font-size-base-5);
+    line-height: 26px;
+    color: var(--neutral-600);
+  }
+.frameTextarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Curved border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow */
+    font-size: 16px;
+    resize: vertical; /* Allows vertical resizing only */
+    box-sizing: border-box; /* Ensure padding is included in the element's width and height */
+    outline: none; /* Remove the default outline */
+  }
   
-    
-    
-    .languageToggleOptions {
-      /* border: solid red 5px; */
-      height: 160px;
-      width: 494px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0 0 var(--padding-12xs-6) 0;
-      position: relative;
-      max-width: 100%;
-    }
-    
-    .languageToggles {
-      /* border: solid 5px red; */
-      align-self: stretch;
-      flex-direction: row;
-      padding: 0 0 0 var(--padding-13xl);
-    }
-    
-    .selected {
-      border-color: var(--color-selected-border);
-      background-color: var(--background-selected);
-    }
-    
+  .frameTextarea:focus {
+    border-color: #007bff; /* Change border color on focus */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(0, 123, 255, 0.25); /* Add focus shadow */
+  }
+  
+  .productDescription {
+    margin-bottom: 3%;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500; /* 500 corresponds to medium weight */
+    font-size: 0.9rem;
+  }
   .buttonText {
-    position: relative;
     font-size: var(--font-size-base-5);
     line-height: 17.25px;
     font-weight: 700;
-    font-family: var(--font-dm-sans);
+    font-family: 'DM Sans', sans-serif; /* Updated to use the DM Sans font */
     color: var(--color-black);
     text-align: center;
     display: inline-block;
-    min-width: 74px;
   }
-  .primaryBtn,
-  .rectangleParent {
+
+  .productDetailsOuterWrapper {
+    position: relative;
+    padding: 20px;
+    /* Other styles as needed */
+  }
+  
+  .buttonsWrapper {
+    /* border : solid red 5px !important;  */
     display: flex;
-    justify-content: flex-start;
-    z-index: 1;
+    justify-content: space-between;
+    margin-top: 20px;
+    /* Ensures that buttons stay inside the wrapper */
+    flex-wrap: wrap;
   }
-  .primaryBtn {
+  
+  .buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  
+  .primaryBtn, .secondaryBtn {
     cursor: pointer;
-    border: 0;
     padding: var(--padding-base-9) var(--padding-14xl) var(--padding-mid-7);
-    background-color: var(--color-gold-100);
-    box-shadow: 0 2.6px 10.35px rgba(74, 58, 255, 0.18);
-    border-radius: 48.29px;
     flex-direction: row;
     align-items: flex-start;
     white-space: nowrap;
-  }
-  .primaryBtn:hover {
-    background-color: var(--color-darkgoldenrod-100);
+    box-shadow: 0 2.6px 10.35px rgba(74, 58, 255, 0.18);
+    border-radius: 48.29px;
+}
+
+.primaryBtn {
+    border: 0;
+    background-color: var(--color-gold-100);
+}
+
+.secondaryBtn {
+    border: 2px solid var(--color-gold-100); 
+    background-color: transparent; 
+}
+
+
+
+.primaryBtn:hover {
+  background-color: var(--color-darkgoldenrod-100);
+}
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
   .rectangleParent {
     margin: 0;
@@ -521,13 +389,35 @@
       }
     
       .selectLanguageYou {
-          text-align: center;
+        text-align: center;
        margin: 2%;
         width: 100%; /* Take up full width */
         padding: 0;
         font-size: 16px; /* Adjust font size as needed */
       }
     }
+    /* Center text inside buttons for screens below 450px */
+    @media screen and (max-width: 450px) {
+        .buttonText,
+        .buttonText1 {
+          display: flex; /* Use flexbox */
+          align-items: center; /* Center vertically */
+          justify-content: center; /* Center horizontally */
+          text-align: center !important;
+          font-size: 0.6rem !important;
+        }
+      
+        .primaryBtn,
+        .secondaryBtn {
+          text-align: center !important;
+          width: 50% !important; /* Adjust button width as needed */
+          display: block; /* Ensure button alignment applies */
+        }
+      }
+      
+  
+      
+      
     
   
   
