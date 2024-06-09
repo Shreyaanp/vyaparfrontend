@@ -8,9 +8,12 @@
 }
 .pad,
 .par {
+    
   color: var(--color-gold-100);
 }
 .vyaparLaunchpad {
+    /* border: solid red 5px; */
+  
   position: absolute;
   top: 0;
   left: 0;
@@ -52,8 +55,10 @@
   font-size: var(--font-size-10xl-9);
   color: var(--color-black);
   font-family: var(--font-ubuntu);
+  
 }
 .baseParent {
+     /* border: solid red 5px; */
   width: 100%;
   position: relative;
   background-color: var(--color-palegoldenrod-100);

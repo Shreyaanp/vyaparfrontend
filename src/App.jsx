@@ -95,13 +95,13 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/frame-285" element={<Frame11 />} />
+      <Route path="/frame-278" element={<Frame2 />} />
+      <Route path="/frame-281" element={<Frame2 />} />
       <Route path="/" element={<Frame />} />
       <Route path="/form-register" element={<FormRegister />} />
       <Route path="/root" element={<Root />} />
-      <Route path="/frame-278" element={<Frame2 />} />
-      <Route path="/frame-281" element={<Frame2 />} />
       <Route path="/root1" element={<Root1 />} />
-      <Route path="/frame-285" element={<Frame11 />} />
       <Route path="/version-3" element={<Version />} />
       <Route path="/version-4" element={<Version1 />} />
       <Route path="/version-9" element={<Version2 />} />
