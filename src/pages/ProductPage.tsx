@@ -53,7 +53,7 @@ const ProductPage = () => {
   const uploadProductData = async () => {
     if (superData) {
       try {
-        const response = await axios.post(`${backendUrl}/product/upload`, superData);
+        const response = await axios.post(`${backendUrl}product/upload`, superData);
         console.log('Product uploaded successfully:', response.data);
       } catch (error) {
         console.error('Error uploading product:', error);
