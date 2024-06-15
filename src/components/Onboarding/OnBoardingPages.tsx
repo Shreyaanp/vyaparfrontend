@@ -85,7 +85,7 @@ const OnBoardingPages: React.FC = () => {
           formData.append('file', productData.companyLogoFile);
 
           try {
-            const response = await axios.post(`${backendUrl}/upload/s3`, formData, {
+            const response = await axios.post(`${backendUrl}upload/s3`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
@@ -109,7 +109,7 @@ const OnBoardingPages: React.FC = () => {
           });
 
           try {
-            const response = await axios.post(`${backendUrl}/upload/s3/multiple`, formData, {
+            const response = await axios.post(`${backendUrl}upload/s3/multiple`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
