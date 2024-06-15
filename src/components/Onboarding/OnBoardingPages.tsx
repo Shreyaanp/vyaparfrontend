@@ -4,7 +4,6 @@ import SellerDetails from './OnBoardPages/SellerDetails';
 import Companyupload from './OnBoardPages/Companyupload';
 import SearchLang from './OnBoardPages/SearchLang';
 import ProductImages from './OnBoardPages/ProductImages';
-
 import ProductDetails from './OnBoardPages/ProductDetails';
 import ProductDescription from './OnBoardPages/ProductDescription';
 import ProductVariations from './OnBoardPages/ProductVariations';
@@ -14,6 +13,7 @@ import Loader from '../../common/Loader';
 import langu from './OnBoardPages/langu';
 
 const aiUrl = import.meta.env.VITE_BASE_AI_API;
+const backendUrl = import.meta.env.VITE_BASE_API;
 
 const OnBoardingPages: React.FC = () => {
   useEffect(() => {
@@ -36,7 +36,10 @@ const OnBoardingPages: React.FC = () => {
     Pricing: '',
     productDescription: '',
     productVariation: '',
+    companyLogo: '',
+    images: [],
   });
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -72,11 +75,59 @@ const OnBoardingPages: React.FC = () => {
     return response.data;
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < 8) {
-      // console.log(step);
+      setUploading(true);
+      if (step === 6) {
+        // Upload company logo
+        if (productData.companyLogoFile) {
+          const formData = new FormData();
+          formData.append('file', productData.companyLogoFile);
+
+          try {
+            const response = await axios.post(`${backendUrl}/upload/s3`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+
+            setProductData((prevData: any) => ({
+              ...prevData,
+              companyLogo: response.data.s3_link,
+              companyLogoFile: null,
+            }));
+          } catch (error) {
+            console.error("Error uploading company logo:", error);
+          }
+        }
+      } else if (step === 7) {
+        // Upload product images
+        if (productData.imageFiles && productData.imageFiles.length > 0) {
+          const formData = new FormData();
+          productData.imageFiles.forEach((file: File) => {
+            formData.append('files', file);
+          });
+
+          try {
+            const response = await axios.post(`${backendUrl}/upload/s3/multiple`, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+
+            setProductData((prevData: any) => ({
+              ...prevData,
+              images: response.data.s3_links,
+              imageFiles: [],
+            }));
+          } catch (error) {
+            console.error("Error uploading product images:", error);
+          }
+        }
+      }
+
       setStep(step + 1);
-      // console.log(step);
+      setUploading(false);
     }
   };
 
@@ -91,6 +142,7 @@ const OnBoardingPages: React.FC = () => {
 
     if (step === 8) {
       console.log('this is is somethings');
+      console.log(productData);
 
       postData(
         productData.ProductTitle,
@@ -127,9 +179,7 @@ const OnBoardingPages: React.FC = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            // flex: 1,
             backgroundColor: '#FFE9A9',
-            // opacity: 0.4,
             justifyContent: 'center',
             height: '100vh',
           }}
@@ -142,7 +192,6 @@ const OnBoardingPages: React.FC = () => {
             <div
               style={{
                 display: 'flex',
-                flex: 1,
                 justifyContent: 'center',
                 fontSize: 24,
                 fontWeight: '800',
@@ -160,9 +209,6 @@ const OnBoardingPages: React.FC = () => {
                 boxShadow:
                   '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
                 borderRadius: 30,
-                // margin: 'auto',
-                // height: '90vh',
-                // height:"100%"
               }}
             >
               <header
@@ -189,11 +235,9 @@ const OnBoardingPages: React.FC = () => {
               <main
                 style={{
                   display: 'flex',
-                  flex: 1,
-                  padding: '16px',
-                  // backgroundColor: 'red',
                   flexDirection: 'column',
                   height: 350,
+                  padding: '16px',
                 }}
               >
                 {step === 1 && (
@@ -220,14 +264,12 @@ const OnBoardingPages: React.FC = () => {
                     setProductData={setProductData}
                   />
                 )}
-
                 {step === 5 && (
                   <ProductVariations
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-
                 {step === 6 && (
                   <Companyupload
                     productData={productData}
@@ -244,9 +286,8 @@ const OnBoardingPages: React.FC = () => {
               <footer
                 style={{
                   display: 'flex',
-                  flex: 1,
                   flexDirection: 'column',
-                  // backgroundColor: 'lightblue',
+                  padding: '16px',
                 }}
                 className="px-12"
               >
@@ -254,13 +295,12 @@ const OnBoardingPages: React.FC = () => {
                   style={{
                     justifyContent: 'space-between',
                     display: 'flex',
-                    flex: 1,
                     paddingLeft: 12,
                     paddingRight: 12,
                     paddingBottom: 12,
                   }}
                 >
-                  <button onClick={handlePrevious}>
+                  <button onClick={handlePrevious} disabled={uploading}>
                     <p
                       style={{
                         backgroundColor: '#FCBD01',
@@ -277,7 +317,7 @@ const OnBoardingPages: React.FC = () => {
                       Previous Step
                     </p>
                   </button>
-                  <button onClick={handleNext}>
+                  <button onClick={handleNext} disabled={uploading}>
                     <p
                       style={{
                         backgroundColor: '#FCBD01',
@@ -289,7 +329,7 @@ const OnBoardingPages: React.FC = () => {
                         width: 140,
                       }}
                     >
-                      {step === 7 ? 'Submit' : 'Next Step'}
+                      {uploading ? 'Uploading...' : step === 7 ? 'Submit' : 'Next Step'}
                     </p>
                   </button>
                 </div>

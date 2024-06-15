@@ -2,37 +2,36 @@ import React, { useState } from 'react';
 import upload from '../../../images/Onboarding/upload.svg';
 import langu from './langu';
 
-
 type ProductVariationsProps = {
   productData: any;
   setProductData: any;
 }
 
-const Companyupload : React.FC<ProductVariationsProps> = ({ productData, setProductData }) => {
-
-  const [selectedFile, setSelectedFile] = useState<any>()
+const Companyupload: React.FC<ProductVariationsProps> = ({ productData, setProductData }) => {
+  const [selectedFile, setSelectedFile] = useState<any>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedFile(URL.createObjectURL(file));
-
-      console.log(URL.createObjectURL(file))
+      setSelectedFile(file);
+      setProductData((prevData: any) => ({
+        ...prevData,
+        companyLogoFile: file,
+      }));
     }
   };
+
   return (
     <div className="px-16 h-[20rem]">
       <h1 className="text-[#170F49] text-2xl mb-2 font-poppins font-bold">
         {langu[productData.inputLanguage].compLogo.heading}
       </h1>
       <p className="text-[#6F6C90] font-poppins text-md">
-      {langu[productData.inputLanguage].compLogo.subheading}
+        {langu[productData.inputLanguage].compLogo.subheading}
       </p>
-      <div className="mt-4 font-poppins">
-
-      </div>
+      <div className="mt-4 font-poppins"></div>
       <h1 className="text-[#170F49] text-md mb-6 mt-4 font-poppins font-medium">
-      {langu[productData.inputLanguage].compLogo.heading}
+        {langu[productData.inputLanguage].compLogo.heading}
       </h1>
 
       <div className="flex justify-center items-center ">
@@ -51,21 +50,14 @@ const Companyupload : React.FC<ProductVariationsProps> = ({ productData, setProd
             <h3 className="mt-2 text-sm font-medium text-gray-900">
               <label htmlFor="file-upload" className="relative cursor-pointer">
                 <span> Choose a file or drag & drop it here</span>
-                {/* <input
-                  id="file-upload"
-                  name="file-upload"
-                  type="file"
-                  className="sr-only"
-                /> */}
               </label>
             </h3>
             <button className="mt-1 bg-white border border-gray-300  text-[#FCBD01] px-4 py-2 rounded-lg ">
               Browse
             </button>
           </div>
-          <img src={`${selectedFile}`}
+          <img src={selectedFile ? URL.createObjectURL(selectedFile) : ""}
             className={`my-auto mx-auto max-h-25 ${selectedFile ? 'block' : "hidden"}`}
-          // id="preview" 
           />
         </div>
       </div>
