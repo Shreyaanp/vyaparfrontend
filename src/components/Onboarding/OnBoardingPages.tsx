@@ -162,7 +162,6 @@ const OnBoardingPages: React.FC = () => {
         });
       });
     }
-    console.log(productData);
   }, [step]);
 
   if (step === 8) {

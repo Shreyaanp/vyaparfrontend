@@ -13,8 +13,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ productData, setProduct
   const dispatch = useDispatch();
   const [productTitle, setProductTitle] = useState('');
   const [productPricing, setProductPricing] = useState(0);
-  console.log(productData);
-
 
   const handleSave = () => {
     dispatch(setProductDetails({

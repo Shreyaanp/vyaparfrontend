@@ -90,6 +90,7 @@ const ProductPage = () => {
       }
     }
   };
+  console.log('Product Data:', productData);
 
   const handleSave = async () => {
     uploadProductData();
