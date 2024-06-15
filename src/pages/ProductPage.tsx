@@ -8,6 +8,7 @@ import Img1 from '../images/image.png';
 import Img2 from '../images/image.png';
 import BackIcon from '../images/icons/backIcon.svg';
 import { AppContext } from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 import DownloadIcon from '../images/icons/downloadIcon.svg';
 import axios from 'axios';
 
@@ -44,6 +45,8 @@ const ProductPage = () => {
   const superData = state?.productData;
   const backendUrl = import.meta.env.VITE_BASE_API;
   const context = useContext(AppContext);
+
+  const navigate = useNavigate();
   if (superData && context?.user?.id) {
     superData.uid = context.user.id;
   }
@@ -90,15 +93,34 @@ const ProductPage = () => {
         setProductData((prevData) => ({
           ...prevData,
           ...response.data,
-        }));
+        })).then(() => {
+          navigate( '/ecommerce')
+        }
+      );
       } catch (error) {
         console.error('Error uploading product:', error);
       }
     }
   };
 
+  const updateProductData = async () => {
+    if (superData) {
+      try {
+        const response = await axios.put(`${backendUrl}product/${superData._id}`, productData);
+        console.log('Product updated successfully:', response.data);
+      } catch (error) {
+        console.error('Error updating product:', error);
+      }
+    }
+  };
+
   const handleSave = async () => {
-    uploadProductData();
+    if (isEditing) {
+      updateProductData();
+    } else {
+      uploadProductData();
+    }
+    setIsEditing(false);
   };
 
   const handleEdit = () => {
@@ -183,7 +205,9 @@ const ProductPage = () => {
           style={{ display: 'flex', flexDirection: 'column', width: '37rem' }}
         >
           <div style={{ width: '33rem' }}>
-            <div style={{ margin: 20 }}>
+            <div 
+              onClick={() => navigate('/ecommerce')}
+            style={{ margin: 20 }}>
               <img src={BackIcon} alt="" style={{ width: 30, height: 30 }} />
             </div>
             <div style={styles.shadowComp}>

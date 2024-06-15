@@ -33,24 +33,6 @@ const ProductLinguisticSathi: React.FC<ProductLinguisticSathiProps> = ({ product
           </div>
         </div>
       </section>
-
-      {/* Render the list of products */}
-      <section className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Your Products</h2>
-        {products.length > 0 ? (
-          <ul>
-            {products.map((product, index) => (
-              <li key={index} className="mb-4">
-                <h3 className="text-xl font-bold">{product.productTitle}</h3>
-                <p>{product.productDescription}</p>
-                {/* Render other product details here */}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No products found</p>
-        )}
-      </section>
     </div>
   );
 };

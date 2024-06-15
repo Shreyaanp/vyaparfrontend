@@ -1,0 +1,68 @@
+.productNameWrapper {
+    padding: 20px;
+    background-color: #f5db90;
+    border-radius: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .productName {
+    margin-bottom: 20px;
+  }
+  
+  .product1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  
+  .background {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .vermaHandicrafts {
+    flex: 1;
+  }
+  
+  .theLivingEarth {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .rectangleParent {
+    display: flex;
+    align-items: center;
+  }
+  
+  .edit03Icon {
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .addMore {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
+  .addMoreProducts {
+    font-size: 1rem;
+    color: #333;
+    margin-left: 10px;
+  }
+  
+  .addIcon {
+    width: 20px;
+    height: 20px;
+  }
+  

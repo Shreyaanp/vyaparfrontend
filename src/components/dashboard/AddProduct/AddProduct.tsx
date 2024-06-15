@@ -1,26 +1,49 @@
 import React from 'react';
-import product from './AddProduct.svg';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import editIcon from './edit03.svg';
+import addIcon from './add.svg';
+import './AddProduct.css'; // Import the separated CSS
 
-const AddProduct: React.FC = () => {
+const AddProduct = ({ products }) => {
   const navigate = useNavigate();
 
+  const handleEdit = (product) => {
+    navigate('/productpage', { state: { productData: product } });
+  };
+  console.log(products);
+
   return (
-    <div className="bg-[#F6E7BD] p-4 w-full mb-2 rounded-2xl overflow-hidden flex flex-col justify-center items-center">
-      <img className="rounded-3xl  py-8" src={product} alt="Banner Image" />
-      {/* <Link to="/OnBoarding"> */}
-      <button
-        onClick={() => {
-          navigate('/OnBoarding', {
-            state: { productData: 'this is product data' },
-          });
-        }}
-        className="bg-[#B8E1E2] mb-4 hover:bg-green-400 text-[#006A66] font-bold px-4 w-40 h-12 rounded"
-      >
-        Add Products
+    <div className="productNameWrapper">
+      {products.map((product, index) => (
+        <div key={index} className="productName">
+          <div className="product1">Product {index + 1}</div>
+          <div className="background">
+            <div className="vermaHandicrafts">
+              <div className="vermaHandicraftsChild" />
+              <div className="theLivingEarth">{product.productTitle}</div>
+            </div>
+            <div className="rectangleParent">
+              <div className="frameChild" />
+              <img
+                className="edit03Icon"
+                loading="lazy"
+                alt="Edit"
+                src={editIcon}
+                onClick={() => handleEdit(product)}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+      <button 
+        onClick={() => navigate('/onboarding')}
+      className="addMore">
+        <div className="addMoreChild" />
+        <div className="productLinguisticSathi">
+          <b className="addMoreProducts">Add More Products</b>
+        </div>
+        <img className="addIcon" alt="Add" src={addIcon} />
       </button>
-      {/* </Link> */}
     </div>
   );
 };
