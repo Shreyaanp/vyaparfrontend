@@ -21,7 +21,6 @@ const OnBoardingPages: React.FC = () => {
       sessionStorage.setItem('reloaded', 'true');
       window.location.reload();
     }
-    console.log(aiUrl);
   }, []);
 
   const [step, setStep] = useState<number>(1);
@@ -70,8 +69,6 @@ const OnBoardingPages: React.FC = () => {
       },
     );
 
-    console.log(response.data);
-
     return response.data;
   };
 
@@ -94,7 +91,6 @@ const OnBoardingPages: React.FC = () => {
             setProductData((prevData: any) => ({
               ...prevData,
               companyLogo: response.data.s3_link,
-              companyLogoFile: null,
             }));
           } catch (error) {
             console.error("Error uploading company logo:", error);
@@ -118,7 +114,6 @@ const OnBoardingPages: React.FC = () => {
             setProductData((prevData: any) => ({
               ...prevData,
               images: response.data.s3_links,
-              imageFiles: [],
             }));
           } catch (error) {
             console.error("Error uploading product images:", error);
@@ -142,7 +137,6 @@ const OnBoardingPages: React.FC = () => {
 
     if (step === 8) {
       console.log('this is is somethings');
-      console.log(productData);
 
       postData(
         productData.ProductTitle,
@@ -168,6 +162,7 @@ const OnBoardingPages: React.FC = () => {
         });
       });
     }
+    console.log(productData);
   }, [step]);
 
   if (step === 8) {
