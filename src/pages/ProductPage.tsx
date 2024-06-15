@@ -52,23 +52,28 @@ const ProductPage = () => {
     inputLanguage: '',
     shopName: '',
     sellerState: '',
-    productlanguage: '',
+    productLanguage: '',
     productCategory: '',
-    ProductTitle: '',
-    Pricing: '',
+    productTitle: '',
+    pricing: '',
     productDescription: '',
     productVariation: '',
     response: {
-      'Product Regional Names': [],
-      'Product Name': '',
-      'Product Description': '',
-      'Product Variation': '',
-      'About Product': [],
-      'Product Tagline': '',
-      'Product Prompt': '',
-      'Seo Friendly Tags': [],
+      ProductRegionalNames: [],
+      ProductName: '',
+      ProductDescription: '',
+      ProductVariation: [],
+      AboutProduct: [],
+      ProductTagline: '',
+      ProductPrompt: '',
+      MarketPainPoints: [],
+      CustomerAcquisition: [],
+      MarketEntryStrategy: [],
+      SeoFriendlyTags: [],
     },
   });
+
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (superData) {
@@ -78,6 +83,7 @@ const ProductPage = () => {
 
   const uploadProductData = async () => {
     if (superData) {
+      console.log('Uploading product data:', superData);
       try {
         const response = await axios.post(`${backendUrl}product/upload`, superData);
         console.log('Product uploaded successfully:', response.data);
@@ -90,10 +96,43 @@ const ProductPage = () => {
       }
     }
   };
-  console.log('Product Data:', productData);
 
   const handleSave = async () => {
     uploadProductData();
+  };
+
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const nameParts = name.split('.');
+    if (nameParts.length === 2) {
+      setProductData((prevData) => ({
+        ...prevData,
+        [nameParts[0]]: {
+          ...prevData[nameParts[0]],
+          [nameParts[1]]: value,
+        },
+      }));
+    } else {
+      setProductData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleArrayChange = (e, index, arrayName) => {
+    const { value } = e.target;
+    setProductData((prevData) => ({
+      ...prevData,
+      response: {
+        ...prevData.response,
+        [arrayName]: prevData.response[arrayName].map((item, i) => (i === index ? value : item)),
+      },
+    }));
   };
 
   return (
@@ -150,9 +189,19 @@ const ProductPage = () => {
             <div style={styles.shadowComp}>
               <span className="label">Product Title</span>
               <div className="line" />
-              <p style={{ fontFamily: 'poppins' }} className="productTitle ">
-                {productData.response['Product Name']}
-              </p>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="response.ProductName"
+                  value={productData.response.ProductName}
+                  onChange={handleChange}
+                  style={{ fontFamily: 'poppins' }}
+                />
+              ) : (
+                <p style={{ fontFamily: 'poppins' }} className="productTitle ">
+                  {productData.response.ProductName}
+                </p>
+              )}
               <div style={{ marginTop: -10 }}>
                 <CopyBtn />
               </div>
@@ -164,35 +213,64 @@ const ProductPage = () => {
                   <span className="label">Product Pricing</span>
                   <div className="line" />
                 </div>
-                <p
-                  style={{
-                    fontFamily: 'poppins',
-                    color: '#263238',
-                    fontSize: 26,
-                    fontWeight: '600',
-                    marginTop: 5,
-                  }}
-                >
-                  ₹ {productData.pricing}
-                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name="pricing"
+                    value={productData.pricing}
+                    onChange={handleChange}
+                    style={{ fontFamily: 'poppins', fontSize: 26, fontWeight: '600' }}
+                  />
+                ) : (
+                  <p
+                    style={{
+                      fontFamily: 'poppins',
+                      color: '#263238',
+                      fontSize: 26,
+                      fontWeight: '600',
+                      marginTop: 5,
+                    }}
+                  >
+                    ₹ {productData.pricing}
+                  </p>
+                )}
               </div>
             </div>
 
             <div style={styles.shadowComp}>
               <span className="label">Product Tagline</span>
               <div className="line" />
-              <p style={{ fontFamily: 'poppins' }} className="txt ">
-                {productData.response['Product Tagline']}
-              </p>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="response.ProductTagline"
+                  value={productData.response.ProductTagline}
+                  onChange={handleChange}
+                  style={{ fontFamily: 'poppins' }}
+                />
+              ) : (
+                <p style={{ fontFamily: 'poppins' }} className="txt ">
+                  {productData.response.ProductTagline}
+                </p>
+              )}
               <CopyBtn />
             </div>
 
             <div style={styles.shadowComp}>
               <span className="label">Product Description</span>
               <div className="line" />
-              <p style={{ fontFamily: 'poppins' }} className="txt ">
-                {productData.response['Product Description']}
-              </p>
+              {isEditing ? (
+                <textarea
+                  name="response.ProductDescription"
+                  value={productData.response.ProductDescription}
+                  onChange={handleChange}
+                  style={{ fontFamily: 'poppins' }}
+                />
+              ) : (
+                <p style={{ fontFamily: 'poppins' }} className="txt ">
+                  {productData.response.ProductDescription}
+                </p>
+              )}
               <CopyBtn />
             </div>
 
@@ -200,15 +278,24 @@ const ProductPage = () => {
               <span className="label">Product Features</span>
               <div className="line" />
               <ul style={{ listStyleType: 'disc', paddingLeft: 20 }}>
-                {productData.response['About Product'].map((item, index) => (
-                  <li
-                    key={index}
-                    style={{ fontFamily: 'poppins' }}
-                    className="txt "
-                  >
-                    {item}
-                  </li>
-                ))}
+                {isEditing ? (
+                  productData.response.AboutProduct.map((item, index) => (
+                    <li key={index} style={{ fontFamily: 'poppins' }}>
+                      <input
+                        type="text"
+                        value={item}
+                        onChange={(e) => handleArrayChange(e, index, 'AboutProduct')}
+                        style={{ fontFamily: 'poppins' }}
+                      />
+                    </li>
+                  ))
+                ) : (
+                  productData.response.AboutProduct.map((item, index) => (
+                    <li key={index} style={{ fontFamily: 'poppins' }} className="txt ">
+                      {item}
+                    </li>
+                  ))
+                )}
               </ul>
               <CopyBtn />
             </div>
@@ -216,10 +303,30 @@ const ProductPage = () => {
             <div style={styles.shadowComp}>
               <span className="label">Customer Acquisition</span>
               <div className="line" />
-
-              <p style={{ fontFamily: 'poppins' }} className="txt ">
-                {productData.response['Customer Acquisition']}
-              </p>
+              <ul style={{ listStyleType: 'disc', paddingLeft: 20 }}>
+                {productData.response.CustomerAcquisition && productData.response.CustomerAcquisition.length > 0 ? (
+                  isEditing ? (
+                    productData.response.CustomerAcquisition.map((item, index) => (
+                      <li key={index} style={{ fontFamily: 'poppins' }}>
+                        <input
+                          type="text"
+                          value={item}
+                          onChange={(e) => handleArrayChange(e, index, 'CustomerAcquisition')}
+                          style={{ fontFamily: 'poppins' }}
+                        />
+                      </li>
+                    ))
+                  ) : (
+                    productData.response.CustomerAcquisition.map((item, index) => (
+                      <li key={index} style={{ fontFamily: 'poppins' }} className="txt ">
+                        {item}
+                      </li>
+                    ))
+                  )
+                ) : (
+                  <li>No data available</li>
+                )}
+              </ul>
               <CopyBtn />
             </div>
           </div>
@@ -246,16 +353,30 @@ const ProductPage = () => {
                   paddingBottom: 5,
                   borderRadius: 10,
                   backgroundColor: '#006A66',
+                  marginRight: 10,
                 }}
+                onClick={handleEdit}
               >
-                <button
-                  onClick={() => {
-                    handleSave();
-                  }}
-                  style={{ color: 'white', fontWeight: 550, fontSize: 14 }}
-                >
+                <span style={{ color: 'white', fontWeight: 550, fontSize: 14 }}>
+                  {isEditing ? 'Save' : 'Edit'}
+                </span>
+              </button>
+              <button
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: 15,
+                  paddingRight: 15,
+                  paddingTop: 5,
+                  paddingBottom: 5,
+                  borderRadius: 10,
+                  backgroundColor: '#006A66',
+                }}
+                onClick={handleSave}
+              >
+                <span style={{ color: 'white', fontWeight: 550, fontSize: 14 }}>
                   Save
-                </button>
+                </span>
               </button>
             </div>
           </div>
@@ -297,9 +418,19 @@ const ProductPage = () => {
             <div style={styles.shadowComp}>
               <span className="label">Keywords</span>
               <div className="line" />
-              <p style={{ fontFamily: 'poppins' }} className="txt ">
-                {productData.response['Seo Friendly Tags'].join(', ')}
-              </p>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="response.SeoFriendlyTags"
+                  value={productData.response.SeoFriendlyTags.join(', ')}
+                  onChange={handleChange}
+                  style={{ fontFamily: 'poppins' }}
+                />
+              ) : (
+                <p style={{ fontFamily: 'poppins' }} className="txt ">
+                  {productData.response.SeoFriendlyTags.join(', ')}
+                </p>
+              )}
               <CopyBtn />
             </div>
 
@@ -338,18 +469,35 @@ const ProductPage = () => {
               <div style={{ padding: 20 }}>
                 <span className="label">Product Image presentation</span>
                 <div className="line" />
-                <p style={{ fontFamily: 'poppins' }} className="txt ">
-                  {productData.response['Product Prompt']}
-                </p>
+                {isEditing ? (
+                  <textarea
+                    name="response.ProductPrompt"
+                    value={productData.response.ProductPrompt}
+                    onChange={handleChange}
+                    style={{ fontFamily: 'poppins' }}
+                  />
+                ) : (
+                  <p style={{ fontFamily: 'poppins' }} className="txt ">
+                    {productData.response.ProductPrompt}
+                  </p>
+                )}
               </div>
 
               <div style={{ padding: 20 }}>
                 <span className="label">Market Painpoints</span>
                 <div className="line" />
-
-                <p style={{ fontFamily: 'poppins' }} className="txt ">
-                  {productData.response['Market PainPoints']}
-                </p>
+                {isEditing ? (
+                  <textarea
+                    name="response.MarketPainPoints"
+                    value={productData.response.MarketPainPoints}
+                    onChange={handleChange}
+                    style={{ fontFamily: 'poppins' }}
+                  />
+                ) : (
+                  <p style={{ fontFamily: 'poppins' }} className="txt ">
+                    {productData.response.MarketPainPoints}
+                  </p>
+                )}
                 <CopyBtn />
               </div>
             </div>
