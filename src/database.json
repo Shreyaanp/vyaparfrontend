@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "666656720cc4aa562815ac7a"
+  },
+  "user_id": "60c72b2f9b1e8a7a7c8b4567",
+  "language": "en",
+  "seller_details": {
+    "shop_name": "John's Shop",
+    "seller_state": "CA",
+    "product_language": "English",
+    "product_category": "Electronics"
+  },
+  "product_details": {
+    "product_title": "Smartphone",
+    "pricing": 699.99,
+    "product_description": "Latest model smartphone with all features.",
+    "product_variation": "Color: Black, Storage: 128GB"
+  },
+  "product_raw_image": [
+    "https://your_bucket_name.s3.amazonaws.com/uploads/your_product_image.jpg",
+    "https://your_bucket_name.s3.amazonaws.com/uploads/your_product_image.jpg",
+    "https://your_bucket_name.s3.amazonaws.com/uploads/your_product_image.jpg"
+  ],
+  "user_logo": "https://your_bucket_name.s3.amazonaws.com/uploads/your_logo.jpg",
+  "generated_data": {
+    "product_regional_names": ["Smartphone", "Handphone"],
+    "product_name": "Smartphone",
+    "product_description": "Discover the latest smartphone with cutting-edge technology.",
+    "about_product": [
+      "Advanced Camera System",
+      "High Performance",
+      "Long Battery Life"
+    ],
+    "product_tagline": "Experience the future",
+    "product_prompt": "Showcase the sleek design and advanced features.",
+    "seo_friendly_tags": ["Smartphone", "Electronics", "Gadgets"],
+    "product_processed_images": [
+      "https://your_bucket_name.s3.amazonaws.com/uploads/your_product_image.jpg",
+      "https://your_bucket_name.s3.amazonaws.com/uploads/your_product_image.jpg",
+      "https://your_bucket_name.s3.amazonaws.com/uploads/your_product_image.jpg"
+    ]
+  }
+}
