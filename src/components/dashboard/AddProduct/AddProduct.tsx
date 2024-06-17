@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import editIcon from './edit03.svg';
 import addIcon from './add.svg';
 import './AddProduct.css'; // Import the separated CSS
+import { AppContext } from '../../../AppContext';
 
 const AddProduct = ({ products }) => {
   const navigate = useNavigate();
+  const context = useContext(AppContext);
 
   const handleEdit = (product) => {
+    context.setIsEditing(true);
     navigate('/productpage', { state: { productData: product } });
   };
-  console.log(products);
+
+  const handleAdd = () => {
+    context.setIsEditing(false);
+    navigate('/onBoarding'); // Navigating to product page for new product
+  };
 
   return (
     <div className="productNameWrapper">
@@ -35,9 +42,7 @@ const AddProduct = ({ products }) => {
           </div>
         </div>
       ))}
-      <button 
-        onClick={() => navigate('/onboarding')}
-      className="addMore">
+      <button onClick={handleAdd} className="addMore">
         <div className="addMoreChild" />
         <div className="productLinguisticSathi">
           <b className="addMoreProducts">Add More Products</b>

@@ -14,6 +14,8 @@ interface AppContextType {
   setLoading: (loading: boolean) => void;
   user: User | null;
   setUser: (user: User | null) => void;
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -21,6 +23,7 @@ export const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const cachedUser = localStorage.getItem('user');
@@ -31,7 +34,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ loading, setLoading, user, setUser }}>
+    <AppContext.Provider value={{ loading, setLoading, user, setUser, isEditing, setIsEditing }}>
       {children}
     </AppContext.Provider>
   );

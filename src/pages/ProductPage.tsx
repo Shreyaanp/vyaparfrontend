@@ -93,10 +93,8 @@ const ProductPage = () => {
         setProductData((prevData) => ({
           ...prevData,
           ...response.data,
-        })).then(() => {
-          navigate( '/ecommerce')
-        }
-      );
+        }))
+      navigate('/ecommerce');
       } catch (error) {
         console.error('Error uploading product:', error);
       }
@@ -105,6 +103,7 @@ const ProductPage = () => {
 
   const updateProductData = async () => {
     if (superData) {
+
       try {
         const response = await axios.put(`${backendUrl}product/${superData._id}`, productData);
         console.log('Product updated successfully:', response.data);
