@@ -9,6 +9,7 @@ import SignUp from './pages/Authentication/SignUp';
 import ECommerce from './pages/Dashboard/ECommerce';
 import OnBoarding from './components/Onboarding/OnBoardingPages';
 import ProductPage from './pages/ProductPage';
+import Voice from './pages/Voice';
 import { AppContext } from './AppContext';
 
 function App() {
@@ -82,6 +83,15 @@ function App() {
             <>
               <PageTitle title="Vyapar Launchpad" />
               <SignIn />
+            </>
+          }
+        />
+        <Route
+          path='/voice'
+          element={
+            <>
+              <PageTitle title="Vyapar Launchpad" />
+              <Voice />
             </>
           }
         />
