@@ -74,6 +74,8 @@ function App() {
         }
       });
 
+
+
       const translatedText = translationResponse.data.pipelineResponse[0].output[0].target;
 
       const ttsResponse = await axios.post('https://dhruva-api.bhashini.gov.in/services/inference/pipeline', {
@@ -253,6 +255,15 @@ function App() {
       <button onClick={startConversation} disabled={!language}>
         Start
       </button>
+      {/* display the response in chat window */}
+      <div>
+        <h2>Responses:</h2>
+        <ul>
+          {responses.map((response, index) => (
+            <li key={index}>{response}</li>
+          ))}
+        </ul>
+        </div>
 
       {currentQuestionIndex >= 0 && (
         <div>
