@@ -14,6 +14,8 @@ import langu from './OnBoardPages/langu';
 
 const aiUrl = import.meta.env.VITE_BASE_AI_API;
 const backendUrl = import.meta.env.VITE_BASE_API;
+const photAiUrl = "https://prodapi.phot.ai/external/api/v2/user_activity/background-generator";
+const photAiApiKey = "667bd78dc03bdd1cb404e7a0_3668c766b56f00a1de05_apyhitools";
 
 const OnBoardingPages: React.FC = () => {
   useEffect(() => {
@@ -70,6 +72,49 @@ const OnBoardingPages: React.FC = () => {
     );
 
     return response.data;
+  };
+
+  const changeBackgroundImages = async (imageUrls, prompt) => {
+    const newImages = await Promise.all(
+      imageUrls.map(async (url) => {
+        try {
+          const response = await axios.post(
+            photAiUrl,
+            {
+              file_name: url.split('/').pop(),
+              input_image_link: url,
+              prompt: prompt,
+            },
+            {
+              headers: {
+                'x-api-key': photAiApiKey,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          console.log("Phot.AI response:", response.data); // Log the response
+          const orderId = response.data.order_id;
+
+          // Fetch order status using orderId
+          const orderStatusResponse = await axios.get(
+            `https://prodapi.phot.ai/external/api/v1/user_activity/order-status?order_id=${orderId}`,
+            {
+              headers: {
+                'x-api-key': photAiApiKey,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+
+          console.log("Order status response:", orderStatusResponse.data);
+          return orderStatusResponse.data.output_image_link; // Adjust based on the actual response structure
+        } catch (error) {
+          console.error("Error changing background:", error);
+          return null;
+        }
+      })
+    );
+    return newImages;
   };
 
   const handleNext = async () => {
@@ -138,12 +183,15 @@ const OnBoardingPages: React.FC = () => {
     if (step === 8) {
       console.log('this is is somethings');
 
+      const prompt = `Please change the background of the input Image such that they are Ecommerce ready. The product is called ${productData.ProductTitle}`;
       postData(
         productData.ProductTitle,
         productData.productDescription,
         productData.productVariation,
         productData.Pricing,
-      ).then((response) => {
+      ).then(async (response) => {
+        const newImages = await changeBackgroundImages(productData.images, prompt);
+        console.log("New images:", newImages); // Log the new images
         navigate('/ProductPage', {
           state: {
             productData: {
@@ -156,7 +204,9 @@ const OnBoardingPages: React.FC = () => {
               pricing: productData.Pricing,
               productDescription: productData.productDescription,
               productVariation: productData.productVariation,
-              response: response,
+              response: { ...response, newImages: newImages },
+              companyLogo: productData.companyLogo,
+              images: productData.images,
             },
           },
         });

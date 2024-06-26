@@ -4,10 +4,10 @@ import './navBar.css';
 import User from '../images/icons/person-outline.svg';
 import search from '../images/icons/search-outline.svg';
 import CopyButton from '../images/icons/copyButton.svg';
-import Img1 from '../images/image.png';
-import Img2 from '../images/image.png';
 import BackIcon from '../images/icons/backIcon.svg';
 import { AppContext } from '../AppContext';
+import Img1 from "../images/image.png"
+import Img2 from "../images/image.png"
 import { useNavigate } from 'react-router-dom';
 import DownloadIcon from '../images/icons/downloadIcon.svg';
 import axios from 'axios';
@@ -73,6 +73,7 @@ const ProductPage = () => {
       CustomerAcquisition: [],
       MarketEntryStrategy: [],
       SeoFriendlyTags: [],
+      newImages: [], // Add newImages array to hold new images from Phot.AI API
     },
   });
 
@@ -84,6 +85,7 @@ const ProductPage = () => {
     }
   }, [superData]);
 
+  console.log(superData)
   const uploadProductData = async () => {
     if (superData) {
       console.log('Uploading product data:', superData);
@@ -412,7 +414,7 @@ const ProductPage = () => {
                 marginTop: 20,
               }}
             >
-              <img src={Img1} style={{ width: 300, height: 300 }} />
+              <img src={productData.response.newImages[0] || Img1} style={{ width: 300, height: 300 }} />
             </div>
             <div
               style={{
@@ -421,21 +423,11 @@ const ProductPage = () => {
                 marginTop: 20,
               }}
             >
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
+              {productData.response.newImages.slice(1).map((img, index) => (
+                <div key={index} style={styles.slideImgCont}>
+                  <img src={img || Img2} style={styles.slideImg} />
+                </div>
+              ))}
             </div>
 
             <div style={styles.shadowComp}>

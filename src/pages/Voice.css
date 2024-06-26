@@ -1,0 +1,17 @@
+.voice-container {
+  height: 100vh; /* Make sure the container takes the full height of the viewport */
+  width: 100vw; /* Make sure the container takes the full width of the viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.voice {
+  background-color: aqua;
+  height: 600px;
+  width: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

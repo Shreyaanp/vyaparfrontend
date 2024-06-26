@@ -239,9 +239,9 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>Interactive Product Form</h1>
-      <div>
+    <div className='voice-container'>
+      <div className='voice'>
+      <div >
         <label>Select Language:</label>
         <select value={language} onChange={handleLanguageChange}>
           <option value="">Select Language</option>
@@ -255,7 +255,6 @@ function App() {
       <button onClick={startConversation} disabled={!language}>
         Start
       </button>
-      {/* display the response in chat window */}
       <div>
         <h2>Responses:</h2>
         <ul>
@@ -283,6 +282,7 @@ function App() {
           onChange={(e) => setPlaybackRate(e.target.value)}
         />
       </div>
+        </div>
     </div>
   );
 }

@@ -3,8 +3,12 @@
     background-color: #f5db90;
     border-radius: 15px;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
   }
-  
+  .productimg{
+    height: 500px;
+  }
   .productName {
     margin-bottom: 20px;
   }
@@ -65,4 +69,16 @@
     width: 20px;
     height: 20px;
   }
+  .deleteButton {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 12px;
+  }
   
+  .Remove{
+    height: 30px;
+  }
