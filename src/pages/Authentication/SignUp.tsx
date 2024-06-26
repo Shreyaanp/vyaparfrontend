@@ -57,14 +57,8 @@ const SignUp: React.FC = () => {
       <div style={{ height: '100vh' }} className="flex flex-wrap items-center">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="py-17.5 px-26 text-center">
-            <div
-              style={{
-                backgroundColor: 'transparent',
-                top: 40,
-                left: 30,
-                position: 'absolute',
-              }}
-            >
+          <div className="absolute top-40 left-30 bg-transparent">
+
               <span
                 className="font-bold text-4xl font-poppins text-black "
               >
@@ -78,25 +72,12 @@ const SignUp: React.FC = () => {
               }
               style={{ height: 400 }}
             />
-            <p
-              style={{
-                color: 'black',
-                fontWeight: 700,
-                fontSize: 35,
-              }}
-              className=" mb-6"
-            >
+           <p className="text-black font-bold text-2xl mb-6">
+
               Let’s get Started
             </p>
-            <p
-              style={{
-                fontFamily: 'Poppins',
-                color: 'black',
-                fontWeight: 500,
-                fontSize: 20,
-              }}
-              className="text-lg"
-            >
+            <p className="font-poppins text-black font-medium text-title-md">
+
               Your Multilingual gateway to global e-commerce!
             </p>
           </div>
