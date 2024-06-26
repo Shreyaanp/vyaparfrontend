@@ -72,15 +72,7 @@ const SearchLang: React.FC<SearchLangProps> = ({
   return (
     <div className=" px-8 h-[20rem]">
       <div>
-        <h1
-          style={{
-            color: '#170F49',
-            fontFamily: 'poppins',
-            fontWeight: '600',
-            fontSize: 18,
-            marginBottom: 5,
-          }}
-        >
+      <h1 className="text-[#170F49] font-bold poppins text-lg mb-2">
           Language Selection
         </h1>
         <p className="text-[#6F6C90] font-poppins text-sm">
@@ -138,14 +130,7 @@ const SearchLang: React.FC<SearchLangProps> = ({
           </div>
         )}
         {/* Display three random language names */}
-        <div
-          style={{
-            marginTop: 10,
-            borderColor: '#E5E5E5',
-            borderWidth: 2,
-            borderRadius: 14,
-          }}
-        >
+        <div className="mt-4 border-2 border-[#E5E5E5] rounded-lg">
           {randomLanguages.map((language: string, index: number) => (
             <div
               key={index}

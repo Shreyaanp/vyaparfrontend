@@ -14,29 +14,13 @@ import axios from 'axios';
 
 const CopyBtn = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 10 }}>
-      <button
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          borderColor: '#EFF0F6',
-          borderWidth: 1.5,
-          paddingLeft: 7,
-          paddingRight: 7,
-          paddingTop: 2,
-          paddingBottom: 2,
-          borderRadius: 10,
-        }}
-      >
-        <span style={{ color: '#FCBD01', fontWeight: 500, fontSize: 14 }}>
-          Copy
-        </span>
-        <img
-          src={CopyButton}
-          style={{ width: 18, height: 18, marginLeft: 5 }}
-        />
+    <div className="flex justify-end mt-2">
+      <button className="flex items-center border border-[#EFF0F6] p-2 rounded-lg">
+        <span className="text-[#FCBD01] font-medium text-sm">Copy</span>
+        <img src={CopyButton} alt="Copy Icon" className="w-4 h-4 ml-2" />
       </button>
     </div>
+
   );
 };
 
@@ -157,58 +141,30 @@ const ProductPage = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: 'white',
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      <div
-        className="navbar"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          backgroundColor: 'white',
-          padding: '20px 40px',
-          boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.15)',
-          marginBottom: 10,
-        }}
-      >
-        <span style={{ fontSize: '1.5rem', fontWeight: '600', color: 'black' }}>
-          Vya<span style={{ color: '#FCBD01' }}>par</span> Laun
-          <span style={{ color: '#FCBD01' }}>pad</span>
-        </span>
-        <div className="icons">
-          <img src={User} alt="" style={{ width: 30, height: 30 }} />
-          <img src={search} alt="" style={{ width: 30, height: 30 }} />
-        </div>
-      </div>
+    <div className="bg-white flex flex-col h-full w-full">
+  <div className="navbar flex justify-between items-center bg-white p-5 shadow-md mb-2.5">
+      <span className="text-xl font-semibold text-black">
+      Vya<span className="text-[#FCBD01]">par</span> Laun
+      <span className="text-[#FCBD01]">pad</span>
+    </span>
+    <div className="icons flex space-x-2">
+      <img src={User} alt="" className="w-7 h-7" />
+      <img src={search} alt="" className="w-7 h-7" />
+    </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flex: 1,
-          flexDirection: 'row',
-          padding: '0px 40px',
-          justifyContent: 'center',
-          gap: 100,
-          marginBottom: 20,
-        }}
-      >
-        <div
-          style={{ display: 'flex', flexDirection: 'column', width: '37rem' }}
-        >
-          <div style={{ width: '33rem' }}>
-            <div 
-              onClick={() => navigate('/ecommerce')}
-            style={{ margin: 20 }}>
-              <img src={BackIcon} alt="" style={{ width: 30, height: 30 }} />
-            </div>
+      
+    </div>
+
+    <div className="flex flex-1 flex-row px-10 justify-center gap-24 mb-5">
+        <div className="flex flex-col w-[37rem]">
+          <div className="w-[33rem]">
+          <div 
+           onClick={() => navigate('/ecommerce')}
+           className="m-5 cursor-pointer"
+         >
+           <img src={BackIcon} alt="" className="w-7 h-7" />
+         </div>
+
             <div style={styles.shadowComp}>
               <span className="label">Product Title</span>
               <div className="line" />
@@ -225,17 +181,18 @@ const ProductPage = () => {
                   {productData.response.ProductName}
                 </p>
               )}
-              <div style={{ marginTop: -10 }}>
+              <div className="-mt-2">
                 <CopyBtn />
               </div>
+              
             </div>
 
             <div style={styles.shadowComp}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div>
-                  <span className="label">Product Pricing</span>
-                  <div className="line" />
-                </div>
+            <div className="flex justify-between">
+               <div>
+                 <span className="label">Product Pricing</span>
+                 <div className="line" />
+               </div>
                 {isEditing ? (
                   <input
                     type="text"
@@ -245,17 +202,13 @@ const ProductPage = () => {
                     style={{ fontFamily: 'poppins', fontSize: 26, fontWeight: '600' }}
                   />
                 ) : (
-                  <p
-                    style={{
-                      fontFamily: 'poppins',
-                      color: '#263238',
-                      fontSize: 26,
-                      fontWeight: '600',
-                      marginTop: 5,
-                    }}
+                    <p
+                    className="text-[#263238] text-2xl font-semibold mt-1"
+                    style={{ fontFamily: 'poppins' }}
                   >
                     ₹ {productData.pricing}
                   </p>
+                  
                 )}
               </div>
             </div>
@@ -355,177 +308,110 @@ const ProductPage = () => {
           </div>
         </div>
 
-        <div
-          style={{ display: 'flex', flexDirection: 'column', width: '37rem' }}
-        >
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                marginTop: 10,
-              }}
-            >
-              <button
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  paddingLeft: 15,
-                  paddingRight: 15,
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                  borderRadius: 10,
-                  backgroundColor: '#006A66',
-                  marginRight: 10,
-                }}
-                onClick={handleEdit}
-              >
-                <span style={{ color: 'white', fontWeight: 550, fontSize: 14 }}>
-                  {isEditing ? 'Save' : 'Edit'}
-                </span>
-              </button>
-              <button
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  paddingLeft: 15,
-                  paddingRight: 15,
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                  borderRadius: 10,
-                  backgroundColor: '#006A66',
-                }}
-                onClick={handleSave}
-              >
-                <span style={{ color: 'white', fontWeight: 550, fontSize: 14 }}>
-                  Save
-                </span>
-              </button>
-            </div>
-          </div>
+        <div className="flex flex-col w-[37rem]">
+  <div className="flex justify-end mt-4">
+    <button
+      className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm mr-2"
+      onClick={handleEdit}
+    >
+      {isEditing ? 'Save' : 'Edit'}
+    </button>
+    <button
+      className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm"
+      onClick={handleSave}
+    >
+      Save
+    </button>
+  </div>
 
-          <div style={{ width: '37rem' }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: 20,
-              }}
-            >
-              <img src={Img1} style={{ width: 300, height: 300 }} />
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: 20,
-              }}
-            >
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-              <div style={styles.slideImgCont}>
-                <img src={Img2} style={styles.slideImg} />
-              </div>
-            </div>
+  <div className="w-[37rem]">
+    <div className="flex justify-center mt-8">
+      <img src={Img1} className="w-72 h-72" />
+    </div>
 
-            <div style={styles.shadowComp}>
-              <span className="label">Keywords</span>
-              <div className="line" />
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="response.SeoFriendlyTags"
-                  value={productData.response.SeoFriendlyTags.join(', ')}
-                  onChange={handleChange}
-                  style={{ fontFamily: 'poppins' }}
-                />
-              ) : (
-                <p style={{ fontFamily: 'poppins' }} className="txt ">
-                  {productData.response.SeoFriendlyTags.join(', ')}
-                </p>
-              )}
-              <CopyBtn />
-            </div>
+    <div className="flex justify-between mt-8">
+      <div className="w-[72px]">
+        <img src={Img2} className="w-full h-auto" />
+      </div>
+      <div className="w-[72px]">
+        <img src={Img2} className="w-full h-auto" />
+      </div>
+      <div className="w-[72px]">
+        <img src={Img2} className="w-full h-auto" />
+      </div>
+      <div className="w-[72px]">
+        <img src={Img2} className="w-full h-auto" />
+      </div>
+      <div className="w-[72px]">
+        <img src={Img2} className="w-full h-auto" />
+      </div>
+    </div>
 
-            <div
-              style={{
-                boxShadow: '0px 4.43px 14.18px 0px rgba(8, 15, 52, 0.06)',
-                borderRadius: 18,
-                borderColor: '#EFF0F6',
-                borderWidth: 0.8,
-                marginTop: 20,
-                paddingTop: 20,
-                paddingBottom: 20,
-              }}
-            >
-              <p
-                style={{
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  paddingBottom: 20,
-                  fontSize: 24,
-                  color: '#263238',
-                  fontWeight: '500',
-                  fontFamily: 'poppins',
-                }}
-              >
-                AI Recommendations
-              </p>
-              <hr
-                style={{
-                  borderColor: '#EFF0F6',
-                  borderWidth: 1,
-                  borderStyle: 'solid',
-                }}
-              />
+    <div className="bg-white shadow-md rounded-lg border border-[#EFF0F6] mt-8 p-6">
+      <span className="label">Keywords</span>
+      <div className="line" />
+      {isEditing ? (
+        <input
+          type="text"
+          name="response.SeoFriendlyTags"
+          value={productData.response.SeoFriendlyTags.join(', ')}
+          onChange={handleChange}
+          className="mt-2 p-2 rounded-lg border border-[#EFF0F6] focus:outline-none"
+          style={{ fontFamily: 'poppins' }}
+        />
+      ) : (
+        <p className="txt mt-2" style={{ fontFamily: 'poppins' }}>
+          {productData.response.SeoFriendlyTags.join(', ')}
+        </p>
+      )}
+      <CopyBtn />
+    </div>
 
-              <div style={{ padding: 20 }}>
-                <span className="label">Product Image presentation</span>
-                <div className="line" />
-                {isEditing ? (
-                  <textarea
-                    name="response.ProductPrompt"
-                    value={productData.response.ProductPrompt}
-                    onChange={handleChange}
-                    style={{ fontFamily: 'poppins' }}
-                  />
-                ) : (
-                  <p style={{ fontFamily: 'poppins' }} className="txt ">
-                    {productData.response.ProductPrompt}
-                  </p>
-                )}
-              </div>
+    <div className="bg-white shadow-lg rounded-lg border border-[#EFF0F6] mt-8 p-6">
+      <p className="font-semibold text-lg text-[#263238] mb-4" style={{ fontFamily: 'poppins' }}>
+        AI Recommendations
+      </p>
+      <hr className="border border-[#EFF0F6]" />
+      <div className="p-4">
+        <span className="label">Product Image presentation</span>
+        <div className="line" />
+        {isEditing ? (
+          <textarea
+            name="response.ProductPrompt"
+            value={productData.response.ProductPrompt}
+            onChange={handleChange}
+            className="mt-2 p-2 rounded-lg border border-[#EFF0F6] focus:outline-none w-full"
+            style={{ fontFamily: 'poppins' }}
+          />
+        ) : (
+          <p className="txt mt-2" style={{ fontFamily: 'poppins' }}>
+            {productData.response.ProductPrompt}
+          </p>
+        )}
+      </div>
 
-              <div style={{ padding: 20 }}>
-                <span className="label">Market Painpoints</span>
-                <div className="line" />
-                {isEditing ? (
-                  <textarea
-                    name="response.MarketPainPoints"
-                    value={productData.response.MarketPainPoints}
-                    onChange={handleChange}
-                    style={{ fontFamily: 'poppins' }}
-                  />
-                ) : (
-                  <p style={{ fontFamily: 'poppins' }} className="txt ">
-                    {productData.response.MarketPainPoints}
-                  </p>
-                )}
-                <CopyBtn />
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="p-4 mt-4">
+        <span className="label">Market Painpoints</span>
+        <div className="line" />
+        {isEditing ? (
+          <textarea
+            name="response.MarketPainPoints"
+            value={productData.response.MarketPainPoints}
+            onChange={handleChange}
+            className="mt-2 p-2 rounded-lg border border-[#EFF0F6] focus:outline-none w-full"
+            style={{ fontFamily: 'poppins' }}
+          />
+        ) : (
+          <p className="txt mt-2" style={{ fontFamily: 'poppins' }}>
+            {productData.response.MarketPainPoints}
+          </p>
+        )}
+        <CopyBtn />
+      </div>
+    </div>
+  </div>
+</div>
+
       </div>
     </div>
   );

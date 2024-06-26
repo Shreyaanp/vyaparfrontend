@@ -169,52 +169,16 @@ const OnBoardingPages: React.FC = () => {
   } else {
     return (
       <div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: '#FFE9A9',
-            justifyContent: 'center',
-            height: '100vh',
-          }}
-        >
-          <div
-            style={{
-              width: '40%',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                fontSize: 24,
-                fontWeight: '800',
-                marginBottom: '3rem',
-                color: '#4B4B4B',
-              }}
-            >
+        <div className="flex items-center bg-ffe9a9 justify-center h-screen">
+        <div className="w-2/5">
+           <div className="flex justify-center text-2xl font-extrabold mb-12 text-4b4b4b">
               <span style={{ fontSize: 34 }}>
                 Vya<span>par</span> Launch<span>pad</span>
               </span>
             </div>
-            <div
-              style={{
-                backgroundColor: 'white',
-                boxShadow:
-                  '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                borderRadius: 30,
-              }}
-            >
-              <header
-                style={{
-                  padding: '16px',
-                }}
-              >
-                <div
-                  style={{
-                    paddingBottom: 8,
-                  }}
-                >
+            <div className="bg-white shadow-custom rounded-custom">
+            <header className="p-4">
+                <div className="pb-2">
                   <Stepper currentStep={step} />
                 </div>
                 <div
@@ -226,14 +190,7 @@ const OnBoardingPages: React.FC = () => {
                   <hr style={{ color: '#D9DBE9' }} />
                 </div>
               </header>
-              <main
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 350,
-                  padding: '16px',
-                }}
-              >
+              <main className="flex flex-col h-350 p-4">
                 {step === 1 && (
                   <SearchLang
                     productData={productData}
@@ -277,23 +234,9 @@ const OnBoardingPages: React.FC = () => {
                   />
                 )}
               </main>
-              <footer
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  padding: '16px',
-                }}
-                className="px-12"
-              >
-                <div
-                  style={{
-                    justifyContent: 'space-between',
-                    display: 'flex',
-                    paddingLeft: 12,
-                    paddingRight: 12,
-                    paddingBottom: 12,
-                  }}
-                >
+              <footer className="flex flex-col p-4 px-12">
+              <div className="flex justify-between px-4 pb-4">
+                
                   <button onClick={handlePrevious} disabled={uploading}>
                     <p
                       style={{
@@ -312,17 +255,7 @@ const OnBoardingPages: React.FC = () => {
                     </p>
                   </button>
                   <button onClick={handleNext} disabled={uploading}>
-                    <p
-                      style={{
-                        backgroundColor: '#FCBD01',
-                        color: 'black',
-                        border: '2px solid #FCBD01',
-                        borderRadius: '9999px',
-                        padding: '6px 0px',
-                        fontWeight: '600',
-                        width: 140,
-                      }}
-                    >
+                  < p className="bg-FCBD01 text-black border-2 border-FCBD01 rounded-full py-3 px-4 font-semibold w-36">
                       {uploading ? 'Uploading...' : step === 7 ? 'Submit' : 'Next Step'}
                     </p>
                   </button>
