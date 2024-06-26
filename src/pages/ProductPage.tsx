@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect,useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import QRCode from 'qrcode.react';
@@ -10,6 +10,7 @@ import BackIcon from '../images/icons/backIcon.svg';
 import { AppContext } from '../AppContext';
 import Img1 from "../images/image.png";
 import Img2 from "../images/image.png";
+import OverLayBG from "../images/PublishOverlay/OverlayBackground.svg";
 
 const CopyBtn = () => {
   return (
@@ -59,8 +60,31 @@ const ProductPage = () => {
 
   const [productData, setProductData] = useState(superData);
   const [isEditing, setIsEditing] = useState(false);
-  const [shareableLink, setShareableLink] = useState('');
+  const [shareableLink, setShareableLink] = useState<string | null>(null); // Specify string or null
+  const modalRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
+  const [copySuccess, setCopySuccess] = useState(false);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setShareableLink(null); // Reset shareableLink to null to close modal
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  });
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareableLink);
+    setCopySuccess(true);
+    setTimeout(() => {
+      setCopySuccess(false);
+    }, 1500);
+  };
+ 
   useEffect(() => {
     if (superData) {
       setProductData(superData);
@@ -313,7 +337,7 @@ const ProductPage = () => {
               {isEditing ? 'Cancel' : 'Edit'}
             </button>
             <button
-              className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm"
+              className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm mr-2"
               onClick={handleSave}
             >
               Save
@@ -325,13 +349,37 @@ const ProductPage = () => {
               Publish
             </button>
           </div>
-
           {shareableLink && (
-            <div className="mt-4">
-              <p>Shareable Link: <a href={shareableLink} target="_blank" rel="noopener noreferrer">{shareableLink}</a></p>
-              <QRCode value={shareableLink} />
-            </div>
-          )}
+  <div className="modal absolute top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-900 bg-opacity-50">
+    <div ref={modalRef} className="content p-6 bg-white rounded-lg shadow-lg text-center"style={{ backgroundImage: `url(${OverLayBG})`, backgroundSize: 'contain', backgroundPosition: 'center' }}>
+      <h1 className="font-sans-serif font-bold text-black text-title-md mb-8">Your Product is now live!</h1>
+      <div className="flex justify-center m-3">
+        <QRCode value={shareableLink} />
+      </div>
+      <div className="text-left">
+        <div className="text-center mt-4">
+          <p className="font-sans-serif text-lg">OR</p>
+        </div>
+        <p className="mb-2 font-sans-serif font-bold text-black">Copy Link</p>
+        <div className="flex items-center justify-between">
+          <div className="w-6/7 flex items-center justify-between bg-gray border border-gray-300 rounded-lg p-3">
+            <p className="flex-grow">{shareableLink}</p>
+          </div>
+          <button
+            onClick={copyToClipboard}
+            className="ml-2 px-4 py-2 bg-gray text-black font-bold rounded-md"
+          >
+            {copySuccess ? 'Copied!' : 'Copy'}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+
 
           <div className="w-[37rem]">
             <div className="flex justify-center mt-8">
