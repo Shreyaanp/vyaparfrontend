@@ -101,6 +101,7 @@ const ProductPage = () => {
       console.error('Error publishing product:', error);
     }
   };
+  
 
   const handleSave = async () => {
     if (productData._id) {
