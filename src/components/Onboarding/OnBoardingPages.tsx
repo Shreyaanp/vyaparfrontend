@@ -74,6 +74,24 @@ const OnBoardingPages: React.FC = () => {
     return response.data;
   };
 
+  const fetchOrderStatus = async (orderId) => {
+    try {
+      const response = await axios.get(
+        `https://prodapi.phot.ai/external/api/v1/user_activity/order-status?order_id=${orderId}`,
+        {
+          headers: {
+            'x-api-key': photAiApiKey,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching order status:", error);
+      return null;
+    }
+  };
+
   const changeBackgroundImages = async (imageUrls, prompt) => {
     const newImages = await Promise.all(
       imageUrls.map(async (url) => {
@@ -96,18 +114,24 @@ const OnBoardingPages: React.FC = () => {
           const orderId = response.data.order_id;
 
           // Fetch order status using orderId
-          const orderStatusResponse = await axios.get(
-            `https://prodapi.phot.ai/external/api/v1/user_activity/order-status?order_id=${orderId}`,
-            {
-              headers: {
-                'x-api-key': photAiApiKey,
-                'Content-Type': 'application/json',
-              },
-            }
-          );
+          let orderStatusResponse;
+          let retries = 5;
 
-          console.log("Order status response:", orderStatusResponse.data);
-          return orderStatusResponse.data.output_image_link; // Adjust based on the actual response structure
+          // Retry mechanism to fetch the order status
+          while (retries > 0) {
+            orderStatusResponse = await fetchOrderStatus(orderId);
+            if (orderStatusResponse && orderStatusResponse.output_urls.length > 0) {
+              break;
+            }
+            await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
+            retries--;
+          }
+
+          if (orderStatusResponse && orderStatusResponse.output_urls.length > 0) {
+            return orderStatusResponse.output_urls[0];
+          } else {
+            return null;
+          }
         } catch (error) {
           console.error("Error changing background:", error);
           return null;
