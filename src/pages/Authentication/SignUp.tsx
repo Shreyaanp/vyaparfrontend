@@ -47,18 +47,13 @@ const SignUp: React.FC = () => {
 
   return (
     <div
-      style={{
-        backgroundColor: 'transparent',
-        height: '100vh',
-        overflow: 'hidden',
-      }}
+      style={{ backgroundColor: 'transparent', height: '100vh' }}
       className="rounded-sm border border-stroke bg-[#FFDB75] shadow-default"
     >
       <div style={{ height: '100vh' }} className="flex flex-wrap items-center">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="py-17.5 px-26 text-center">
-          <div className="absolute top-40 left-30 bg-transparent">
-
+          <div className="absolute top-20 left-10 bg-transparent">
               <span
                 className="font-bold text-4xl font-poppins text-black "
               >
@@ -71,22 +66,21 @@ const SignUp: React.FC = () => {
                 'https://firebasestorage.googleapis.com/v0/b/backendintegration-2fdc3.appspot.com/o/login_illustration.png?alt=media&token=5dd33ed6-0f9d-49fe-87d4-615cff08c1d5'
               }
               style={{ height: 400 }}
+              className="mt-10" 
             />
-           <p className="text-black font-bold text-2xl mb-6">
+           <p className="text-black font-bold text-title-xl mb-2">
 
               Let’s get Started
             </p>
-            <p className="font-poppins text-black font-medium text-title-md">
+            <p className="font-poppins text-black font-medium text-lg">
 
               Your Multilingual gateway to global e-commerce!
             </p>
           </div>
         </div>
 
-        <div
-          style={{ backgroundColor: 'white' }}
-          className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2"
-        >
+        <div className="w-full xl:w-1/2 border-stroke dark:border-strokedark xl:border-l-2 flex items-center justify-center h-screen bg-white">
+
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <span className="mb-1.5 block font-medium">Start for free</span>
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
