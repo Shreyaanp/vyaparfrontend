@@ -337,7 +337,7 @@ const OnBoardingPages: React.FC = () => {
                         borderRadius: '9999px',
                         padding: '8px 0px',
                         visibility:
-                          step === 1 && subStep === 1 ? 'hidden' : 'visible',
+                           step === 1? 'hidden' : 'visible',
                         fontWeight: '600',
                         width: 140,
                       }}
@@ -346,7 +346,19 @@ const OnBoardingPages: React.FC = () => {
                     </p>
                   </button>
                   <button onClick={handleNext} disabled={uploading}>
-                  < p className="bg-FCBD01 text-black border-2 border-FCBD01 rounded-full py-3 px-4 font-semibold w-36">
+                  <p
+                  style={{
+                    backgroundColor: '#FCBD01',
+                    color: 'black',
+                    border: '2px solid #FCBD01',
+                    borderRadius: '9999px',
+                    padding: '8px 0px',
+                    visibility:
+                      step === 2 ? 'hidden' : 'visible',
+                    fontWeight: '600',
+                    width: 140,
+                  }}
+                >
                       {uploading ? 'Uploading...' : step === 7 ? 'Submit' : 'Next Step'}
                     </p>
                   </button>

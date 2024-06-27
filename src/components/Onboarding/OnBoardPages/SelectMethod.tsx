@@ -1,14 +1,13 @@
 import React, { FunctionComponent, useMemo, CSSProperties } from "react";
-import styles from "../OnBoardPages/SelectMethod.css";
 import voiceImg from "../../../images/SelectMethod/group-1000004811.svg";
-
-// GroupComponent.tsx or wherever your types are defined
+import inputImg from "../../../images/SelectMethod/InputIcon.svg";
 
 export type GroupComponentType = {
   className?: string;
   voiceFirst?: string;
   useVoiceFeatureToInputYou?: string;
   group1000004811?: string;
+  group1000004811_1?: string;
   group?: "voice" | "onboarding";
 
   // Style props
@@ -41,28 +40,23 @@ const GroupComponent: FunctionComponent<GroupComponentType> = ({
 
   return (
     <div
-      className={[styles.rectangleParent, className].join(" ")}
+      className={`p-4 bg-white rounded-lg shadow-md ${className}`}
       style={groupDivStyle}
     >
-      <div className={styles.frameChild} />
-      <div className={styles.voiceInputContent}>
-        <div className={styles.voiceOptions}>
-          <b className={styles.voiceFirst}>{voiceFirst}</b>
-        </div>
-        <div className={styles.useVoiceFeature}>
-          {useVoiceFeatureToInputYou}
-        </div>
+      <div className="mb-4">
+        <b className="text-lg font-bold">{voiceFirst}</b>
       </div>
-      <div className={styles.manualInputContent}>
-        <div className={styles.wrapperGroup1000004811}>
-          <img
-            className={styles.wrapperGroup1000004811Child}
-            loading="lazy"
-            alt=""
-            src={group1000004811}
-            onClick={handleClick}
-          />
-        </div>
+      <div className="mb-4">
+        {useVoiceFeatureToInputYou}
+      </div>
+      <div className="flex justify-center items-center">
+        <img
+          className="cursor-pointer"
+          loading="lazy"
+          alt=""
+          src={group1000004811}
+          onClick={handleClick}
+        />
       </div>
     </div>
   );
@@ -76,37 +70,28 @@ type SelectMethodProps = {
 // Root component definition
 const SelectMethod: FunctionComponent<SelectMethodProps> = ({ onGroupClick }) => {
   return (
-    <div className={styles.root}>
-      <div className={styles.base} />
-      <div className={styles.rootInner}>
-        <div className={styles.vyaparLaunchpadParent}>
-          <b className={styles.vyaparLaunchpad}>
-            <span>Vya</span>
-            <span className={styles.par}>par</span>
-            <span> Launch</span>
-            <span className={styles.pad}>pad</span>
-          </b>
-          <div className={styles.frameChild} />
-        </div>
-      </div>
-      <section className={styles.frameParent}>
-        <GroupComponent
-          voiceFirst="Voice First"
-          useVoiceFeatureToInputYou="Use voice feature to input your shop details."
-          group1000004811={voiceImg}
-          group="voice"
-          onGroupClick={onGroupClick} // Ensure onGroupClick is passed here
-        />
-        <GroupComponent
-          voiceFirst="Input Shop Details"
-          useVoiceFeatureToInputYou="Input your shop details manually by keyboard."
-          group1000004811={voiceImg}
-          propFlex="1"
-          group="onboarding"
-          onGroupClick={onGroupClick} // Ensure onGroupClick is passed here
-        />
-      </section>
-    </div>
+    <div className="flex flex-col items-center bg-gray-100 h-1/2 p-8">
+  <div className="flex justify-center items-center space-x-8 w-full h-full">
+    <GroupComponent
+      className="flex-1"
+      voiceFirst="Voice First"
+      useVoiceFeatureToInputYou="Use voice feature to input your shop details."
+      group1000004811={voiceImg}
+      group="voice"
+      onGroupClick={onGroupClick}
+    />
+    <GroupComponent
+      className="flex-1"
+      voiceFirst="Input Shop Details"
+      useVoiceFeatureToInputYou="Input your shop details manually by keyboard."
+      group1000004811={inputImg}
+      propFlex="1"
+      group="onboarding"
+      onGroupClick={onGroupClick}
+    />
+  </div>
+</div>
+
   );
 };
 
