@@ -7,6 +7,7 @@ import ProductImages from './OnBoardPages/ProductImages';
 import ProductDetails from './OnBoardPages/ProductDetails';
 import ProductDescription from './OnBoardPages/ProductDescription';
 import ProductVariations from './OnBoardPages/ProductVariations';
+import SelectMethod from "./OnBoardPages/SelectMethod";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../../common/Loader';
@@ -43,6 +44,19 @@ const OnBoardingPages: React.FC = () => {
   const [uploading, setUploading] = useState<boolean>(false);
 
   const navigate = useNavigate();
+//   const handleGroupClick = (group: "voice" | "onboarding") => {
+//     console.log(`Handling group click with group: ${group}`);
+//     // Handle logic based on group click
+//   };
+  const handleGroupClick = (group: "voice" | "onboarding") => {
+    console.log("Success")
+    console.log("Handling group click with group:", group);
+    if (group === "voice") {
+      navigate("/voice");
+    } else if (group === "onboarding") {
+      setStep(3); // Navigate to step 3 (Contactdetails)
+    }
+  };
 
   const postData = async (
     productTitle,
@@ -142,9 +156,9 @@ const OnBoardingPages: React.FC = () => {
   };
 
   const handleNext = async () => {
-    if (step < 8) {
+    if (step < 9) {
       setUploading(true);
-      if (step === 6) {
+      if (step ===7) {
         // Upload company logo
         if (productData.companyLogoFile) {
           const formData = new FormData();
@@ -165,7 +179,7 @@ const OnBoardingPages: React.FC = () => {
             console.error("Error uploading company logo:", error);
           }
         }
-      } else if (step === 7) {
+      } else if (step ===8) {
         // Upload product images
         if (productData.imageFiles && productData.imageFiles.length > 0) {
           const formData = new FormData();
@@ -204,7 +218,7 @@ const OnBoardingPages: React.FC = () => {
   useEffect(() => {
     console.log(step);
 
-    if (step === 8) {
+    if (step === 9) {
       console.log('this is is somethings');
 
       const prompt = `Please change the background of the input Image such that they are Ecommerce ready. The product is called ${productData.ProductTitle}`;
@@ -238,7 +252,7 @@ const OnBoardingPages: React.FC = () => {
     }
   }, [step]);
 
-  if (step === 8) {
+  if (step === 9) {
     return <Loader />;
   } else {
     return (
@@ -272,36 +286,39 @@ const OnBoardingPages: React.FC = () => {
                   />
                 )}
                 {step === 2 && (
+                  <SelectMethod onGroupClick={handleGroupClick} />
+                )}
+                {step === 3 && (
                   <SellerDetails
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 3 && (
+                {step === 4 && (
                   <ProductDetails
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 4 && (
+                {step === 5 && (
                   <ProductDescription
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 5 && (
+                {step === 6 && (
                   <ProductVariations
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 6 && (
+                {step === 7 && (
                   <Companyupload
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 7 && (
+                {step ===8 && (
                   <ProductImages
                     productData={productData}
                     setProductData={setProductData}

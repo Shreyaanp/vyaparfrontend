@@ -19,7 +19,7 @@ const LANGUAGES = [
   { sourceLanguage: "ur", name: "Urdu" }
 ];
 
-const QUESTIONS = [
+const QUESTIONS: string[] = [
   "What is the shop name?",
   "What is the seller state?",
   "What is the product language?",
@@ -31,6 +31,8 @@ const QUESTIONS = [
 ];
 
 function App() {
+    const [questionsHistory, setQuestionsHistory] = useState<string[]>([]);
+    const [responsesHistory, setResponsesHistory] = useState<string[]>([]);  
   const [language, setLanguage] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
   const [responses, setResponses] = useState([]);
@@ -187,31 +189,48 @@ function App() {
   };
 
   const handleNext = async () => {
+    // Pause any currently playing audio
     if (audioRef.current) {
       audioRef.current.pause();
     }
-
+  
+    // Stop recording if it's ongoing
     if (isRecording) {
       stopRecording();
     }
-
+  
+    // Check if there's a next question to proceed to
     if (currentQuestionIndex < QUESTIONS.length - 1) {
       const nextIndex = currentQuestionIndex + 1;
+  
+      // Update the current question index
       setCurrentQuestionIndex(nextIndex);
+  
+      // Handle audio playback for the next question if available
       if (nextAudio) {
         audioRef.current = nextAudio;
         audioRef.current.play();
-        // Preload the subsequent question's audio
+  
+        // Preload the subsequent question's audio if available
         if (nextIndex < QUESTIONS.length - 1) {
           preloadNextQuestion(nextIndex + 1);
         }
       } else {
+        // If no audio, directly proceed to asking the next question
         askQuestion(nextIndex);
       }
+  
+      // Add the current question and its response to history
+      if (currentQuestionIndex >= 0 && responses[currentQuestionIndex]) {
+        setQuestionsHistory([...questionsHistory, QUESTIONS[currentQuestionIndex]]);
+        setResponsesHistory([...responsesHistory, responses[currentQuestionIndex]]);
+      }
     } else {
+      // If it's the end of questions, log collected data
       console.log('Collected Data:', JSON.stringify(responses));
     }
   };
+  
 
   const startRecording = () => {
     setIsRecording(true);
@@ -239,52 +258,119 @@ function App() {
   };
 
   return (
-    <div className='voice-container'>
-      <div className='voice'>
-      <div >
-        <label>Select Language:</label>
-        <select value={language} onChange={handleLanguageChange}>
-          <option value="">Select Language</option>
-          {LANGUAGES.map(lang => (
-            <option key={lang.sourceLanguage} value={lang.sourceLanguage}>
-              {lang.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <button onClick={startConversation} disabled={!language}>
-        Start
-      </button>
-      <div>
-        <h2>Responses:</h2>
-        <ul>
-          {responses.map((response, index) => (
-            <li key={index}>{response}</li>
-          ))}
-        </ul>
-        </div>
+    <div className="h-screen flex justify-center items-center">
+    <div className="max-w-4xl bg-white shadow-lg rounded-lg p-4 w-full h-3/4">
+      <div className="flex">
+        <div className="w-9/10">
+        <div className="chat-box bg-gray">
+          {/* Always display the welcome message */}
+          <div className="chat-message">
+            <div className="chat-question">
+              <p>Hello, I'm Vyapar Sathi! 👋<br />Welcome to Vyapar Launchpad, Let's onboard your product.</p>
+            </div>
+          </div>
 
-      {currentQuestionIndex >= 0 && (
-        <div>
-          <p>{QUESTIONS[currentQuestionIndex]}</p>
-          <button onClick={startRecording} disabled={isRecording}>Record</button>
-          <button onClick={handleNext} disabled={isRecording}>Next</button>
+          {/* Render questions and responses history */}
+           {/* Render questions and responses history */}
+  {questionsHistory.map((question, index) => (
+    <div key={`history-question-${index}`} className="chat-message">
+      <div className="chat-question">
+        <p>{question}</p>
+      </div>
+      <div className="chat-response ml-4">
+        <p>{responsesHistory[index]}</p>
+      </div>
+    </div>
+  ))}
+
+  {/* Render current question and response */}
+  {currentQuestionIndex >= 0 && (
+    <div className="chat-message">
+      <div className="chat-question">
+        <p>{QUESTIONS[currentQuestionIndex]}</p>
+      </div>
+      {responses[currentQuestionIndex] && (
+        <div className="chat-response ml-4">
+          <p>{responses[currentQuestionIndex]}</p>
         </div>
       )}
-      <div>
-        <label>Playback Rate:</label>
-        <input
-          type="range"
-          min="0.5"
-          max="2"
-          step="0.1"
-          value={playbackRate}
-          onChange={(e) => setPlaybackRate(e.target.value)}
-        />
-      </div>
-        </div>
     </div>
+  )}
+        </div>
+      </div>
+
+      <div className="w-1/3 flex flex-col justify-between ml-4">
+        {/* Select Language */}
+        <div className="flex items-center mb-4">
+          <label className="mr-2">Select Language:</label>
+          <select
+            value={language}
+            onChange={handleLanguageChange}
+            className="border border-gray-300 rounded px-3 py-1 mr-2"
+          >
+            <option value="">Select Language</option>
+            {LANGUAGES.map((lang) => (
+              <option key={lang.sourceLanguage} value={lang.sourceLanguage}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={startConversation}
+            disabled={!language}
+            className="bg-primary text-white px-4 py-1 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+          >
+            Start
+          </button>
+        </div>
+
+        {/* Input section */}
+        <div className="chat-input mb-4">
+          <p className="text-lg mb-2">{QUESTIONS[currentQuestionIndex]}</p>
+          <div className="button-group">
+            {/* Record button */}
+            <button
+              onClick={startRecording}
+              disabled={isRecording}
+              className="bg-primary text-white px-4 py-2 rounded mr-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              Record
+            </button>
+            {/* Next button */}
+            <button
+              onClick={handleNext}
+              disabled={isRecording}
+              className="bg-secondary text-white px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+
+        {/* Playback rate */}
+        <div className="chat-settings">
+          <label className="mr-2">Playback Rate:</label>
+          <input
+            type="range"
+            min="0.5"
+            max="2"
+            step="0.1"
+            value={playbackRate}
+            onChange={(e) => setPlaybackRate(e.target.value)}
+            className="w-full bg-gray-200 rounded-lg p-2"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+
+
   );
+  
 }
 
 export default App;
