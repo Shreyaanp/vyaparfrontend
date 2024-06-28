@@ -7,6 +7,8 @@ import ProductImages from './OnBoardPages/ProductImages';
 import ProductDetails from './OnBoardPages/ProductDetails';
 import ProductDescription from './OnBoardPages/ProductDescription';
 import ProductVariations from './OnBoardPages/ProductVariations';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import SelectMethod from "./OnBoardPages/SelectMethod";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -43,6 +45,8 @@ const OnBoardingPages: React.FC = () => {
   });
   const [uploading, setUploading] = useState<boolean>(false);
 
+
+
   const navigate = useNavigate();
 //   const handleGroupClick = (group: "voice" | "onboarding") => {
 //     console.log(`Handling group click with group: ${group}`);
@@ -52,7 +56,7 @@ const OnBoardingPages: React.FC = () => {
     console.log("Success")
     console.log("Handling group click with group:", group);
     if (group === "voice") {
-      navigate("/voice");
+        navigate("/voice");
     } else if (group === "onboarding") {
       setStep(3); // Navigate to step 3 (Contactdetails)
     }

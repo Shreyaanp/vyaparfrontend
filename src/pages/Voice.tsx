@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './Voice.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+
+
+
+
 
 const API_KEY = 'sk0Y4-IrxVJSOmP2V7umwEeUnxyWqCbvHSK4LzLRaAQ7yz4-_p6Mez3WTjD8-Bl0';
 const LANGUAGES = [
@@ -30,21 +36,31 @@ const QUESTIONS: string[] = [
   "What are the product variations?"
 ];
 
-function App() {
+function Voice() {
     const [questionsHistory, setQuestionsHistory] = useState<string[]>([]);
     const [responsesHistory, setResponsesHistory] = useState<string[]>([]);  
   const [language, setLanguage] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
   const [responses, setResponses] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [nextAudio, setNextAudio] = useState(null);
   const [playbackRate, setPlaybackRate] = useState(1);
 
+  const user = useSelector((state: RootState) => state.userInfo);
+
+  useEffect(() => {
+    console.log(user.language);
+    // Set a default language if needed when the component mounts
+    setLanguage(getSourceLanguage(user.language)|| 'en'); // Example default language or fallback to 'en'
+  }, [user.language]);
   const handleLanguageChange = (e) => {
     setLanguage(e.target.value);
   };
-
+  const getSourceLanguage = (languageName: string): string => {
+    const foundLanguage = LANGUAGES.find(lang => lang.name === languageName);
+    return foundLanguage ? foundLanguage.sourceLanguage : 'en'; // Default to 'en' if not found
+  };
   const startConversation = () => {
     setCurrentQuestionIndex(0);
     askQuestion(0);
@@ -75,11 +91,9 @@ function App() {
           'Content-Type': 'application/json'
         }
       });
-
-
-
+  
       const translatedText = translationResponse.data.pipelineResponse[0].output[0].target;
-
+  
       const ttsResponse = await axios.post('https://dhruva-api.bhashini.gov.in/services/inference/pipeline', {
         pipelineTasks: [
           {
@@ -103,14 +117,15 @@ function App() {
           'Content-Type': 'application/json'
         }
       });
-
+    //   const audioRef = useRef<HTMLAudioElement | null>(null);
       const audioContent = ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
       if (audioContent) {
         const audio = new Audio(`data:audio/wav;base64,${audioContent}`);
         audio.playbackRate = playbackRate;
         audioRef.current = audio;
         audio.play();
-
+  
+        console.log('Audio generated successfully:', audio);
         // Preload the next question's audio
         if (index < QUESTIONS.length - 1) {
           preloadNextQuestion(index + 1);
@@ -122,7 +137,7 @@ function App() {
       console.error('Error in TTS:', error);
     }
   };
-
+  
   const preloadNextQuestion = async (index) => {
     const question = QUESTIONS[index];
     try {
@@ -259,118 +274,115 @@ function App() {
 
   return (
     <div className="h-screen flex justify-center items-center">
-    <div className="max-w-4xl bg-white shadow-lg rounded-lg p-4 w-full h-3/4">
-      <div className="flex">
-        <div className="w-9/10">
-        <div className="chat-box bg-gray">
-          {/* Always display the welcome message */}
-          <div className="chat-message">
-            <div className="chat-question">
-              <p>Hello, I'm Vyapar Sathi! 👋<br />Welcome to Vyapar Launchpad, Let's onboard your product.</p>
+    <div className="flex w-full h-3/4 max-w-4xl flex justify-center items-center">
+        <div className="w-1/10 flex flex-col justify-between ml-4 h-1/2 mr-10">
+            {/* Select Language */}
+            <div className="flex items-center mb-4">
+                <label className="mr-2">Select Language:</label>
+                <select
+                    value={language}
+                    onChange={handleLanguageChange}
+                    className="border border-gray-300 rounded px-3 py-1 mr-2"
+                >
+                    <option value="">Select Language</option>
+                    {LANGUAGES.map((lang) => (
+                        <option key={lang.sourceLanguage} value={lang.sourceLanguage}>
+                            {lang.name}
+                        </option>
+                    ))}
+                </select>
+                <button
+                    onClick={startConversation}
+                    disabled={!language}
+                    className="bg-primary text-white px-4 py-1 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+                >
+                    Start
+                </button>
             </div>
-          </div>
 
-          {/* Render questions and responses history */}
-           {/* Render questions and responses history */}
-  {questionsHistory.map((question, index) => (
-    <div key={`history-question-${index}`} className="chat-message">
-      <div className="chat-question">
-        <p>{question}</p>
-      </div>
-      <div className="chat-response ml-4">
-        <p>{responsesHistory[index]}</p>
-      </div>
+            {/* Input section */}
+            <div className="chat-input mb-4">
+                
+                <div className="button-group">
+                    {/* Record button */}
+                    <button
+                        onClick={startRecording}
+                        disabled={isRecording}
+                        className="bg-primary text-white px-4 py-2 rounded mr-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                        Record
+                    </button>
+                    {/* Next button */}
+                    <button
+                        onClick={handleNext}
+                        disabled={isRecording}
+                        className="bg-secondary text-white px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            {/* Playback rate */}
+            <div className="chat-settings">
+                <label className="mr-2">Playback Rate:</label>
+                <input
+                    type="range"
+                    min="0.5"
+                    max="2"
+                    step="0.1"
+                    value={playbackRate}
+                    onChange={(e) => setPlaybackRate(e.target.value)}
+                    className="w-full bg-gray-200 rounded-lg p-2"
+                />
+            </div>
+        </div>
+
+        <div className="max-w-4xl bg-white shadow-lg rounded-2xl p-4 w-1/2 h-full">
+            <div className="w-1/8 rounded flex flex-col overflow-y-auto h-full">
+                {/* Always display the welcome message */}
+                <div className="chat-message">
+                    <div className="chat-question p-2 m-4">
+                        <p>Hello, I'm Vyapar Sathi! 👋<br />Welcome to Vyapar Launchpad, Let's onboard your product.</p>
+                    </div>
+                </div>
+
+                {/* Render questions and responses history */}
+                {questionsHistory.map((question, index) => (
+                    <div key={`history-question-${index}`} className="chat-message p-2">
+                        <div className="chat-question p-2">
+                            <p>{question}</p>
+                        </div>
+                        <div className="flex justify-end">
+                            <div className="chat-response p-2 inline-block">
+                                <p>{responsesHistory[index]}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+
+                {/* Render current question and response */}
+                {currentQuestionIndex >= 0 && (
+                    <div className="chat-message p-2">
+                        <div className="chat-question p-2">
+                            <p>{QUESTIONS[currentQuestionIndex]}</p>
+                        </div>
+                        {responses[currentQuestionIndex] && (
+                            <div className="flex justify-end">
+                                <div className="chat-response p-2 inline-block">
+                                    <p>{responses[currentQuestionIndex]}</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </div>
     </div>
-  ))}
-
-  {/* Render current question and response */}
-  {currentQuestionIndex >= 0 && (
-    <div className="chat-message">
-      <div className="chat-question">
-        <p>{QUESTIONS[currentQuestionIndex]}</p>
-      </div>
-      {responses[currentQuestionIndex] && (
-        <div className="chat-response ml-4">
-          <p>{responses[currentQuestionIndex]}</p>
-        </div>
-      )}
-    </div>
-  )}
-        </div>
-      </div>
-
-      <div className="w-1/3 flex flex-col justify-between ml-4">
-        {/* Select Language */}
-        <div className="flex items-center mb-4">
-          <label className="mr-2">Select Language:</label>
-          <select
-            value={language}
-            onChange={handleLanguageChange}
-            className="border border-gray-300 rounded px-3 py-1 mr-2"
-          >
-            <option value="">Select Language</option>
-            {LANGUAGES.map((lang) => (
-              <option key={lang.sourceLanguage} value={lang.sourceLanguage}>
-                {lang.name}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={startConversation}
-            disabled={!language}
-            className="bg-primary text-white px-4 py-1 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            Start
-          </button>
-        </div>
-
-        {/* Input section */}
-        <div className="chat-input mb-4">
-          <p className="text-lg mb-2">{QUESTIONS[currentQuestionIndex]}</p>
-          <div className="button-group">
-            {/* Record button */}
-            <button
-              onClick={startRecording}
-              disabled={isRecording}
-              className="bg-primary text-white px-4 py-2 rounded mr-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              Record
-            </button>
-            {/* Next button */}
-            <button
-              onClick={handleNext}
-              disabled={isRecording}
-              className="bg-secondary text-white px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-
-        {/* Playback rate */}
-        <div className="chat-settings">
-          <label className="mr-2">Playback Rate:</label>
-          <input
-            type="range"
-            min="0.5"
-            max="2"
-            step="0.1"
-            value={playbackRate}
-            onChange={(e) => setPlaybackRate(e.target.value)}
-            className="w-full bg-gray-200 rounded-lg p-2"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
-
-  
-
 
   );
   
 }
 
-export default App;
+export default Voice;
