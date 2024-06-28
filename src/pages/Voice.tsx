@@ -266,8 +266,8 @@ function Voice() {
           state: {
             productData: {
               productTitle,
-              productDescription: "description",
-              productVariation: "variation",
+              productDescription: "Description",
+              productVariation: "Variation",
               pricing: 2500,
               response: response
             },
@@ -313,94 +313,97 @@ function Voice() {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-100">
-      <div className="max-w-4xl bg-white shadow-lg rounded-lg p-4 w-full h-3/4 flex">
-        <div className="w-2/3 flex flex-col">
-          <div className="chat-box flex-1 overflow-y-auto bg-gray-100 p-4 rounded-lg">
-            {currentQuestionIndex < 0 ? (
-              <div className="chat-message">
-                <div className="chat-question">
-                  <p>Please select a language to start the conversation.</p>
+    <div className="h-screen flex justify-center items-center ">
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="max-w-5xl bg-white shadow-lg rounded-lg p-4 w-full h-3/4 flex">
+          <div className="w-3/4 flex flex-col">
+            <div className="chat-box flex-1 overflow-y-auto bg-gray-100 p-4 rounded-lg">
+              {currentQuestionIndex < 0 ? (
+                <div className="chat-message">
+                  <div className="chat-question">
+                    <p>Please select a language to start the conversation.</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Render questions and responses history */}
+                  {questionsHistory.map((question, index) => (
+                    <div key={`history-question-${index}`} className="chat-message">
+                      <div className="chat-question">
+                        <p>{question}</p>
+                      </div>
+                      <div className="chat-response ml-4">
+                        <p>{responsesHistory[index]}</p>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Render current question and response */}
+                  {currentQuestionIndex < QUESTIONS.length && (
+                    <div className="chat-message">
+                      <div className="chat-question">
+                        <p>{QUESTIONS[currentQuestionIndex]}</p>
+                      </div>
+                      {responses[currentQuestionIndex] && (
+                        <div className="chat-response ml-4">
+                          <p>{responses[currentQuestionIndex]}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            {currentQuestionIndex >= 0 && (
+              <div className="chat-input mt-4">
+                <div className="flex">
+                  <button
+                    onClick={startRecording}
+                    className="bg-primary text-white px-4 py-2 rounded mr-2"
+                  >
+                    Record
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    className="bg-secondary text-white px-4 py-2 rounded"
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
-            ) : (
-              <>
-                {/* Render questions and responses history */}
-                {questionsHistory.map((question, index) => (
-                  <div key={`history-question-${index}`} className="chat-message">
-                    <div className="chat-question">
-                      <p>{question}</p>
-                    </div>
-                    <div className="chat-response ml-4">
-                      <p>{responsesHistory[index]}</p>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Render current question and response */}
-                {currentQuestionIndex < QUESTIONS.length && (
-                  <div className="chat-message">
-                    <div className="chat-question">
-                      <p>{QUESTIONS[currentQuestionIndex]}</p>
-                    </div>
-                    {responses[currentQuestionIndex] && (
-                      <div className="chat-response ml-4">
-                        <p>{responses[currentQuestionIndex]}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </>
             )}
           </div>
 
-          {currentQuestionIndex >= 0 && (
-            <div className="chat-input mt-4">
-              <div className="flex">
-                <button
-                  onClick={startRecording}
-                  className="bg-primary text-white px-4 py-2 rounded mr-2"
-                >
-                  Record
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="bg-secondary text-white px-4 py-2 rounded"
-                >
-                  Next
-                </button>
-              </div>
+          <div className="w-1/3 ml-4 flex flex-col justify-between">
+            {/* Select Language */}
+            <div className="flex items-center mb-4">
+              <label className="mr-2">Select Language:</label>
+              <select
+                value={language}
+                onChange={handleLanguageChange}
+                className="border border-gray-300 rounded px-3 py-1 mr-2"
+              >
+                <option value="">Select Language</option>
+                {LANGUAGES.map((lang) => (
+                  <option key={lang.sourceLanguage} value={lang.sourceLanguage}>
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={startConversation}
+                disabled={!language}
+                className={`bg-primary text-white px-4 py-1 rounded ${!language ? 'disabled:bg-gray-400 disabled:cursor-not-allowed' : 'hover:bg-blue-700 hover:cursor-pointer'}`}
+              >
+                Start
+              </button>
             </div>
-          )}
-        </div>
-
-        <div className="w-1/3 ml-4 flex flex-col justify-between">
-          {/* Select Language */}
-          <div className="flex items-center mb-4">
-            <label className="mr-2">Select Language:</label>
-            <select
-              value={language}
-              onChange={handleLanguageChange}
-              className="border border-gray-300 rounded px-3 py-1 mr-2"
-            >
-              <option value="">Select Language</option>
-              {LANGUAGES.map((lang) => (
-                <option key={lang.sourceLanguage} value={lang.sourceLanguage}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-            <button
-              onClick={startConversation}
-              disabled={!language}
-              className={`bg-primary text-white px-4 py-1 rounded ${!language ? 'disabled:bg-gray-400 disabled:cursor-not-allowed' : 'hover:bg-blue-700 hover:cursor-pointer'}`}
-            >
-              Start
-            </button>
           </div>
         </div>
-      </div>
-      {loading && <Loader />}
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 body {
   font-family: 'Arial', sans-serif;
+  background-color: rgb(255 233 169 / var(--tw-bg-opacity));
 }
 
 .chat-box {
