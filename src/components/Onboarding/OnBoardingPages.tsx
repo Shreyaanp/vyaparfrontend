@@ -7,6 +7,9 @@ import ProductImages from './OnBoardPages/ProductImages';
 import ProductDetails from './OnBoardPages/ProductDetails';
 import ProductDescription from './OnBoardPages/ProductDescription';
 import ProductVariations from './OnBoardPages/ProductVariations';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import SelectMethod from "./OnBoardPages/SelectMethod";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../../common/Loader';
@@ -14,6 +17,8 @@ import langu from './OnBoardPages/langu';
 
 const aiUrl = import.meta.env.VITE_BASE_AI_API;
 const backendUrl = import.meta.env.VITE_BASE_API;
+const photAiUrl = "https://prodapi.phot.ai/external/api/v2/user_activity/background-generator";
+const photAiApiKey = "667bd78dc03bdd1cb404e7a0_3668c766b56f00a1de05_apyhitools";
 
 const OnBoardingPages: React.FC = () => {
   useEffect(() => {
@@ -40,7 +45,22 @@ const OnBoardingPages: React.FC = () => {
   });
   const [uploading, setUploading] = useState<boolean>(false);
 
+
+
   const navigate = useNavigate();
+//   const handleGroupClick = (group: "voice" | "onboarding") => {
+//     console.log(`Handling group click with group: ${group}`);
+//     // Handle logic based on group click
+//   };
+  const handleGroupClick = (group: "voice" | "onboarding") => {
+    console.log("Success")
+    console.log("Handling group click with group:", group);
+    if (group === "voice") {
+        navigate("/voice");
+    } else if (group === "onboarding") {
+      setStep(3); // Navigate to step 3 (Contactdetails)
+    }
+  };
 
   const postData = async (
     productTitle,
@@ -72,10 +92,77 @@ const OnBoardingPages: React.FC = () => {
     return response.data;
   };
 
+  const fetchOrderStatus = async (orderId) => {
+    try {
+      const response = await axios.get(
+        `https://prodapi.phot.ai/external/api/v1/user_activity/order-status?order_id=${orderId}`,
+        {
+          headers: {
+            'x-api-key': photAiApiKey,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching order status:", error);
+      return null;
+    }
+  };
+
+  const changeBackgroundImages = async (imageUrls, prompt) => {
+    const newImages = await Promise.all(
+      imageUrls.map(async (url) => {
+        try {
+          const response = await axios.post(
+            photAiUrl,
+            {
+              file_name: url.split('/').pop(),
+              input_image_link: url,
+              prompt: prompt,
+            },
+            {
+              headers: {
+                'x-api-key': photAiApiKey,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          console.log("Phot.AI response:", response.data); // Log the response
+          const orderId = response.data.order_id;
+
+          // Fetch order status using orderId
+          let orderStatusResponse;
+          let retries = 5;
+
+          // Retry mechanism to fetch the order status
+          while (retries > 0) {
+            orderStatusResponse = await fetchOrderStatus(orderId);
+            if (orderStatusResponse && orderStatusResponse.output_urls.length > 0) {
+              break;
+            }
+            await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
+            retries--;
+          }
+
+          if (orderStatusResponse && orderStatusResponse.output_urls.length > 0) {
+            return orderStatusResponse.output_urls[0];
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.error("Error changing background:", error);
+          return null;
+        }
+      })
+    );
+    return newImages;
+  };
+
   const handleNext = async () => {
-    if (step < 8) {
+    if (step < 9) {
       setUploading(true);
-      if (step === 6) {
+      if (step ===7) {
         // Upload company logo
         if (productData.companyLogoFile) {
           const formData = new FormData();
@@ -96,7 +183,7 @@ const OnBoardingPages: React.FC = () => {
             console.error("Error uploading company logo:", error);
           }
         }
-      } else if (step === 7) {
+      } else if (step ===8) {
         // Upload product images
         if (productData.imageFiles && productData.imageFiles.length > 0) {
           const formData = new FormData();
@@ -135,15 +222,18 @@ const OnBoardingPages: React.FC = () => {
   useEffect(() => {
     console.log(step);
 
-    if (step === 8) {
+    if (step === 9) {
       console.log('this is is somethings');
 
+      const prompt = `Please change the background of the input Image such that they are Ecommerce ready. The product is called ${productData.ProductTitle}`;
       postData(
         productData.ProductTitle,
         productData.productDescription,
         productData.productVariation,
         productData.Pricing,
-      ).then((response) => {
+      ).then(async (response) => {
+        const newImages = await changeBackgroundImages(productData.images, prompt);
+        console.log("New images:", newImages); // Log the new images
         navigate('/ProductPage', {
           state: {
             productData: {
@@ -156,7 +246,9 @@ const OnBoardingPages: React.FC = () => {
               pricing: productData.Pricing,
               productDescription: productData.productDescription,
               productVariation: productData.productVariation,
-              response: response,
+              response: { ...response, newImages: newImages },
+              companyLogo: productData.companyLogo,
+              images: productData.images,
             },
           },
         });
@@ -164,7 +256,7 @@ const OnBoardingPages: React.FC = () => {
     }
   }, [step]);
 
-  if (step === 8) {
+  if (step === 9) {
     return <Loader />;
   } else {
     return (
@@ -198,36 +290,39 @@ const OnBoardingPages: React.FC = () => {
                   />
                 )}
                 {step === 2 && (
+                  <SelectMethod onGroupClick={handleGroupClick} />
+                )}
+                {step === 3 && (
                   <SellerDetails
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 3 && (
+                {step === 4 && (
                   <ProductDetails
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 4 && (
+                {step === 5 && (
                   <ProductDescription
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 5 && (
+                {step === 6 && (
                   <ProductVariations
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 6 && (
+                {step === 7 && (
                   <Companyupload
                     productData={productData}
                     setProductData={setProductData}
                   />
                 )}
-                {step === 7 && (
+                {step ===8 && (
                   <ProductImages
                     productData={productData}
                     setProductData={setProductData}
@@ -246,7 +341,7 @@ const OnBoardingPages: React.FC = () => {
                         borderRadius: '9999px',
                         padding: '8px 0px',
                         visibility:
-                          step === 1 && subStep === 1 ? 'hidden' : 'visible',
+                           step === 1? 'hidden' : 'visible',
                         fontWeight: '600',
                         width: 140,
                       }}
@@ -255,7 +350,19 @@ const OnBoardingPages: React.FC = () => {
                     </p>
                   </button>
                   <button onClick={handleNext} disabled={uploading}>
-                  < p className="bg-FCBD01 text-black border-2 border-FCBD01 rounded-full py-3 px-4 font-semibold w-36">
+                  <p
+                  style={{
+                    backgroundColor: '#FCBD01',
+                    color: 'black',
+                    border: '2px solid #FCBD01',
+                    borderRadius: '9999px',
+                    padding: '8px 0px',
+                    visibility:
+                      step === 2 ? 'hidden' : 'visible',
+                    fontWeight: '600',
+                    width: 140,
+                  }}
+                >
                       {uploading ? 'Uploading...' : step === 7 ? 'Submit' : 'Next Step'}
                     </p>
                   </button>

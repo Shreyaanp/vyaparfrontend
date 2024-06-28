@@ -44,6 +44,7 @@ const ECommerce: React.FC = () => {
       <Breadcrumb pageName="Your Products" />
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-2 xl:grid-cols-4 2xl:gap-0">
         <div className="md:col-span-2 xl:col-span-4">
+        
           <AddProduct products={products} />
           <Breadcrumb pageName="Product Linguistic Sathi" />
           <ProductLinguisticSathi />

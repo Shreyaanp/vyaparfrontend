@@ -1,10 +1,18 @@
 {
-  "compilerOptions": {
-    "composite": true,
-    "skipLibCheck": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true
-  },
-  "include": ["vite.config.ts"]
-}
+    "compilerOptions": {
+      "composite": true,
+      "skipLibCheck": true,
+      "module": "ESNext",
+      "moduleResolution": "node",  // Change to "node" if not using a bundler
+      "allowSyntheticDefaultImports": true,
+      "target": "ESNext",          // Specify your target version of ECMAScript
+      "jsx": "preserve",           // Adjust according to your JSX settings
+      "strict": true,              // Enable strict type checking
+      "esModuleInterop": true       // Enable interoperability with CommonJS modules
+    },
+    "include": [
+      "src/**/*.ts",              // Adjust the path according to your project structure
+      "vite.config.ts"            // Ensure this path is correct relative to tsconfig.json
+    ]
+  }
+  

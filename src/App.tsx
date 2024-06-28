@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
@@ -11,6 +10,7 @@ import OnBoarding from './components/Onboarding/OnBoardingPages';
 import ProductPage from './pages/ProductPage';
 import Voice from './pages/Voice';
 import { AppContext } from './AppContext';
+import PublicProductPage from './pages/PublicProductPage'; // Add this line
 
 function App() {
   const { loading, setLoading } = useContext(AppContext);
@@ -101,6 +101,15 @@ function App() {
             <>
               <PageTitle title="Vyapar Launchpad" />
               <SignUp />
+            </>
+          }
+        />
+        <Route
+          path="/live/:shareable_id"
+          element={
+            <>
+              <PageTitle title="Vyapar Launchpad" />
+              <PublicProductPage />
             </>
           }
         />
