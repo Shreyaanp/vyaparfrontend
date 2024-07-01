@@ -23,17 +23,20 @@ const ProductImages: React.FC<ProductVariationsProps> = ({ productData, setProdu
     }
   };
 
+  const inputLanguage = productData?.inputLanguage || 'en';
+  const productImgText = langu[inputLanguage]?.productImg || { heading: 'Product Images', subheading: 'Please upload product images' };
+
   return (
     <div className="px-16">
       <h1 className="text-[#170F49] text-2xl mb-2 font-poppins font-bold">
-        {langu[productData.inputLanguage].productImg.heading}
+        {productImgText.heading}
       </h1>
       <p className="text-[#6F6C90] font-poppins text-sm">
-        {langu[productData.inputLanguage].productImg.subheading}
+        {productImgText.subheading}
       </p>
       <div className="mt-4 font-poppins">
         <label className="block text-[#170F49] text-md font-medium mb-2">
-          {langu[productData.inputLanguage].productImg.heading}
+          {productImgText.heading}
         </label>
         <div className="grid grid-cols-3 gap-4">
           {productData.images && productData.images.map((image: string, index: number) => (

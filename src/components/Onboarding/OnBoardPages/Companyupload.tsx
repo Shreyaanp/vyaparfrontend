@@ -21,20 +21,23 @@ const Companyupload: React.FC<ProductVariationsProps> = ({ productData, setProdu
     }
   };
 
+  const inputLanguage = productData?.inputLanguage || 'en';
+  const compLogoText = langu[inputLanguage]?.compLogo || { heading: 'Company Logo', subheading: 'Please upload your company logo' };
+
   return (
     <div className="px-16 h-[20rem]">
       <h1 className="text-[#170F49] text-2xl mb-2 font-poppins font-bold">
-        {langu[productData.inputLanguage].compLogo.heading}
+        {compLogoText.heading}
       </h1>
       <p className="text-[#6F6C90] font-poppins text-md">
-        {langu[productData.inputLanguage].compLogo.subheading}
+        {compLogoText.subheading}
       </p>
       <div className="mt-4 font-poppins"></div>
       <h1 className="text-[#170F49] text-md mb-6 mt-4 font-poppins font-medium">
-        {langu[productData.inputLanguage].compLogo.heading}
+        {compLogoText.heading}
       </h1>
 
-      <div className="flex justify-center items-center ">
+      <div className="flex justify-center items-center">
         <div
           className="w-3/4 py-8 relative border-2 border-[#FCBD01] border-dashed rounded-lg p-6"
           id="dropzone"
@@ -45,19 +48,20 @@ const Companyupload: React.FC<ProductVariationsProps> = ({ productData, setProdu
             accept="image/*"
             onChange={handleFileChange}
           />
-          <div className={`text-center ${selectedFile ? "hidden" : "block"}`}>
+          <div className={`text-center ${selectedFile ? 'hidden' : 'block'}`}>
             <img className="mx-auto h-12 w-12" src={upload} alt="" />
             <h3 className="mt-2 text-sm font-medium text-gray-900">
               <label htmlFor="file-upload" className="relative cursor-pointer">
-                <span> Choose a file or drag & drop it here</span>
+                <span>Choose a file or drag & drop it here</span>
               </label>
             </h3>
-            <button className="mt-1 bg-white border border-gray-300  text-[#FCBD01] px-4 py-2 rounded-lg ">
+            <button className="mt-1 bg-white border border-gray-300 text-[#FCBD01] px-4 py-2 rounded-lg">
               Browse
             </button>
           </div>
-          <img src={selectedFile ? URL.createObjectURL(selectedFile) : ""}
-            className={`my-auto mx-auto max-h-25 ${selectedFile ? 'block' : "hidden"}`}
+          <img
+            src={selectedFile ? URL.createObjectURL(selectedFile) : ''}
+            className={`my-auto mx-auto max-h-25 ${selectedFile ? 'block' : 'hidden'}`}
           />
         </div>
       </div>

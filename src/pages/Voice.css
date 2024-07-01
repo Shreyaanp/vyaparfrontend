@@ -16,7 +16,7 @@ body {
 
 .chat-question {
   background-color: #f1f1f1;
-  border-radius: 15px;
+  border-radius: 0 15px 15px 15px;
   padding: 10px 15px;
   display: inline-block;
   max-width: 80%;
@@ -24,7 +24,7 @@ body {
 
 .chat-response {
   background-color: #e0f7ff;
-  border-radius: 15px;
+  border-radius: 15px 15px 0 15px;
   padding: 10px 15px;
   display: inline-block;
   max-width: 80%;
@@ -76,9 +76,6 @@ body {
   width: 100%;
 }
 
-.h-3/4 {
-  height: 75%;
-}
 
 .bg-gray-100 {
   background-color: #f7fafc;

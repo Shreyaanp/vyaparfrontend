@@ -3,10 +3,20 @@ import axios from 'axios';
 import './Voice.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import MicInput from "../images/icons/MicInput.svg";
+import VoiceLeftImg from "../images/icons/VoiceLeftImg.svg";
+import VoiceRightImg from "../images/icons/VoiceRightImg.svg";
+import MicAnimation from "../images/icons/MicAnimation.json";
+import Lottie from 'react-lottie';
+import RobotIcon from '../images/icons/RobotIcon.svg';
 
+import CompanyUpload from "../components/Onboarding/OnBoardPages/Companyupload";
+import ProductImages from "../components/Onboarding/OnBoardPages/ProductImages";
 
-
-
+type ProductVariationsProps = {
+    productData: any;
+    setProductData: (data: any) => void;
+}
 
 const API_KEY = 'sk0Y4-IrxVJSOmP2V7umwEeUnxyWqCbvHSK4LzLRaAQ7yz4-_p6Mez3WTjD8-Bl0';
 const LANGUAGES = [
@@ -33,40 +43,44 @@ const QUESTIONS: string[] = [
   "What is the product name?",
   "What is the price of the product?",
   "What is the product description?",
-  "What are the product variations?"
+  "What are the product variations?",
+  "Upload the image of the product"
 ];
 
-function Voice() {
-    const [questionsHistory, setQuestionsHistory] = useState<string[]>([]);
-    const [responsesHistory, setResponsesHistory] = useState<string[]>([]);  
+const Voice: React.FC = () => {
+  const [productData, setProductData] = useState<any>({});
+  const [questionsHistory, setQuestionsHistory] = useState<string[]>([]);
+  const [responsesHistory, setResponsesHistory] = useState<string[]>([]);
   const [language, setLanguage] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
-  const [responses, setResponses] = useState([]);
+  const [responses, setResponses] = useState<string[]>([]);
   const [isRecording, setIsRecording] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<{ [key: number]: File | null }>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [nextAudio, setNextAudio] = useState(null);
+  const [nextAudio, setNextAudio] = useState<HTMLAudioElement | null>(null);
   const [playbackRate, setPlaybackRate] = useState(1);
 
   const user = useSelector((state: RootState) => state.userInfo);
 
   useEffect(() => {
-    console.log(user.language);
-    // Set a default language if needed when the component mounts
-    setLanguage(getSourceLanguage(user.language)|| 'en'); // Example default language or fallback to 'en'
+    setLanguage(getSourceLanguage(user.language) || 'en');
   }, [user.language]);
-  const handleLanguageChange = (e) => {
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value);
   };
+
   const getSourceLanguage = (languageName: string): string => {
     const foundLanguage = LANGUAGES.find(lang => lang.name === languageName);
-    return foundLanguage ? foundLanguage.sourceLanguage : 'en'; // Default to 'en' if not found
+    return foundLanguage ? foundLanguage.sourceLanguage : 'en';
   };
+
   const startConversation = () => {
     setCurrentQuestionIndex(0);
     askQuestion(0);
   };
 
-  const askQuestion = async (index) => {
+  const askQuestion = async (index: number) => {
     const question = QUESTIONS[index];
     try {
       const translationResponse = await axios.post('https://dhruva-api.bhashini.gov.in/services/inference/pipeline', {
@@ -91,9 +105,9 @@ function Voice() {
           'Content-Type': 'application/json'
         }
       });
-  
+
       const translatedText = translationResponse.data.pipelineResponse[0].output[0].target;
-  
+
       const ttsResponse = await axios.post('https://dhruva-api.bhashini.gov.in/services/inference/pipeline', {
         pipelineTasks: [
           {
@@ -117,16 +131,14 @@ function Voice() {
           'Content-Type': 'application/json'
         }
       });
-    //   const audioRef = useRef<HTMLAudioElement | null>(null);
+
       const audioContent = ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
       if (audioContent) {
         const audio = new Audio(`data:audio/wav;base64,${audioContent}`);
         audio.playbackRate = playbackRate;
         audioRef.current = audio;
         audio.play();
-  
-        console.log('Audio generated successfully:', audio);
-        // Preload the next question's audio
+
         if (index < QUESTIONS.length - 1) {
           preloadNextQuestion(index + 1);
         }
@@ -137,8 +149,8 @@ function Voice() {
       console.error('Error in TTS:', error);
     }
   };
-  
-  const preloadNextQuestion = async (index) => {
+
+  const preloadNextQuestion = async (index: number) => {
     const question = QUESTIONS[index];
     try {
       const translationResponse = await axios.post('https://dhruva-api.bhashini.gov.in/services/inference/pipeline', {
@@ -204,48 +216,37 @@ function Voice() {
   };
 
   const handleNext = async () => {
-    // Pause any currently playing audio
     if (audioRef.current) {
       audioRef.current.pause();
     }
-  
-    // Stop recording if it's ongoing
+
     if (isRecording) {
       stopRecording();
     }
-  
-    // Check if there's a next question to proceed to
+
     if (currentQuestionIndex < QUESTIONS.length - 1) {
       const nextIndex = currentQuestionIndex + 1;
-  
-      // Update the current question index
       setCurrentQuestionIndex(nextIndex);
-  
-      // Handle audio playback for the next question if available
+
       if (nextAudio) {
         audioRef.current = nextAudio;
         audioRef.current.play();
-  
-        // Preload the subsequent question's audio if available
+
         if (nextIndex < QUESTIONS.length - 1) {
           preloadNextQuestion(nextIndex + 1);
         }
       } else {
-        // If no audio, directly proceed to asking the next question
         askQuestion(nextIndex);
       }
-  
-      // Add the current question and its response to history
+
       if (currentQuestionIndex >= 0 && responses[currentQuestionIndex]) {
         setQuestionsHistory([...questionsHistory, QUESTIONS[currentQuestionIndex]]);
         setResponsesHistory([...responsesHistory, responses[currentQuestionIndex]]);
       }
     } else {
-      // If it's the end of questions, log collected data
       console.log('Collected Data:', JSON.stringify(responses));
     }
   };
-  
 
   const startRecording = () => {
     setIsRecording(true);
@@ -272,117 +273,137 @@ function Voice() {
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    setSelectedFiles((prevFiles) => ({
+      ...prevFiles,
+      [index]: file
+    }));
+    if (file) {
+      setResponses((prevResponses) => {
+        const newResponses = [...prevResponses];
+        newResponses[index] = file.name;
+        return newResponses;
+      });
+    }
+  };
+
   return (
-    <div className="h-screen flex justify-center items-center">
-    <div className="flex w-full h-3/4 max-w-4xl flex justify-center items-center">
-        <div className="w-1/10 flex flex-col justify-between ml-4 h-1/2 mr-10">
-            {/* Select Language */}
-            <div className="flex items-center mb-4">
-                <label className="mr-2">Select Language:</label>
-                <select
-                    value={language}
-                    onChange={handleLanguageChange}
-                    className="border border-gray-300 rounded px-3 py-1 mr-2"
-                >
-                    <option value="">Select Language</option>
-                    {LANGUAGES.map((lang) => (
-                        <option key={lang.sourceLanguage} value={lang.sourceLanguage}>
-                            {lang.name}
-                        </option>
-                    ))}
-                </select>
-                <button
-                    onClick={startConversation}
-                    disabled={!language}
-                    className="bg-primary text-white px-4 py-1 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
-                >
-                    Start
-                </button>
-            </div>
+    <div className="h-screen flex flex-col justify-center items-center relative">
+  <div className="absolute left-0 top-0 h-full">
+    <img src={VoiceLeftImg} alt="Voice Left" className="h-full w-auto" />
+  </div>
 
-            {/* Input section */}
-            <div className="chat-input mb-4">
-                
-                <div className="button-group">
-                    {/* Record button */}
-                    <button
-                        onClick={startRecording}
-                        disabled={isRecording}
-                        className="bg-primary text-white px-4 py-2 rounded mr-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    >
-                        Record
-                    </button>
-                    {/* Next button */}
-                    <button
-                        onClick={handleNext}
-                        disabled={isRecording}
-                        className="bg-secondary text-white px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    >
-                        Next
-                    </button>
+  <div className="absolute right-0 top-0 h-full">
+    <img src={VoiceRightImg} alt="Voice Right" className="h-full w-auto" />
+  </div>
+
+  <div className="flex justify-center items-center text-2xl font-extrabold mb-12 text-4b4b4b mt-10">
+    <span className="font-bold text-4xl font-poppins text-black text-center">
+      Vya<span style={{ color: '#FCBD01' }}>par</span> Launch
+      <span style={{ color: '#FCBD01' }}>pad</span>
+    </span>
+  </div>
+
+  <div className="flex flex-col w-full h-screen items-center overflow-hidden">
+    <div className="w-full max-w-4xl p-4 h-2/3 mb-5 overflow-hidden rounded-lg  bg-white">
+      <div className="w-full h-full overflow-y-auto">
+        <div className="w-full flex flex-col pr-3">
+          <div className="chat-message text-black flex items-center">
+            <div>
+              <img src={RobotIcon} alt="robot" className="inline-block" />
+            </div>
+            <div className="chat-question p-2 m-4">
+              <p>Hello, I'm Vyapar Sathi! 👋<br />Welcome to Vyapar Launchpad, Let's onboard your product.</p>
+            </div>
+          </div>
+
+          {questionsHistory.map((question, index) => (
+            <div key={`history-question-${index}`} className="chat-message">
+              <div className="flex items-start">
+                <img src={RobotIcon} alt="robot" className="inline-block mr-3" />
+                <div className="chat-question p-2 text-black">
+                  <p>{question}</p>
                 </div>
-            </div>
-
-            {/* Playback rate */}
-            <div className="chat-settings">
-                <label className="mr-2">Playback Rate:</label>
-                <input
-                    type="range"
-                    min="0.5"
-                    max="2"
-                    step="0.1"
-                    value={playbackRate}
-                    onChange={(e) => setPlaybackRate(e.target.value)}
-                    className="w-full bg-gray-200 rounded-lg p-2"
-                />
-            </div>
-        </div>
-
-        <div className="max-w-4xl bg-white shadow-lg rounded-2xl p-4 w-1/2 h-full">
-            <div className="w-1/8 rounded flex flex-col overflow-y-auto h-full">
-                {/* Always display the welcome message */}
-                <div className="chat-message">
-                    <div className="chat-question p-2 m-4">
-                        <p>Hello, I'm Vyapar Sathi! 👋<br />Welcome to Vyapar Launchpad, Let's onboard your product.</p>
-                    </div>
+              </div>
+              <div className="flex justify-end">
+                <div className="chat-response p-2 inline-block bg-[#FCBD01] text-white">
+                  <p>{responsesHistory[index]}</p>
                 </div>
-
-                {/* Render questions and responses history */}
-                {questionsHistory.map((question, index) => (
-                    <div key={`history-question-${index}`} className="chat-message p-2">
-                        <div className="chat-question p-2">
-                            <p>{question}</p>
-                        </div>
-                        <div className="flex justify-end">
-                            <div className="chat-response p-2 inline-block">
-                                <p>{responsesHistory[index]}</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-
-                {/* Render current question and response */}
-                {currentQuestionIndex >= 0 && (
-                    <div className="chat-message p-2">
-                        <div className="chat-question p-2">
-                            <p>{QUESTIONS[currentQuestionIndex]}</p>
-                        </div>
-                        {responses[currentQuestionIndex] && (
-                            <div className="flex justify-end">
-                                <div className="chat-response p-2 inline-block">
-                                    <p>{responses[currentQuestionIndex]}</p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
+              </div>
             </div>
+          ))}
+
+          {currentQuestionIndex >= 0 && (
+            <div className="chat-message p-2">
+              <img src={RobotIcon} alt="robot" className="inline-block mr-3" />
+              <div className="chat-question p-2 text-black">
+                <p>{QUESTIONS[currentQuestionIndex]}</p>
+              </div>
+              {currentQuestionIndex === 8 ? (
+                <ProductImages productData={productData} setProductData={setProductData} />
+              ) : (
+                responses[currentQuestionIndex] && (
+                  <div className="flex justify-end">
+                    <div className="chat-response p-2 inline-block bg-[#FCBD01] text-white">
+                      <p>{responses[currentQuestionIndex]}</p>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          )}
         </div>
+      </div>
     </div>
+
+    <div className="button-group flex space-x-2 mb-5 items-center justify-center">
+      <button
+        onClick={startRecording}
+        disabled={isRecording}
+        className="flex items-center justify-center bg-transparent disabled:cursor-not-allowed"
+        style={{ width: '80px', height: '80px' }}
+      >
+        {isRecording ? (
+          <Lottie
+            options={{
+              animationData: MicAnimation,
+              loop: true,
+              autoplay: true
+            }}
+            height={80}
+            width={80}
+          />
+        ) : (
+          <img src={MicInput} alt="Record" className="w-full h-full" />
+        )}
+      </button>
+      <button
+        onClick={handleNext}
+        disabled={isRecording}
+        className="flex items-center justify-center bg-yellow-500 text-black rounded-3xl disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-yellow-600 hover:text-white"
+        style={{ width: '80px', height: '40px' }}
+      >
+        Next
+      </button>
+
+      <button
+        onClick={startConversation}
+        disabled={!language}
+        className="flex items-center justify-center bg-yellow-500 text-black rounded-3xl disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-yellow-600 hover:text-white"
+        style={{ width: '80px', height: '40px' }}
+      >
+        Start
+      </button>
+    </div>
+  </div>
 </div>
 
-  );
+
   
+  
+
+  );
 }
 
 export default Voice;
