@@ -61,55 +61,51 @@ const OnBoardingPages: React.FC = () => {
       setStep(3); // Navigate to step 3 (Contactdetails)
     }
   };
-
   const postData = async (
     productTitle,
     productDescription,
     productVariation,
     pricing,
   ) => {
-    const response = await axios.post(
-      productData.sellerState !== ''
-        ? `${aiUrl}process/`
-        : 'http://127.0.0.1:8000/process/',
-      {
-        prompt: productTitle,
-        description: productDescription,
-        variation: productVariation,
-        pricing: pricing,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'PostmanRuntime/7.39.0',
-          Accept: '*/*',
-          'Accept-Encoding': 'gzip, deflate, br',
-          Connection: 'keep-alive',
-        },
-      },
-    );
-
-    return response.data;
-  };
-
-  const fetchOrderStatus = async (orderId) => {
+    console.log('Executing postData function...');
+    
+    const url = productData.sellerState !== ''
+      ? `${aiUrl}process/`
+      : 'http://127.0.0.1:8000/process/';
+  
+    console.log('PostData URL:', url);
+    
+    const requestData = {
+      prompt: productTitle,
+      description: productDescription,
+      variation: productVariation,
+      pricing: pricing,
+    };
+  
+    console.log('Request Data:', requestData);
+  
     try {
-      const response = await axios.get(
-        `https://prodapi.phot.ai/external/api/v1/user_activity/order-status?order_id=${orderId}`,
+      const response = await axios.post(
+        url,
+        requestData,
         {
           headers: {
-            'x-api-key': photAiApiKey,
             'Content-Type': 'application/json',
+            'User-Agent': 'PostmanRuntime/7.39.0',
+            Accept: '*/*',
+            'Accept-Encoding': 'gzip, deflate, br',
+            Connection: 'keep-alive',
           },
-        }
+        },
       );
+  
+      console.log('PostData Response:', response.data);
       return response.data;
     } catch (error) {
-      console.error("Error fetching order status:", error);
-      return null;
+      console.error('PostData Error:', error);
+      throw error; // Re-throw the error to handle it elsewhere if needed
     }
   };
-
   const changeBackgroundImages = async (imageUrls, prompt) => {
     const newImages = await Promise.all(
       imageUrls.map(async (url) => {
