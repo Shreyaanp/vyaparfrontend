@@ -1,5 +1,5 @@
 import React from "react";
-import Text from "../../components/common/Bhasini/Text";
+import Text from "../../Bhasini/Text";
 
 const Step7: React.FC = () => {
   return (

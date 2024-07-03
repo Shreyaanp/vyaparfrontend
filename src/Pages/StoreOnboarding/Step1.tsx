@@ -2,7 +2,7 @@ import React from "react";
 import img1 from "../../assets/images/onboard1.png";
 import img2 from "../../assets/images/onboard2.png";
 import img3 from "../../assets/images/onboard3.png";
-import Text from "../../components/common/Bhasini/Text";
+import Text from "../../Bhasini/Text";
 
 const Step1: React.FC = () => {
   return (

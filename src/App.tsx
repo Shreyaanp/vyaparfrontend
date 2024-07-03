@@ -13,6 +13,8 @@ import StoreOnboarding from "./Pages/StoreOnboarding/StoreOnboard";
 import ProductOnBoarding from "./Pages/ProductOnboarding/ProductOnboard";
 import ProductPage from "./Pages/ProductOnboarding/ProductPage";
 import Voice from "./Pages/Voice/Voice";
+import MyStore from "./Pages/MyStore/MyStore";
+import Inventory from "./Pages/Inventory/Inventory";
 
 const apiUrl = (import.meta as any).env.VITE_BASE_API;
 
@@ -109,6 +111,25 @@ function App() {
             <>
               <PageTitle title="Vyapar Launchpad" />
               <Voice />
+            </>
+          }
+        />
+        <Route
+          path="/mystore"
+          element={
+            <>
+              <PageTitle title="Vyapar Launchpad" />
+              <MyStore />
+            </>
+          }
+        />
+
+        <Route
+          path="/inventory"
+          element={
+            <>
+              <PageTitle title="Vyapar Launchpad" />
+              <Inventory />
             </>
           }
         />
