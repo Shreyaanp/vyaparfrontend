@@ -19,6 +19,7 @@ const backendUrl = (import.meta as any).env.VITE_BASE_API;
 const photAiUrl =
   "https://prodapi.phot.ai/external/api/v2/user_activity/background-generator";
 const photAiApiKey = "667bd78dc03bdd1cb404e7a0_3668c766b56f00a1de05_apyhitools";
+const photoRoomApi = "sandbox_bf94ab81f439e8cc7c75b8e42607c85d9d4345d5";
 
 const ProductOnBoarding: React.FC = () => {
   useEffect(() => {
@@ -97,6 +98,7 @@ const ProductOnBoarding: React.FC = () => {
           },
         }
       );
+
       return response.data;
     } catch (error) {
       console.error("Error fetching order status:", error);
@@ -108,50 +110,35 @@ const ProductOnBoarding: React.FC = () => {
     const newImages = await Promise.all(
       imageUrls.map(async (url) => {
         try {
-          const response = await axios.post(
-            photAiUrl,
-            {
-              file_name: url.split("/").pop(),
-              input_image_link: url,
-              prompt: prompt,
+          const apiUrl = `https://image-api.photoroom.com/v2/edit?background.prompt=${encodeURIComponent(
+            prompt
+          )}&maxHeight=500&maxWidth=500&imageUrl=${encodeURIComponent(url)}`;
+
+          const response = await axios.get(apiUrl, {
+            headers: {
+              "x-api-key": photoRoomApi,
             },
-            {
-              headers: {
-                "x-api-key": photAiApiKey,
-                "Content-Type": "application/json",
-              },
-            }
+            responseType: "arraybuffer",
+          });
+
+          // Convert binary data to base64
+          const base64Image = Buffer.from(response.data, "binary").toString(
+            "base64"
           );
-          console.log("Phot.AI response:", response.data); // Log the response
-          const orderId = response.data.order_id;
+          const imageUrl = `data:image/png;base64,${base64Image}`;
 
-          // Fetch order status using orderId
-          let orderStatusResponse;
-          let retries = 5;
-
-          // Retry mechanism to fetch the order status
-          while (retries > 0) {
-            orderStatusResponse = await fetchOrderStatus(orderId);
-            if (
-              orderStatusResponse &&
-              orderStatusResponse.output_urls.length > 0
-            ) {
-              break;
-            }
-            await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
-            retries--;
-          }
-
-          if (
-            orderStatusResponse &&
-            orderStatusResponse.output_urls.length > 0
-          ) {
-            return orderStatusResponse.output_urls[0];
-          } else {
-            return null;
-          }
+          return imageUrl; // Return the base64 image URL
         } catch (error) {
-          console.error("Error changing background:", error);
+          if (error.response) {
+            console.error("Error response data:", error.response.data);
+            console.error("Error response status:", error.response.status);
+            console.error("Error response headers:", error.response.headers);
+          } else if (error.request) {
+            console.error("Error request data:", error.request);
+          } else {
+            console.error("General error message:", error.message);
+          }
+          console.error("Error config:", error.config);
           return null;
         }
       })
@@ -163,7 +150,6 @@ const ProductOnBoarding: React.FC = () => {
     if (step < 9) {
       setUploading(true);
       if (step === 7) {
-        // Upload company logo
         if (productData.companyLogoFile) {
           const formData = new FormData();
           formData.append("file", productData.companyLogoFile);
@@ -210,6 +196,8 @@ const ProductOnBoarding: React.FC = () => {
               ...prevData,
               images: response.data.s3_links,
             }));
+
+            console.log("Product images uploaded:", response.data.s3_links);
           } catch (error) {
             console.error("Error uploading product images:", error);
           }
@@ -260,6 +248,7 @@ const ProductOnBoarding: React.FC = () => {
               response: { ...response, newImages: newImages },
               companyLogo: productData.companyLogo,
               images: productData.images,
+              prompt: prompt,
             },
           },
         });

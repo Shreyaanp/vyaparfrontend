@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GOOGLE_MAPS_API_KEY } from "../../Contexts/StoreOnboarding";
 import Labels from "../../Contexts/StoreOnboarding";
-import Text from "../../components/Bhasini/Text";
+import Text from "../../components/common/Bhasini/Text";
 
 const Step3 = ({ lang }) => {
   const [address, setAddress] = useState("");

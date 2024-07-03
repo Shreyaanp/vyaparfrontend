@@ -12,6 +12,8 @@ import OverLayBG from "../../assets/images/OverlayBackground.svg";
 
 import { AppContext } from "../../AppContext";
 
+const photoroomApi = "sandbox_bf94ab81f439e8cc7c75b8e42607c85d9d4345d5";
+
 const CopyBtn = () => {
   return (
     <div className="flex justify-end mt-2">
@@ -65,6 +67,8 @@ const ProductPage = () => {
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
+    console.log("\n\n\n");
+    console.log(productData);
     function handleClickOutside(event: MouseEvent) {
       if (
         modalRef.current &&
@@ -429,26 +433,24 @@ const ProductPage = () => {
 
           <div className="w-[37rem]">
             <div className="flex justify-center mt-8">
-              <img src={Img1} className="w-72 h-72" />
+              <img
+                className="w-72 h-72 rounded-lg shadow-lg"
+                src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.prompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${productData.images[0]}&apiKey=${photoroomApi}`}
+              />
             </div>
 
-            <div className="flex justify-between mt-8">
-              <div className="w-[72px]">
-                <img src={Img1} className="w-full h-auto" />
+            {productData.images.length > 1 && (
+              <div className="flex justify-center gap-2 mt-8">
+                {productData.images.slice(1).map((img, index) => (
+                  <div className="w-[72px]">
+                    <img
+                      src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.prompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${img}&apiKey=${photoroomApi}`}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                ))}
               </div>
-              <div className="w-[72px]">
-                <img src={Img1} className="w-full h-auto" />
-              </div>
-              <div className="w-[72px]">
-                <img src={Img1} className="w-full h-auto" />
-              </div>
-              <div className="w-[72px]">
-                <img src={Img1} className="w-full h-auto" />
-              </div>
-              <div className="w-[72px]">
-                <img src={Img1} className="w-full h-auto" />
-              </div>
-            </div>
+            )}
 
             <div className="bg-white shadow-md rounded-lg border border-[#EFF0F6] mt-8 p-6">
               <span className="label">Keywords</span>

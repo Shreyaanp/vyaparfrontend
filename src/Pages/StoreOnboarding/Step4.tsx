@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Step4.css";
 
 import Labels from "../../Contexts/StoreOnboarding";
-import Text from "../../components/Bhasini/Text";
+import Text from "../../components/common/Bhasini/Text";
 
 const indianStates = [
   "Andhra Pradesh",

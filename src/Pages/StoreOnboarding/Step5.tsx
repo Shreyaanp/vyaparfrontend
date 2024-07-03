@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Labels from "../../Contexts/StoreOnboarding";
-import Text from "../../components/Bhasini/Text";
+import Text from "../../components/common/Bhasini/Text";
 
 const Step5 = ({ lang }) => {
   const [title, setTitle] = useState("");

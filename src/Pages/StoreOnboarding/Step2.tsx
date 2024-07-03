@@ -1,6 +1,6 @@
 import React from "react";
 import Labels from "../../Contexts/StoreOnboarding";
-import Text from "../../components/Bhasini/Text";
+import Text from "../../components/common/Bhasini/Text";
 
 interface CompProps {
   lang: string;

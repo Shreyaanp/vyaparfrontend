@@ -9,7 +9,7 @@ const Stepper: React.FC<StepperProps> = ({ currentStep }) => {
     <div>
       <div className="w-full py-0">
         <div className="flex">
-          {[1, 2, 3, 4].map((stepNumber) => (
+          {[1, 2, 3, 4, 5].map((stepNumber) => (
             <div key={stepNumber} className="w-1/4">
               <div className="relative mb-2">
                 <div

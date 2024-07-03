@@ -19,6 +19,7 @@ const Dashboard: React.FC = () => {
       >
         <div className="md:col-span-2 xl:col-span-4">
           <AddProduct />
+
           <p className="text-2xl font-medium text-[#575757]">
             Linguistic Sathi (Transliteration)
           </p>

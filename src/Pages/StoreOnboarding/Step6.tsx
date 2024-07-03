@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import photos from "../../assets/Icons/photos.svg";
 import Labels from "../../Contexts/StoreOnboarding";
-import Text from "../../components/Bhasini/Text";
+import Text from "../../components/common/Bhasini/Text";
 
 const Step6 = ({ lang }) => {
   const [images, setImages] = useState([]);
