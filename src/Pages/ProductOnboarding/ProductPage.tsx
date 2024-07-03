@@ -9,6 +9,7 @@ import CopyButton from "../../assets/Icons/copyButton.svg";
 import BackIcon from "../../assets/Icons/backIcon.svg";
 import Img1 from "../../assets/images/sareeImage.png";
 import OverLayBG from "../../assets/images/OverlayBackground.svg";
+import Text from "../../Bhasini/Text";
 
 import { AppContext } from "../../AppContext";
 
@@ -18,7 +19,9 @@ const CopyBtn = () => {
   return (
     <div className="flex justify-end mt-2">
       <button className="flex items-center border border-[#EFF0F6] p-2 rounded-lg">
-        <span className="text-[#FCBD01] font-medium text-sm">Copy</span>
+        <span className="text-[#FCBD01] font-medium text-sm">
+          <Text>Copy</Text>
+        </span>
         <img src={CopyButton} alt="Copy Icon" className="w-4 h-4 ml-2" />
       </button>
     </div>
@@ -85,7 +88,7 @@ const ProductPage = () => {
   });
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(shareableLink);
+    navigator.clipboard.writeText(shareableLink || "");
     setCopySuccess(true);
     setTimeout(() => {
       setCopySuccess(false);
@@ -211,7 +214,9 @@ const ProductPage = () => {
             </div>
 
             <div style={styles.shadowComp}>
-              <span className="label">Product Title</span>
+              <span className="label">
+                <Text>Product Title</Text>
+              </span>
               <div className="line" />
               {isEditing ? (
                 <input
@@ -223,18 +228,17 @@ const ProductPage = () => {
                 />
               ) : (
                 <p style={{ fontFamily: "poppins" }} className="productTitle">
-                  {productData.response.ProductName}
+                  <Text>{productData.response.ProductName}</Text>
                 </p>
               )}
-              <div className="-mt-2">
-                <CopyBtn />
-              </div>
             </div>
 
             <div style={styles.shadowComp}>
               <div className="flex justify-between">
                 <div>
-                  <span className="label">Product Pricing</span>
+                  <span className="label">
+                    <Text>Product Pricing</Text>
+                  </span>
                   <div className="line" />
                 </div>
                 {isEditing ? (
@@ -254,14 +258,16 @@ const ProductPage = () => {
                     className="text-[#263238] text-2xl font-semibold mt-1"
                     style={{ fontFamily: "poppins" }}
                   >
-                    ₹ {productData.pricing}
+                    <Text>₹ {productData.pricing}</Text>
                   </p>
                 )}
               </div>
             </div>
 
             <div style={styles.shadowComp}>
-              <span className="label">Product Tagline</span>
+              <span className="label">
+                <Text>Product Tagline</Text>
+              </span>
               <div className="line" />
               {isEditing ? (
                 <input
@@ -273,14 +279,15 @@ const ProductPage = () => {
                 />
               ) : (
                 <p style={{ fontFamily: "poppins" }} className="txt">
-                  {productData.response.ProductTagline}
+                  <Text>{productData.response.ProductTagline}</Text>
                 </p>
               )}
-              <CopyBtn />
             </div>
 
             <div style={styles.shadowComp}>
-              <span className="label">Product Description</span>
+              <span className="label">
+                <Text>Product Description</Text>
+              </span>
               <div className="line" />
               {isEditing ? (
                 <textarea
@@ -291,14 +298,15 @@ const ProductPage = () => {
                 />
               ) : (
                 <p style={{ fontFamily: "poppins" }} className="txt">
-                  {productData.response.ProductDescription}
+                  <Text>{productData.response.ProductDescription}</Text>
                 </p>
               )}
-              <CopyBtn />
             </div>
 
             <div style={styles.shadowComp}>
-              <span className="label">Product Features</span>
+              <span className="label">
+                <Text>Product Features</Text>
+              </span>
               <div className="line" />
               <ul style={{ listStyleType: "disc", paddingLeft: 20 }}>
                 {isEditing
@@ -320,15 +328,16 @@ const ProductPage = () => {
                         style={{ fontFamily: "poppins" }}
                         className="txt"
                       >
-                        {item}
+                        <Text>{item}</Text>
                       </li>
                     ))}
               </ul>
-              <CopyBtn />
             </div>
 
             <div style={styles.shadowComp}>
-              <span className="label">Customer Acquisition</span>
+              <span className="label">
+                <Text>Customer Acquisition</Text>
+              </span>
               <div className="line" />
               <ul style={{ listStyleType: "disc", paddingLeft: 20 }}>
                 {productData.response.CustomerAcquisition &&
@@ -356,16 +365,17 @@ const ProductPage = () => {
                           style={{ fontFamily: "poppins" }}
                           className="txt"
                         >
-                          {item}
+                          <Text>{item}</Text>
                         </li>
                       )
                     )
                   )
                 ) : (
-                  <li>No data available</li>
+                  <li>
+                    <Text>No data available</Text>
+                  </li>
                 )}
               </ul>
-              <CopyBtn />
             </div>
           </div>
         </div>
@@ -376,19 +386,19 @@ const ProductPage = () => {
               className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm mr-2"
               onClick={handleEdit}
             >
-              {isEditing ? "Cancel" : "Edit"}
+              <Text>{isEditing ? "Cancel" : "Edit"}</Text>
             </button>
             <button
               className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm mr-2"
               onClick={handleSave}
             >
-              Save
+              <Text>Save</Text>
             </button>
             <button
               className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm"
               onClick={publishProduct}
             >
-              Publish
+              <Text>Publish</Text>
             </button>
           </div>
           {shareableLink && (
@@ -403,27 +413,31 @@ const ProductPage = () => {
                 }}
               >
                 <h1 className="font-sans-serif font-bold text-black text-title-md mb-8">
-                  Your Product is now live!
+                  <Text>Your Product is now live!</Text>
                 </h1>
                 <div className="flex justify-center m-3">
                   <QRCode value={shareableLink} />
                 </div>
                 <div className="text-left">
                   <div className="text-center mt-4">
-                    <p className="font-sans-serif text-lg">OR</p>
+                    <p className="font-sans-serif text-lg">
+                      <Text>OR</Text>
+                    </p>
                   </div>
                   <p className="mb-2 font-sans-serif font-bold text-black">
-                    Copy Link
+                    <Text>Copy Link</Text>
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="w-6/7 flex items-center justify-between bg-gray border border-gray-300 rounded-lg p-3">
-                      <p className="flex-grow">{shareableLink}</p>
+                      <p className="flex-grow">
+                        <Text>{shareableLink}</Text>
+                      </p>
                     </div>
                     <button
                       onClick={copyToClipboard}
                       className="ml-2 px-4 py-2 bg-gray text-black font-bold rounded-md"
                     >
-                      {copySuccess ? "Copied!" : "Copy"}
+                      <Text>{copySuccess ? "Copied!" : "Copy"}</Text>
                     </button>
                   </div>
                 </div>
@@ -434,7 +448,8 @@ const ProductPage = () => {
           <div className="w-[37rem]">
             <div className="flex justify-center mt-8">
               <img
-                className="w-72 h-72 rounded-lg shadow-lg"
+                className="rounded-lg shadow-2xl shadow-lg"
+                style={{ width: "20rem", height: "20rem" }}
                 src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.prompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${productData.images[0]}&apiKey=${photoroomApi}`}
               />
             </div>
@@ -442,10 +457,10 @@ const ProductPage = () => {
             {productData.images.length > 1 && (
               <div className="flex justify-center gap-2 mt-8">
                 {productData.images.slice(1).map((img, index) => (
-                  <div className="w-[72px]">
+                  <div className="w-[72px]" key={index}>
                     <img
                       src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.prompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${img}&apiKey=${photoroomApi}`}
-                      className="w-full h-auto"
+                      className="w-full h-auto rounded-lg shadow-lg"
                     />
                   </div>
                 ))}
@@ -453,7 +468,9 @@ const ProductPage = () => {
             )}
 
             <div className="bg-white shadow-md rounded-lg border border-[#EFF0F6] mt-8 p-6">
-              <span className="label">Keywords</span>
+              <span className="label">
+                <Text>Keywords</Text>
+              </span>
               <div className="line" />
               {isEditing ? (
                 <input
@@ -466,10 +483,9 @@ const ProductPage = () => {
                 />
               ) : (
                 <p className="txt mt-2" style={{ fontFamily: "poppins" }}>
-                  {productData.response.SeoFriendlyTags.join(", ")}
+                  <Text>{productData.response.SeoFriendlyTags.join(", ")}</Text>
                 </p>
               )}
-              <CopyBtn />
             </div>
 
             <div className="bg-white shadow-lg rounded-lg border border-[#EFF0F6] mt-8 p-6">
@@ -477,11 +493,13 @@ const ProductPage = () => {
                 className="font-semibold text-lg text-[#263238] mb-4"
                 style={{ fontFamily: "poppins" }}
               >
-                AI Recommendations
+                <Text>AI Recommendations</Text>
               </p>
               <hr className="border border-[#EFF0F6]" />
               <div className="p-4">
-                <span className="label">Product Image presentation</span>
+                <span className="label">
+                  <Text>Product Image presentation</Text>
+                </span>
                 <div className="line" />
                 {isEditing ? (
                   <textarea
@@ -493,13 +511,15 @@ const ProductPage = () => {
                   />
                 ) : (
                   <p className="txt mt-2" style={{ fontFamily: "poppins" }}>
-                    {productData.response.ProductPrompt}
+                    <Text>{productData.response.ProductPrompt}</Text>
                   </p>
                 )}
               </div>
 
               <div className="p-4 mt-4">
-                <span className="label">Market Painpoints</span>
+                <span className="label">
+                  <Text>Market Painpoints</Text>
+                </span>
                 <div className="line" />
                 {isEditing ? (
                   <textarea
@@ -510,11 +530,22 @@ const ProductPage = () => {
                     style={{ fontFamily: "poppins" }}
                   />
                 ) : (
-                  <p className="txt mt-2" style={{ fontFamily: "poppins" }}>
-                    {productData.response.MarketPainPoints}
-                  </p>
+                  <ul>
+                    {productData.response.MarketPainPoints.map(
+                      (data, index) => {
+                        return (
+                          <li
+                            key={index}
+                            className="txt mt-2"
+                            style={{ fontFamily: "poppins" }}
+                          >
+                            <Text>{data}</Text>
+                          </li>
+                        );
+                      }
+                    )}
+                  </ul>
                 )}
-                <CopyBtn />
               </div>
             </div>
           </div>

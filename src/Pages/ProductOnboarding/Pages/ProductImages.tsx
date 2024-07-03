@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import langu from "./langu";
+import Text from "../../../Bhasini/Text";
 
 type ProductVariationsProps = {
   productData: any;
@@ -29,14 +29,14 @@ const ProductImages: React.FC<ProductVariationsProps> = ({
   return (
     <div className="px-16">
       <h1 className="text-[#170F49] text-2xl mb-2 font-poppins font-bold">
-        {langu[productData.inputLanguage].productImg.heading}
+        <Text>Product Images</Text>
       </h1>
       <p className="text-[#6F6C90] font-poppins text-sm">
-        {langu[productData.inputLanguage].productImg.subheading}
+        <Text>Upload Your Product Images</Text>
       </p>
       <div className="mt-4 font-poppins">
         <label className="block text-[#170F49] text-md font-medium mb-2">
-          {langu[productData.inputLanguage].productImg.heading}
+          <Text>Product Images</Text>
         </label>
         <div className="grid grid-cols-3 gap-4">
           {productData.images &&

@@ -3,6 +3,7 @@ import TableHeader from "../../components/common/TableHeader";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import Text from "../../Bhasini/Text";
 
 const TourPackageTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,13 +48,15 @@ const TourPackageTable = () => {
   return (
     <div className="rounded-xl border border-stroke bg-[white] px-2 pt-6 pb-2 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-5 xl:pb-1 relative">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-md font-bold mb-0">Inventory Products Details</h2>
+        <h2 className="text-md font-bold mb-0">
+          <Text>Inventory Products Details</Text>
+        </h2>
         <div className="flex">
           <button
             //   onClick={exportToExcel}
             style={styles.downloadButton}
           >
-            Download Data
+            <Text>Download Data</Text>
           </button>
         </div>
       </div>
@@ -63,31 +66,31 @@ const TourPackageTable = () => {
           <thead>
             <tr className=" border-b border-t  border-[#CFD3D5] text-left ">
               <th className="py-4 text-sm font-bold text-black text-center">
-                S.No.
+                <Text>S.No.</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                Satus
+                <Text>Satus</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                Name
+                <Text>Name</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                Available Quantity
+                <Text>Available Quantity</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                Price
+                <Text>Price</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                Discount Price
+                <Text>Discount Price</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                EAN / Barcode No.
+                <Text>EAN / Barcode No.</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                Net Weight
+                <Text>Net Weight</Text>
               </th>
               <th className="py-4 text-sm font-bold text-black text-center">
-                Unit
+                <Text>Unit</Text>
               </th>
             </tr>
           </thead>
@@ -105,7 +108,7 @@ const TourPackageTable = () => {
               >
                 <td className="p-3">
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    {key + 1}.
+                    <Text>{key + 1}.</Text>
                   </h5>
                 </td>
                 <td
@@ -131,42 +134,42 @@ const TourPackageTable = () => {
                       paddingRight: 5,
                     }}
                   >
-                    {item.status}
+                    <Text>{item.status}</Text>
                   </p>
                 </td>
                 <td>
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    {item.name}
+                    <Text>{item.name}</Text>
                   </h5>
                 </td>
                 <td>
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    {item.availableQuantity}
+                    <Text>{item.availableQuantity}</Text>
                   </h5>
                 </td>
                 <td>
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    ₹{item.price}
+                    <Text>₹{item.price}</Text>
                   </h5>
                 </td>
                 <td>
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    ₹{item.discountPrice}
+                    <Text>₹{item.discountPrice}</Text>
                   </h5>
                 </td>
                 <td>
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    {item.ean}
+                    <Text>{item.ean}</Text>
                   </h5>
                 </td>
                 <td>
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    {item.netWeight}
+                    <Text>{item.netWeight}</Text>
                   </h5>
                 </td>
                 <td>
                   <h5 className="text-[0.95rem] text-base text-[#6E7079] font-poppins text-center">
-                    {item.unit}
+                    <Text>{item.unit}</Text>
                   </h5>
                 </td>
               </tr>

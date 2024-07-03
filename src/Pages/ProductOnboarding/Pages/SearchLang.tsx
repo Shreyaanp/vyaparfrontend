@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLanguage } from "../../../redux/slice";
 import SearchIcon from "../../../assets/Icons/blackSearchIcon.svg";
 
@@ -15,27 +15,31 @@ const SearchLang: React.FC<SearchLangProps> = ({
   const dispatch = useDispatch();
   const [proData, setProData] = useState<any>(productData);
 
-  const indianLanguages: string[] = [
-    "Hindi",
-    "English",
-    "Bengali",
-    "Telugu",
-    "Marathi",
-    "Tamil",
-    "Gujarati",
-    "Kannada",
-    "Odia",
-    "Punjabi",
-  ];
+  const indianLanguages: { [key: string]: string } = {
+    Hindi: "hi",
+    English: "en",
+    Bengali: "bn",
+    Telugu: "te",
+    Marathi: "mr",
+    Tamil: "ta",
+    Gujarati: "gu",
+    Kannada: "kn",
+    Odia: "or",
+    Punjabi: "pa",
+    malayalam: "ml",
+    assamese: "as",
+  };
+
+  const languageNames: string[] = Object.keys(indianLanguages);
 
   // Function to generate three random language names
   const generateRandomLanguages = (): string[] => {
     const randomLanguages: string[] = [];
     while (randomLanguages.length < 3) {
       const randomIndex: number = Math.floor(
-        Math.random() * indianLanguages.length
+        Math.random() * languageNames.length
       );
-      const randomLanguage: string = indianLanguages[randomIndex];
+      const randomLanguage: string = languageNames[randomIndex];
       if (!randomLanguages.includes(randomLanguage)) {
         randomLanguages.push(randomLanguage);
       }
@@ -54,7 +58,7 @@ const SearchLang: React.FC<SearchLangProps> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchTerm(event.target.value);
     // Filter languages based on search term
-    const results: string[] = indianLanguages.filter((language: string) =>
+    const results: string[] = languageNames.filter((language: string) =>
       language.toLowerCase().includes(event.target.value.toLowerCase())
     );
     setSearchResult(results.length > 0 ? results[0] : "");
@@ -66,6 +70,12 @@ const SearchLang: React.FC<SearchLangProps> = ({
     setSearchResult(language);
     dispatch(setLanguage(language));
     setProductData({ ...productData, inputLanguage: language.toLowerCase() });
+
+    // Store the language code in localStorage
+    const languageCode = indianLanguages[language];
+    if (languageCode) {
+      localStorage.setItem("languageCode", languageCode);
+    }
   };
 
   return (
@@ -89,7 +99,6 @@ const SearchLang: React.FC<SearchLangProps> = ({
               borderRadius: 14,
             }}
           >
-            {/* <img src={Search} /> */}
             <div style={{ marginRight: 7 }}>
               <img src={SearchIcon} style={{ width: 18, height: 18 }} />
             </div>
@@ -115,7 +124,6 @@ const SearchLang: React.FC<SearchLangProps> = ({
               border: `2px solid ${
                 searchResult === clickedText ? "#FCBD01" : "#E5E5E5"
               }`,
-
               fontWeight: "600",
               paddingLeft: 10,
             }}

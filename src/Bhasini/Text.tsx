@@ -50,7 +50,9 @@ const Text: React.FC<TextProps> = ({ className, children, style }) => {
           config: {
             language: {
               sourceLanguage: "en",
-              targetLanguage: "hi",
+              targetLanguage: localStorage.getItem("languageCode")
+                ? localStorage.getItem("languageCode")
+                : "hi",
             },
             serviceId: "ai4bharat/indictrans-v2-all-gpu--t4",
           },

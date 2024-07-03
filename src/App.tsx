@@ -15,6 +15,7 @@ import ProductPage from "./Pages/ProductOnboarding/ProductPage";
 import Voice from "./Pages/Voice/Voice";
 import MyStore from "./Pages/MyStore/MyStore";
 import Inventory from "./Pages/Inventory/Inventory";
+import DefaultLayout from "./layout/DefaultLayout";
 
 const apiUrl = (import.meta as any).env.VITE_BASE_API;
 
@@ -44,7 +45,7 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
-    <>
+    <DefaultLayout>
       <Routes>
         <Route
           index
@@ -75,12 +76,23 @@ function App() {
             </>
           }
         />
+
         <Route
-          path="/store-onboarding"
+          path="/mystore"
           element={
             <>
               <PageTitle title="Vyapar Launchpad" />
-              <StoreOnboarding />
+              <MyStore />
+            </>
+          }
+        />
+
+        <Route
+          path="/inventory"
+          element={
+            <>
+              <PageTitle title="Vyapar Launchpad" />
+              <Inventory />
             </>
           }
         />
@@ -115,26 +127,16 @@ function App() {
           }
         />
         <Route
-          path="/mystore"
+          path="/store-onboarding"
           element={
             <>
               <PageTitle title="Vyapar Launchpad" />
-              <MyStore />
-            </>
-          }
-        />
-
-        <Route
-          path="/inventory"
-          element={
-            <>
-              <PageTitle title="Vyapar Launchpad" />
-              <Inventory />
+              <StoreOnboarding />
             </>
           }
         />
       </Routes>
-    </>
+    </DefaultLayout>
   );
 }
 

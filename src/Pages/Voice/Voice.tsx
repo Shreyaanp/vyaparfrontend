@@ -334,7 +334,7 @@ function Voice() {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center ">
+    <div className="h-screen flex justify-center items-center bg-[#FDE7A8] ">
       {loading ? (
         <Loader />
       ) : (

@@ -2,6 +2,7 @@ import React from "react";
 import ProductImage from "../../assets/images/ProLinguisticSathi.svg";
 import { useNavigate } from "react-router-dom";
 import start from "../../assets/Icons/start.svg";
+import Text from "../../Bhasini/Text";
 
 interface Product {
   productTitle: string;
@@ -29,11 +30,11 @@ const ProductLinguisticSathi: React.FC<ProductLinguisticSathiProps> = ({
             />
           </div>
           <div className="md:w-1/2 mb-0 md:mb-0">
-            <h2 className="text-4xl font-medium leading-tight mb-4">
+            <Text className="text-4xl font-medium leading-tight mb-4">
               List your product in your buyer’s Language
-            </h2>
+            </Text>
             <button className="flex items-center px-4 py-2 bg-[#006A66] text-white rounded-lg">
-              Add Products
+              <Text>Add Products</Text>
               <img
                 src={start}
                 style={{ width: 20, height: 20 }}

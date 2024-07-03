@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import Text from "../../Bhasini/Text";
 
 import SidebarLinkGroup from "./SidebarLinkGroup";
 
@@ -33,7 +34,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
-  // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!sidebar.current || !trigger.current) return;
@@ -49,7 +49,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!sidebarOpen || keyCode !== 27) return;
@@ -84,7 +83,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <span className="text-[#FCBD01]">pad</span>
         </h1>
       </div>
-      {/* <!-- SIDEBAR HEADER --> */}
+
       <div className="flex items-center justify-between font-poppins gap-0 ml-2 px-2 pb-5.5 lg:py-6.5">
         <button
           ref={trigger}
@@ -116,47 +115,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-[#7C8DB5]">
-              MENU
+              <Text>MENU</Text>
             </h3>
 
             <ul className="mb-0 flex flex-col gap-0.5">
-              {/* <!-- Menu Item Dashboard --> */}
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === "/" || pathname.includes("dashboard")
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="/"
-                        className={`group relative text-sm flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-[#2E3271] duration-300 ease-in-out hover:text-[#006A66] ${
-                          (pathname === "/" ||
-                            pathname.includes("dashboard")) &&
-                          "text-[#006A66]"
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <img src={Home} />
-                        Home
-                      </NavLink>
-
-                      {/* <!-- Dropdown Menu Start --> */}
-
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Dashboard --> */}
-
-              {/* <!-- Menu Item Calendar --> */}
               <li>
                 <NavLink
                   to="/dashboard"
@@ -165,7 +127,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 >
                   <img src={Player} />
-                  Product
+                  <Text>Dashboard</Text>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard"
+                  className={`group relative text-sm flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-[#2E3271] duration-300 ease-in-out hover:text-[#006A66] ${
+                    pathname.includes("calendar") && "hover:text-[#006A66]"
+                  }`}
+                >
+                  <img src={Player} />
+                  <Text>Product</Text>
                 </NavLink>
               </li>
 
@@ -177,7 +150,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 >
                   <img src={Upload} />
-                  Product Checklist
+                  <Text>Product Checklist</Text>
                 </NavLink>
               </li>
 
@@ -189,7 +162,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 >
                   <img src={youraudiobook} />
-                  My Store
+                  <Text>My Store</Text>
                 </NavLink>
               </li>
 
@@ -201,20 +174,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 >
                   <img src={youraudiobook} />
-                  Inventory
+                  <Text>Inventory</Text>
                 </NavLink>
               </li>
             </ul>
           </div>
 
-          {/* <!-- General Group --> */}
           <div>
             <h3 className="mb-4  mt-6 ml-4 text-sm font-semibold text-[#7C8DB5]">
-              GENERAL
+              <Text>GENERAL</Text>
             </h3>
 
             <ul className="mb-6 text-sm flex flex-col gap-0.5">
-              {/* <!-- Menu Item Chart --> */}
               <li>
                 <NavLink
                   to="/store-onboarding"
@@ -223,7 +194,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   )}`}
                 >
                   <img src={settings} />
-                  Store Onboarding
+                  <Text>Store Onboarding</Text>
                 </NavLink>
               </li>
               <li>
@@ -234,7 +205,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   )}`}
                 >
                   <img src={settings} />
-                  Settings
+                  <Text>Settings</Text>
                 </NavLink>
               </li>
 
@@ -257,14 +228,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         }}
                       >
                         <img src={sub} />
-                        Subscription
+                        <Text>Subscription</Text>
                       </NavLink>
                     </React.Fragment>
                   );
                 }}
               </SidebarLinkGroup>
 
-              {/* <!-- Menu Item Auth Pages --> */}
               <SidebarLinkGroup
                 activeCondition={
                   pathname === "/auth" || pathname.includes("auth")
@@ -287,7 +257,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         }}
                       >
                         <img src={auth} />
-                        Authentication
+                        <Text>Authentication</Text>
                       </NavLink>
                     </React.Fragment>
                   );
@@ -302,7 +272,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6  flex flex-col gap-1.5">
-              {/* <!-- Menu Item Chart --> */}
               <div className="ml-4 py-5 px-[-2] flex flex-row">
                 <a target="_blank" href="#">
                   <img
@@ -332,16 +301,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </a>
               </div>
               <div className="mt-0 ml-3">
-                <p className="text-xs text-[#7C8DB5]">
+                <Text className="text-xs text-[#7C8DB5]">
                   Legal ⁃ Privacy ⁃ Cookie Policy ⁃ Cookie
-                </p>
-                <p className="text-xs text-[#7C8DB5]">
+                </Text>
+                <Text className="text-xs text-[#7C8DB5]">
                   Blog Manage ⁃ Imprint Resource Chart
-                </p>
-                <p className="text-xs text-[#7C8DB5]">
-                  <span className="text-blue-400">Language : </span> English
-                  (US)
-                </p>
+                </Text>
+                <Text className="text-xs text-[#7C8DB5]">
+                  <span className="text-blue-400">
+                    <Text>Language : </Text>
+                  </span>{" "}
+                  <Text>English (US)</Text>
+                </Text>
               </div>
             </ul>
           </div>

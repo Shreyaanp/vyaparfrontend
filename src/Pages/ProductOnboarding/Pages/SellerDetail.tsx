@@ -7,7 +7,8 @@ import Company from "../../../assets/Onboarding/company.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setSellerDetails } from "../../../redux/slice";
 import { RootState } from "../../../redux/store";
-import langu from "./langu.tsx";
+
+import Text from "../../../Bhasini/Text.tsx";
 
 type SearchLangProps = {
   productData: any;
@@ -36,25 +37,20 @@ const SellerDetails = ({ productData, setProductData }) => {
   return (
     <div className="px-16 h-[20rem] ">
       <h1 className="text-[#170F49] text-2xl mb-2 font-poppins font-bold">
-        {/* Seller’s Detail */}
-        {langu[productData.inputLanguage].sellerDetails.heading}
+        <Text>Seller’s Detail </Text>
       </h1>
       <p className="text-[#6F6C90] font-poppins text-sm">
-        {" "}
-        {/* Enter your virtual shop’s details. */}
-        {langu[productData.inputLanguage].sellerDetails.subheading}
+        <Text>Enter your virtual shop’s details.</Text>
       </p>
       <div className="flex font-poppins mt-8">
         <div className="w-3/4 relative">
           <label className="block text-[#170F49] text-sm font-medium mb-2">
-            {langu[productData.inputLanguage].sellerDetails.shopName}
+            <Text>Shop Name</Text>
           </label>
           <div className="relative">
             <input
               type="text"
-              placeholder={
-                langu[productData.inputLanguage].sellerDetails.shopName
-              }
+              placeholder={"Shop Name"}
               value={productData.shopName}
               onChange={(e) =>
                 setProductData({ ...productData, shopName: e.target.value })
@@ -71,14 +67,12 @@ const SellerDetails = ({ productData, setProductData }) => {
         </div>
         <div className="w-3/4 ml-4 relative">
           <label className="block text-[#170F49] text-sm font-medium mb-2">
-            {langu[productData.inputLanguage].sellerDetails.sellerState}
+            <Text>Seller State"</Text>
           </label>
           <div className="relative">
             <input
               type="text"
-              placeholder={
-                langu[productData.inputLanguage].sellerDetails.sellerState
-              }
+              placeholder={"Seller State"}
               value={productData.sellerState}
               onBlur={handleSave}
               onChange={(e) =>
@@ -98,14 +92,12 @@ const SellerDetails = ({ productData, setProductData }) => {
       <div className="flex font-poppins mt-4">
         <div className="w-3/4 mr-4 relative">
           <label className="block text-[#170F49] text-sm font-medium mb-2">
-            {langu[productData.inputLanguage].sellerDetails.productLanguage}
+            <Text>Product Language</Text>
           </label>
           <div className="relative">
             <input
               type="text"
-              placeholder={
-                langu[productData.inputLanguage].sellerDetails.productLanguage
-              }
+              placeholder={"Product Language"}
               value={productData.productLanguage}
               onBlur={handleSave}
               onChange={(e) =>
@@ -125,14 +117,12 @@ const SellerDetails = ({ productData, setProductData }) => {
         </div>
         <div className="w-3/4 relative">
           <label className="block text-[#170F49] text-sm font-medium mb-2">
-            {langu[productData.inputLanguage].sellerDetails.productCategory}
+            <Text>Product Category</Text>
           </label>
           <div className="relative">
             <input
               type="text"
-              placeholder={
-                langu[productData.inputLanguage].sellerDetails.productCategory
-              }
+              placeholder={"Product Category"}
               value={productData.productCategory}
               onBlur={handleSave}
               onChange={(e) =>

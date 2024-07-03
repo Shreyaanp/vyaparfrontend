@@ -1,37 +1,40 @@
 import React, { useState, ReactNode } from "react";
-
+import { useLocation } from "react-router-dom";
 import Header from "../components/common/Header";
 import Sidebar from "../components/Sidebar/index";
 
-const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const DefaultLayout = ({ children }) => {
+  const { pathname } = useLocation();
+  const sidebarOpen = false; // Assuming you have a state for this
+  const setSidebarOpen = () => {}; // Assuming you have a method for this
+
+  // Define the routes that should only render children
+  const simpleRoutes = [
+    "/store-onboarding",
+    "/voice",
+    "/product-page",
+    "/product-onboarding",
+    "/signin",
+    "/",
+  ];
+
+  if (simpleRoutes.includes(pathname)) {
+    return <>{children}</>;
+  }
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark bg-[#FDE7A8]">
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
-        {/* <!-- ===== Sidebar Start ===== --> */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {/* <!-- ===== Sidebar End ===== --> */}
-
-        {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-          {/* <!-- ===== Header Start ===== --> */}
-          {/* <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
           <Header />
-          {/* <!-- ===== Header End ===== --> */}
-
-          {/* <!-- ===== Main Content Start ===== --> */}
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
               {children}
             </div>
           </main>
-          {/* <!-- ===== Main Content End ===== --> */}
         </div>
-        {/* <!-- ===== Content Area End ===== --> */}
       </div>
-      {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>
   );
 };

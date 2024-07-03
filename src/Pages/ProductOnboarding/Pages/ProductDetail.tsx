@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProductDetails } from "../../../redux/slice";
-import langu from "./langu";
+import Text from "../../../Bhasini/Text";
 
 type ProductDetailsProps = {
   productData: any;
@@ -31,19 +31,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   return (
     <div className="px-16">
       <h1 className="text-[#170F49] text-2xl mb-2 font-poppins font-bold">
-        {langu[productData.inputLanguage].productDetails.heading}
+        <Text>Product Details</Text>
       </h1>
       <p className="text-[#6F6C90] font-poppins text-md">
-        {langu[productData.inputLanguage].productDetails.subheading}
+        <Text>Enter Your Product Details</Text>
       </p>
       <div className="mt-4 font-poppins">
         <label className="block  text-[#170F49] text-md font-medium mb-2">
-          {langu[productData.inputLanguage].productDetails.productTitle}
+          <Text>Product Title</Text>
         </label>
         <input
-          placeholder={
-            langu[productData.inputLanguage].productDetails.productTitleLabel
-          }
+          placeholder={"Enter your product title here"}
           value={productData.productTitle}
           onChange={(event) =>
             setProductData({ ...productData, ProductTitle: event.target.value })
@@ -52,12 +50,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           className="w-full border-2 border-[#EFF0F6] rounded-2xl px-4 py-2"
         />
         <label className="block  text-[#170F49] text-md font-medium mb-2 mt-4">
-          {langu[productData.inputLanguage].productDetails.pricing}
+          <Text>Price</Text>
         </label>
         <input
-          placeholder={
-            langu[productData.inputLanguage].productDetails.pricingLabel
-          }
+          placeholder={"Enter your product price here"}
           value={productData.productPricing}
           onChange={(event) =>
             // setProductPricing(Number(event.target.value))

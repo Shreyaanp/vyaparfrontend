@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Profile from "../../assets/images/profile.png";
+import Text from "../../Bhasini/Text";
 
 interface LanguageCode {
   language: string;
@@ -34,11 +35,12 @@ const Header: React.FC = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSelectedLanguage(event.target.value);
+    window.location.reload(); // Refresh the page
   };
 
   return (
     <header className="flex justify-between items-center p-3 bg-yellow-50 shadow-sm font-poppins">
-      <h1 className="text-2xl font-normal text-[#45464E]">Home</h1>
+      <Text className="text-2xl font-normal text-[#45464E]">Home</Text>
       <div className="flex items-center space-x-4">
         <select
           className="bg-transparent p-1 rounded border border-[1.5px] border-gray-300 outline-none"
