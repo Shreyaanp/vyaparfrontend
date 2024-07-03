@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { GOOGLE_MAPS_API_KEY } from "../../Contexts/StoreOnboarding";
-import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 
-const Step3 = ({ lang }) => {
-  const [address, setAddress] = useState("");
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+const GOOGLE_MAPS_API_KEY = "AIzaSyCFAWnROEYsHMvi-pZCLeyBGs_IabmSITs";
+
+interface Step3Props {
+  lang: string;
+}
+
+const Step3: React.FC<Step3Props> = ({ lang }) => {
+  const [address, setAddress] = useState<string>("");
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -21,7 +25,7 @@ const Step3 = ({ lang }) => {
     }
   }, []);
 
-  const handleAddressChange = (event) => {
+  const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(event.target.value);
   };
 
@@ -58,25 +62,27 @@ const Step3 = ({ lang }) => {
   };
 
   return (
-    <div className="flex justify-center items-center flex-col text-center flex-grow  ">
+    <div className="flex justify-center items-center flex-col text-center flex-grow">
       <Text className="text-4xl font-medium mb-2">
-        {Labels[lang].step3.heading}
+        Where's your Store located?
       </Text>
-      <Text className="mb-5 text-gray-600">{Labels[lang].step3.desc}</Text>
+      <Text className="mb-5 text-gray-600">
+        Your address is only shared with buyers after they've made a order.
+      </Text>
       <div className="relative inline-block w-[630px] h-[500px]">
         <input
           type="text"
-          placeholder={Labels[lang].step3.placeholder}
+          placeholder="Enter your address"
           className="absolute top-2.5 left-1/2 w-4/5 max-w-[500px] p-2.5 border border-gray-300 rounded-full shadow-sm -translate-x-1/2"
           value={address}
           onChange={handleAddressChange}
         />
         <button
           style={{ top: 60 }}
-          className="absolute  left-1/2 px-5 py-2.5 border-none rounded-full bg-red-500 text-white cursor-pointer shadow-sm -translate-x-1/2"
+          className="absolute left-1/2 px-5 py-2.5 border-none rounded-full bg-red-500 text-white cursor-pointer shadow-sm -translate-x-1/2"
           onClick={handleCurrentLocationClick}
         >
-          {Labels[lang].step3.currentLocation}
+          <Text>Use current location</Text>
         </button>
         <iframe
           src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${latitude},${longitude}`}

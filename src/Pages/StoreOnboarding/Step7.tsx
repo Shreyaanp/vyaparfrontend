@@ -3,26 +3,21 @@ import Text from "../../Bhasini/Text";
 
 const Step7: React.FC = () => {
   return (
-    <div className=" flex-grow flex flex-col md:flex-row items-center justify-between p-8 px-[88px] bg-white  overflow-hidden">
+    <div className="flex-grow flex flex-col md:flex-row items-center justify-between p-8 px-[88px] bg-white overflow-hidden">
       {/* Left Side */}
       <div className="md:w-1/2 p-8 w-1/2">
-        <Text variant="subtitle" className="text-xl font-semibold mb-2">
-          Step 2
-        </Text>
-        <Text variant="title" className="text-4xl font-medium mb-2 text-left">
+        <Text className="text-xl font-semibold mb-2">Step 2</Text>
+        <Text className="text-4xl font-medium mb-2 text-left">
           Now let's enter the seller details
         </Text>
-        <Text
-          variant="body"
-          className="text-gray-600 text-lg text-left mb-10 text-gray-600"
-        >
-          In this step, you’ll add some of the amenities your place offers, plus
-          5 or more photos. Then you’ll create a title and description.
+        <Text className="text-gray-600 text-lg text-left mb-10">
+          In this step, you'll add some of the amenities your place offers, plus
+          5 or more photos. Then you'll create a title and description.
         </Text>
       </div>
 
       {/* Right Side */}
-      <div className=" w-1/2 md:w-1/2 p-8">
+      <div className="w-1/2 md:w-1/2 p-8">
         <video
           data-testid="video-player"
           autoPlay

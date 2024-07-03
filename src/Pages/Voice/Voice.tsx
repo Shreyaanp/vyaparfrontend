@@ -1,8 +1,17 @@
+// @ts-nocheck
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./Voice.css";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/common/Loader";
+
+// Extend the Window interface to include SpeechRecognition and webkitSpeechRecognition
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 
 const API_KEY =
   "sk0Y4-IrxVJSOmP2V7umwEeUnxyWqCbvHSK4LzLRaAQ7yz4-_p6Mez3WTjD8-Bl0";
@@ -34,7 +43,7 @@ const QUESTIONS: string[] = [
   "What are the product variations?",
 ];
 
-const aiUrl = import.meta.env.VITE_BASE_AI_API;
+const aiUrl = (import.meta as any).env.VITE_BASE_AI_API;
 
 const postData = async (productTitle: string) => {
   try {
@@ -63,14 +72,14 @@ const postData = async (productTitle: string) => {
   }
 };
 
-function Voice() {
+const Voice: React.FC = () => {
   const [questionsHistory, setQuestionsHistory] = useState<string[]>([]);
   const [responsesHistory, setResponsesHistory] = useState<string[]>([]);
-  const [language, setLanguage] = useState("");
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
+  const [language, setLanguage] = useState<string>("");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(-1);
   const [responses, setResponses] = useState<string[]>([]);
-  const [isRecording, setIsRecording] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [nextAudio, setNextAudio] = useState<HTMLAudioElement | null>(null);
@@ -240,45 +249,36 @@ function Voice() {
   };
 
   const handleNext = async () => {
-    // Pause any currently playing audio
     if (audioRef.current) {
       audioRef.current.pause();
     }
 
-    // Stop recording if it's ongoing
     if (isRecording) {
       stopRecording();
     }
 
-    // Add the current question and its response to history
     if (currentQuestionIndex >= 0 && responses[currentQuestionIndex]) {
       setQuestionsHistory((prev) => [...prev, QUESTIONS[currentQuestionIndex]]);
       setResponsesHistory((prev) => [...prev, responses[currentQuestionIndex]]);
     }
 
-    // Check if there's a next question to proceed to
     if (currentQuestionIndex < QUESTIONS.length - 1) {
       const nextIndex = currentQuestionIndex + 1;
-      // Update the current question index
       setCurrentQuestionIndex(nextIndex);
 
-      // Handle audio playback for the next question if available
       if (nextAudio) {
         audioRef.current = nextAudio;
         audioRef.current.play();
 
-        // Preload the subsequent question's audio if available
         if (nextIndex < QUESTIONS.length - 1) {
           preloadNextQuestion(nextIndex + 1);
         }
       } else {
-        // If no audio, directly proceed to asking the next question
         askQuestion(nextIndex);
       }
     } else {
-      // If it's the end of questions, log collected data
       console.log("Collected Data:", JSON.stringify(responses));
-      const productTitle = responses[5]; // Assuming the product title is at index 5
+      const productTitle = responses[5];
       setLoading(true);
       try {
         const response = await postData(productTitle);
@@ -304,7 +304,8 @@ function Voice() {
 
   const startRecording = () => {
     setIsRecording(true);
-    const recognition = new window.webkitSpeechRecognition();
+    const recognition = new (window.SpeechRecognition ||
+      window.webkitSpeechRecognition)();
     recognition.lang = language;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
@@ -334,7 +335,7 @@ function Voice() {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center bg-[#FDE7A8] ">
+    <div className="h-screen flex justify-center items-center bg-[#FDE7A8]">
       {loading ? (
         <Loader />
       ) : (
@@ -349,7 +350,6 @@ function Voice() {
                 </div>
               ) : (
                 <>
-                  {/* Render questions and responses history */}
                   {questionsHistory.map((question, index) => (
                     <div
                       key={`history-question-${index}`}
@@ -364,7 +364,6 @@ function Voice() {
                     </div>
                   ))}
 
-                  {/* Render current question and response */}
                   {currentQuestionIndex < QUESTIONS.length && (
                     <div className="chat-message">
                       <div className="chat-question">
@@ -402,7 +401,6 @@ function Voice() {
           </div>
 
           <div className="w-1/3 ml-4 flex flex-col justify-between">
-            {/* Select Language */}
             <div className="flex items-center mb-4">
               <label className="mr-2">Select Language:</label>
               <select
@@ -434,6 +432,6 @@ function Voice() {
       )}
     </div>
   );
-}
+};
 
 export default Voice;

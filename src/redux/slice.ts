@@ -1,26 +1,26 @@
-
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInfoState, SellerDetails, ProductDetails } from './type';
+// @ts-nocheck
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserInfoState, SellerDetails, ProductDetails } from "./type";
 
 const initialState: UserInfoState = {
-  language: '',
+  language: "",
   sellerDetails: {
-    name: '',
-    state: '',
-    language: '',
-    category: '',
+    name: "",
+    state: "",
+    language: "",
+    category: "",
   },
   productDetails: {
-    title: '',
+    title: "",
     pricing: 0,
-    description: '',
+    description: "",
     variations: [],
     images: [],
   },
 };
 
 const userInfoSlice = createSlice({
-  name: 'userInfo',
+  name: "userInfo",
   initialState,
   reducers: {
     setLanguage: (state, action: PayloadAction<string>) => {
@@ -35,6 +35,7 @@ const userInfoSlice = createSlice({
   },
 });
 
-export const { setLanguage, setSellerDetails, setProductDetails } = userInfoSlice.actions;
+export const { setLanguage, setSellerDetails, setProductDetails } =
+  userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

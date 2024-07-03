@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, DragEvent, ChangeEvent } from "react";
 import photos from "../../assets/Icons/photos.svg";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 
-const Step6 = ({ lang }) => {
-  const [images, setImages] = useState([]);
+interface Step6Props {
+  lang: string;
+}
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
+const Step6: React.FC<Step6Props> = ({ lang }) => {
+  const [images, setImages] = useState<string[]>([]);
+
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setImages(imageUrls);
   };
 
-  const handleDrop = (event) => {
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setImages([...images, ...imageUrls]);
   };
 
-  const handleDragOver = (event) => {
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
 
@@ -81,10 +85,6 @@ const Step6 = ({ lang }) => {
             </>
           )}
         </div>
-
-        <Text className="mt-2 text-sm text-gray-600">
-          {images.length} / 5 {Labels[lang].step6.txt4}
-        </Text>
       </div>
     </div>
   );

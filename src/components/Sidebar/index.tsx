@@ -4,7 +4,6 @@ import Text from "../../Bhasini/Text";
 
 import SidebarLinkGroup from "./SidebarLinkGroup";
 
-import Home from "../../assets/Sidebar/home.svg";
 import Player from "../../assets/Sidebar/player.svg";
 import Upload from "../../assets/Sidebar/upload.svg";
 import settings from "../../assets/Sidebar/Setting.svg";
@@ -302,16 +301,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </div>
               <div className="mt-0 ml-3">
                 <Text className="text-xs text-[#7C8DB5]">
-                  Legal ⁃ Privacy ⁃ Cookie Policy ⁃ Cookie
+                  Legal - Privacy - Cookie Policy - Cookie
                 </Text>
                 <Text className="text-xs text-[#7C8DB5]">
-                  Blog Manage ⁃ Imprint Resource Chart
-                </Text>
-                <Text className="text-xs text-[#7C8DB5]">
-                  <span className="text-blue-400">
-                    <Text>Language : </Text>
-                  </span>{" "}
-                  <Text>English (US)</Text>
+                  Blog Manage - Imprint Resource Chart
                 </Text>
               </div>
             </ul>

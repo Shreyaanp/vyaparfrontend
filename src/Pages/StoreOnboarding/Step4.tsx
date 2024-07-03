@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "./Step4.css";
-
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 
-const indianStates = [
+const indianStates: string[] = [
   "Andhra Pradesh",
   "Arunachal Pradesh",
   "Assam",
@@ -43,16 +42,20 @@ const indianStates = [
   "Jammu and Kashmir",
 ];
 
-const Step4 = ({ lang }) => {
-  const [flat, setFlat] = useState("");
-  const [street, setStreet] = useState("");
-  const [landmark, setLandmark] = useState("");
-  const [district, setDistrict] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [pinCode, setPinCode] = useState("");
+interface Step4Props {
+  lang: string;
+}
 
-  const handleSubmit = (event) => {
+const Step4: React.FC<Step4Props> = ({ lang }) => {
+  const [flat, setFlat] = useState<string>("");
+  const [street, setStreet] = useState<string>("");
+  const [landmark, setLandmark] = useState<string>("");
+  const [district, setDistrict] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [pinCode, setPinCode] = useState<string>("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const addressData = {
       flat,
@@ -68,7 +71,7 @@ const Step4 = ({ lang }) => {
   };
 
   return (
-    <div className="flex-grow flex flex-col justify-center items-center ">
+    <div className="flex-grow flex flex-col justify-center items-center">
       <div className="w-[38rem]">
         <Text className="text-4xl font-medium mb-2 text-left font-lato text-black-500">
           {Labels[lang].step4.heading}
@@ -78,7 +81,7 @@ const Step4 = ({ lang }) => {
         </Text>
       </div>
       <form className="w-[38rem]" onSubmit={handleSubmit}>
-        <div className=" ">
+        <div>
           <select
             value={state}
             onChange={(e) => setState(e.target.value)}
@@ -91,7 +94,7 @@ const Step4 = ({ lang }) => {
             ))}
           </select>
         </div>
-        <div className=" ">
+        <div>
           <input
             type="text"
             placeholder={Labels[lang].step4.flatHouse}
@@ -145,6 +148,9 @@ const Step4 = ({ lang }) => {
             className="custom-input-style bottom"
           />
         </div>
+        <button type="submit" className="custom-submit-button">
+          Submit
+        </button>
       </form>
     </div>
   );

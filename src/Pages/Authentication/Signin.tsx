@@ -48,8 +48,8 @@ const SignIn: React.FC = () => {
 
   return (
     <div
-      style={{ backgroundColor: "transparent", height: "100vh" }}
-      className="rounded-sm border border-stroke bg-[#FFDB75] shadow-default"
+      style={{ backgroundColor: "#FDE7A8", height: "100vh" }}
+      className="rounded-sm border border-stroke  shadow-default"
     >
       <div style={{ height: "100vh" }} className="flex flex-wrap items-center">
         <div className="hidden w-full xl:block xl:w-1/2">
@@ -99,17 +99,19 @@ const SignIn: React.FC = () => {
 
         <div
           style={{
-            backgroundColor: "white",
             height: "100vh",
             justifyContent: "center",
             alignItems: "center",
             paddingTop: 50,
+            paddingLeft: "3rem",
+            paddingRight: "3rem",
+            backgroundColor: "white",
           }}
-          className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2"
+          className="w-full  border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2"
         >
-          <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+          <div className="w-full p-4 px-8 sm:p-12.5 xl:p-17.5">
             <span className="mb-1.5 block font-medium">Start for free</span>
-            <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+            <h2 className="mb-9 text-4xl font-bold text-black dark:text-white sm:text-title-xl2">
               Sign In to Vyapar Launchpad
             </h2>
 

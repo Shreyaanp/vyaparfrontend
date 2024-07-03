@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useState, ReactNode, useEffect } from "react";
 
 interface User {
   id: string;
@@ -26,7 +26,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const cachedUser = localStorage.getItem('user');
+    const cachedUser = localStorage.getItem("user");
     if (cachedUser) {
       setUser(JSON.parse(cachedUser));
       setLoading(false);
@@ -34,7 +34,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ loading, setLoading, user, setUser, isEditing, setIsEditing }}>
+    <AppContext.Provider
+      value={{ loading, setLoading, user, setUser, isEditing, setIsEditing }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "./Step4.css";
-
-import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 
 const BankDetails = ({ lang }) => {
@@ -21,7 +19,8 @@ const BankDetails = ({ lang }) => {
           Enter Bank Details to get started with Vyapar Launchpad
         </Text>
         <Text className="text-lg text-left mb-10 text-gray-600">
-          {Labels[lang].step4.desc}
+          Your address is only shared with guests after they've made a
+          reservation.
         </Text>
       </div>
       <form className="w-[38rem]" onSubmit={handleSubmit}>

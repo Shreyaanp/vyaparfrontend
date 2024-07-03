@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 
-const Step5 = ({ lang }) => {
-  const [title, setTitle] = useState("");
+interface Step5Props {
+  lang: string;
+}
 
-  const handleTitleChange = (event) => {
+const Step5: React.FC<Step5Props> = ({ lang }) => {
+  const [title, setTitle] = useState<string>("");
+
+  const handleTitleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value.length <= 32) {
       setTitle(event.target.value);
     }
@@ -15,7 +19,7 @@ const Step5 = ({ lang }) => {
     <div className="flex-grow flex flex-col justify-center items-center">
       <div className="mt-[-20px]">
         <Text className="text-4xl font-medium mb-2 text-left font-lato">
-          {Labels[lang].step5.heading}
+          {Labels[lang].step5.heading[0]}
         </Text>
         <Text className="text-lg text-left mb-10 text-gray-600">
           {Labels[lang].step5.desc}
@@ -26,9 +30,9 @@ const Step5 = ({ lang }) => {
           onChange={handleTitleChange}
           placeholder={Labels[lang].step5.placeHolder}
         ></textarea>
-        <Text className="text-sm text-gray-600 mt-[-10px]">
-          {title.length}/32
-        </Text>
+        {/* <Text className="text-sm text-gray-600 mt-[-10px]">
+          {title.length.toString()}/32
+        </Text> */}
       </div>
     </div>
   );

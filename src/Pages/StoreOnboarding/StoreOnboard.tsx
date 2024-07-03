@@ -32,10 +32,10 @@ const StoreOnboarding: React.FC = () => {
       {step === 4 && <Step4 lang={lang} />}
       {step === 5 && <Step5 lang={lang} />}
       {step === 6 && <Step6 lang={lang} />}
-      {step === 7 && <Step7 lang={lang} />}
+      {step === 7 && <Step7 />}
       {step === 8 && <Step8 lang={lang} />}
       {step === 9 && <Step9 lang={lang} />}
-      {step === 10 && <Step10 lang={lang} />}
+      {step === 10 && <Step10 />}
       {step === 11 && <BankDetails lang={lang} />}
       {step === 12 && <CancelledCheck lang={lang} />}
       {step === 13 && <Success />}

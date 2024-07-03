@@ -258,7 +258,7 @@ const ProductPage = () => {
                     className="text-[#263238] text-2xl font-semibold mt-1"
                     style={{ fontFamily: "poppins" }}
                   >
-                    <Text>₹ {productData.pricing}</Text>
+                    <Text>{"₹" + productData.pricing}</Text>
                   </p>
                 )}
               </div>

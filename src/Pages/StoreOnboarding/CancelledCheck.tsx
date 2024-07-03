@@ -1,25 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, DragEvent, ChangeEvent } from "react";
 import photos from "../../assets/Icons/photos.svg";
-import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 
-const CancelledCheck = ({ lang }) => {
-  const [images, setImages] = useState([]);
+interface CancelledCheckProps {
+  lang: string;
+}
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
+const CancelledCheck: React.FC<CancelledCheckProps> = ({ lang }) => {
+  const [images, setImages] = useState<string[]>([]);
+
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setImages(imageUrls);
   };
 
-  const handleDrop = (event) => {
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setImages([...images, ...imageUrls]);
   };
 
-  const handleDragOver = (event) => {
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
 
@@ -74,7 +77,7 @@ const CancelledCheck = ({ lang }) => {
                 </Text>
 
                 <Text className="text-black underline cursor-pointer m-0 p-0">
-                  {Labels[lang].step6.txt3}
+                  Upload from your device
                 </Text>
               </label>
             </>
