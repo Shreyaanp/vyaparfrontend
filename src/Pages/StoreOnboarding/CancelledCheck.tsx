@@ -1,28 +1,47 @@
-import React, { useState, DragEvent, ChangeEvent } from "react";
+import React, { useState, useContext } from "react";
 import photos from "../../assets/Icons/photos.svg";
+import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
+import { AppContext } from "../../AppContext";
 
-interface CancelledCheckProps {
-  lang: string;
-}
+const CancelledCheck = ({ lang }) => {
+  const [images, setImages] = useState([]);
+  const { storeData, setStoreData } = useContext(AppContext);
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setImages([imageUrl]);
 
-const CancelledCheck: React.FC<CancelledCheckProps> = ({ lang }) => {
-  const [images, setImages] = useState<string[]>([]);
+    const formData = new FormData();
+    formData.append("file", file);
 
-  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setImages(imageUrls);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_API}upload/s3`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok && data.s3_link) {
+        setStoreData((prevData) => ({
+          ...prevData,
+          cancelledCheque: data.s3_link,
+        }));
+      } else {
+        console.error("Failed to upload image:", data);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   };
 
-  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event) => {
     event.preventDefault();
-    const files = Array.from(event.dataTransfer.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setImages([...images, ...imageUrls]);
+    const file = event.dataTransfer.files[0];
+    handleImageUpload({ target: { files: [file] } });
   };
 
-  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event) => {
     event.preventDefault();
   };
 
@@ -57,7 +76,6 @@ const CancelledCheck: React.FC<CancelledCheckProps> = ({ lang }) => {
             <>
               <input
                 type="file"
-                multiple
                 accept="image/*"
                 onChange={handleImageUpload}
                 className="hidden"
@@ -75,9 +93,8 @@ const CancelledCheck: React.FC<CancelledCheckProps> = ({ lang }) => {
                 <Text className="text-xl font-bold m-0 p-0">
                   Drag your photos here
                 </Text>
-
                 <Text className="text-black underline cursor-pointer m-0 p-0">
-                  Upload from your device
+                  {Labels[lang].step6.txt3}
                 </Text>
               </label>
             </>

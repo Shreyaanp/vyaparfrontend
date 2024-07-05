@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import QRCode from "qrcode.react";
-import "./navBar.css";
+import '../ProductOnboarding/navBar.css'
 import User from "../../assets/Icons/personOutline.svg";
 import search from "../../assets/Icons/searchOutline.svg";
 import CopyButton from "../../assets/Icons/copyButton.svg";
@@ -28,7 +28,7 @@ const CopyBtn = () => {
   );
 };
 
-const ProductPage = () => {
+const LivePage = () => {
   const { state } = useLocation();
   const superData = state?.productData || {
     inputLanguage: "",
@@ -612,4 +612,4 @@ const styles = {
   },
 };
 
-export default ProductPage;
+export default LivePage;

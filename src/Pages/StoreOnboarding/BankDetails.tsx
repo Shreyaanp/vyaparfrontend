@@ -1,15 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Step4.css";
+import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
+import { AppContext } from "../../AppContext";
 
 const BankDetails = ({ lang }) => {
   const [name, setName] = useState("");
   const [accountNum, setAccountNum] = useState("");
   const [bankName, setBankName] = useState("");
   const [ifsc, setIfscCode] = useState("");
+  const { storeData, setStoreData } = useContext(AppContext);
+  const handleInputChange = (field, value) => {
+    switch (field) {
+      case "name":
+        setName(value);
+        break;
+      case "accountNum":
+        setAccountNum(value);
+        break;
+      case "bankName":
+        setBankName(value);
+        break;
+      case "ifsc":
+        setIfscCode(value);
+        break;
+      default:
+        break;
+    }
+    setStoreData((prevData) => ({
+      ...prevData,
+      bankDetails: {
+        ...prevData.bankDetails,
+        [field]: value,
+      },
+    }));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // Handle form submission if needed
   };
 
   return (
@@ -19,16 +48,15 @@ const BankDetails = ({ lang }) => {
           Enter Bank Details to get started with Vyapar Launchpad
         </Text>
         <Text className="text-lg text-left mb-10 text-gray-600">
-          Your address is only shared with guests after they've made a
-          reservation.
+          {Labels[lang].step4.desc}
         </Text>
       </div>
-      <form className="w-[38rem]" onSubmit={handleSubmit}>
+      <div className="w-[38rem]">
         <input
           type="text"
           placeholder={"Account Holder Name"}
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => handleInputChange("name", e.target.value)}
           className="custom-name-style "
         />
 
@@ -36,7 +64,7 @@ const BankDetails = ({ lang }) => {
           type="text"
           placeholder={"Account Number"}
           value={accountNum}
-          onChange={(e) => setAccountNum(e.target.value)}
+          onChange={(e) => handleInputChange("accountNum", e.target.value)}
           className="custom-input-style top "
         />
 
@@ -44,7 +72,7 @@ const BankDetails = ({ lang }) => {
           type="text"
           placeholder={"Bank Name"}
           value={bankName}
-          onChange={(e) => setBankName(e.target.value)}
+          onChange={(e) => handleInputChange("bankName", e.target.value)}
           className="custom-input-style "
         />
 
@@ -53,11 +81,11 @@ const BankDetails = ({ lang }) => {
             type="text"
             placeholder={"IFSC code"}
             value={ifsc}
-            onChange={(e) => setIfscCode(e.target.value)}
+            onChange={(e) => handleInputChange("ifsc", e.target.value)}
             className="custom-input-style bottom "
           />
         </div>
-      </form>
+      </div>
     </div>
   );
 };

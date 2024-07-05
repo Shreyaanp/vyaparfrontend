@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Step4.css";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
+import { AppContext } from "../../AppContext";
 
-const indianStates: string[] = [
+const indianStates = [
   "Andhra Pradesh",
   "Arunachal Pradesh",
   "Assam",
@@ -42,36 +43,21 @@ const indianStates: string[] = [
   "Jammu and Kashmir",
 ];
 
-interface Step4Props {
-  lang: string;
-}
-
-const Step4: React.FC<Step4Props> = ({ lang }) => {
-  const [flat, setFlat] = useState<string>("");
-  const [street, setStreet] = useState<string>("");
-  const [landmark, setLandmark] = useState<string>("");
-  const [district, setDistrict] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
-  const [pinCode, setPinCode] = useState<string>("");
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const addressData = {
-      flat,
-      street,
-      landmark,
-      district,
-      city,
-      state,
-      pinCode,
-    };
-    console.log(addressData);
-    // Handle the form data as needed
+const Step4 = ({ lang }) => {
+  const { storeData, setStoreData } = useContext(AppContext);
+  
+  const handleInputChange = (field, value) => {
+    setStoreData((prevData) => ({
+      ...prevData,
+      Shopaddress: {
+        ...prevData.Shopaddress,
+        [field]: value,
+      },
+    }));
   };
 
   return (
-    <div className="flex-grow flex flex-col justify-center items-center">
+    <div className="flex-grow flex flex-col justify-center items-center ">
       <div className="w-[38rem]">
         <Text className="text-4xl font-medium mb-2 text-left font-lato text-black-500">
           {Labels[lang].step4.heading}
@@ -80,11 +66,11 @@ const Step4: React.FC<Step4Props> = ({ lang }) => {
           {Labels[lang].step4.desc}
         </Text>
       </div>
-      <form className="w-[38rem]" onSubmit={handleSubmit}>
-        <div>
+      <div className="w-[38rem]">
+        <div className=" ">
           <select
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            value={storeData?.Shopaddress?.state || ""}
+            onChange={(e) => handleInputChange("state", e.target.value)}
             className="custom-dropdown-style"
           >
             {indianStates.map((state) => (
@@ -94,12 +80,12 @@ const Step4: React.FC<Step4Props> = ({ lang }) => {
             ))}
           </select>
         </div>
-        <div>
+        <div className=" ">
           <input
             type="text"
             placeholder={Labels[lang].step4.flatHouse}
-            value={flat}
-            onChange={(e) => setFlat(e.target.value)}
+            value={storeData?.Shopaddress?.flat || ""}
+            onChange={(e) => handleInputChange("flat", e.target.value)}
             className="custom-input-style top"
           />
         </div>
@@ -107,8 +93,8 @@ const Step4: React.FC<Step4Props> = ({ lang }) => {
           <input
             type="text"
             placeholder={Labels[lang].step4.street}
-            value={street}
-            onChange={(e) => setStreet(e.target.value)}
+            value={storeData?.Shopaddress?.street || ""}
+            onChange={(e) => handleInputChange("street", e.target.value)}
             className="custom-input-style"
           />
         </div>
@@ -116,8 +102,8 @@ const Step4: React.FC<Step4Props> = ({ lang }) => {
           <input
             type="text"
             placeholder={Labels[lang].step4.landmark}
-            value={landmark}
-            onChange={(e) => setLandmark(e.target.value)}
+            value={storeData?.Shopaddress?.landmark || ""}
+            onChange={(e) => handleInputChange("landmark", e.target.value)}
             className="custom-input-style"
           />
         </div>
@@ -125,8 +111,8 @@ const Step4: React.FC<Step4Props> = ({ lang }) => {
           <input
             type="text"
             placeholder={Labels[lang].step4.district}
-            value={district}
-            onChange={(e) => setDistrict(e.target.value)}
+            value={storeData?.Shopaddress?.district || ""}
+            onChange={(e) => handleInputChange("district", e.target.value)}
             className="custom-input-style"
           />
         </div>
@@ -134,8 +120,8 @@ const Step4: React.FC<Step4Props> = ({ lang }) => {
           <input
             type="text"
             placeholder={Labels[lang].step4.city}
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
+            value={storeData?.Shopaddress?.city || ""}
+            onChange={(e) => handleInputChange("city", e.target.value)}
             className="custom-input-style"
           />
         </div>
@@ -143,15 +129,12 @@ const Step4: React.FC<Step4Props> = ({ lang }) => {
           <input
             type="text"
             placeholder={Labels[lang].step4.pinCode}
-            value={pinCode}
-            onChange={(e) => setPinCode(e.target.value)}
+            value={storeData?.Shopaddress?.pinCode || ""}
+            onChange={(e) => handleInputChange("pinCode", e.target.value)}
             className="custom-input-style bottom"
           />
         </div>
-        <button type="submit" className="custom-submit-button">
-          Submit
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

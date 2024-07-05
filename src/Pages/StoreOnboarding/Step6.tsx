@@ -1,29 +1,50 @@
-import React, { useState, DragEvent, ChangeEvent } from "react";
+import React, { useState, useContext } from "react";
 import photos from "../../assets/Icons/photos.svg";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
+import { AppContext } from "../../AppContext";
 
-interface Step6Props {
-  lang: string;
-}
+const Step6 = ({ lang }) => {
+  const [images, setImages] = useState([]);
+  const { storeData, setStoreData } = useContext(AppContext);
 
-const Step6: React.FC<Step6Props> = ({ lang }) => {
-  const [images, setImages] = useState<string[]>([]);
-
-  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setImages(imageUrls);
-  };
-
-  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const files = Array.from(event.dataTransfer.files);
+  const handleImageUpload = async (event) => {
+    const files = Array.from(event.target.files);
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setImages([...images, ...imageUrls]);
+
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_API}upload/s3/multiple`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok && data.s3_links) {
+        setStoreData((prevData) => ({
+          ...prevData,
+          storeImage: data.s3_links,
+        }));
+      } else {
+        console.error("Failed to upload images:", data);
+      }
+    } catch (error) {
+      console.error("Error uploading images:", error);
+    }
   };
 
-  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    handleImageUpload({ target: { files } });
+  };
+
+  const handleDragOver = (event) => {
     event.preventDefault();
   };
 
@@ -85,6 +106,10 @@ const Step6: React.FC<Step6Props> = ({ lang }) => {
             </>
           )}
         </div>
+
+        <Text className="mt-2 text-sm text-gray-600">
+          {images.length} / 5 {Labels[lang].step6.txt4}
+        </Text>
       </div>
     </div>
   );

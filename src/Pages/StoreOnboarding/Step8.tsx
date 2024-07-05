@@ -1,33 +1,54 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, useContext } from "react";
 import "./Step4.css";
-
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
+import { AppContext } from "../../AppContext";
 
-interface Step8Props {
-  lang: string;
-}
+const Step8 = ({ lang }) => {
+  const [name, setName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [aadhar, setAadhar] = useState("");
+  const [pan, setPan] = useState("");
+  const [fassai, setFassai] = useState("");
+  const [gst, setGST] = useState("");
+  const { storeData, setStoreData } = useContext(AppContext);
 
-const Step8: React.FC<Step8Props> = ({ lang }) => {
-  const [name, setName] = useState<string>("");
-  const [companyName, setCompanyName] = useState<string>("");
-  const [aadhar, setAadhar] = useState<string>("");
-  const [pan, setPan] = useState<string>("");
-  const [fassai, setFassai] = useState<string>("");
-  const [gst, setGST] = useState<string>("");
+  const handleInputChange = (field, value) => {
+    switch (field) {
+      case "name":
+        setName(value);
+        break;
+      case "companyName":
+        setCompanyName(value);
+        break;
+      case "aadhar":
+        setAadhar(value);
+        break;
+      case "pan":
+        setPan(value);
+        break;
+      case "fassai":
+        setFassai(value);
+        break;
+      case "gst":
+        setGST(value);
+        break;
+      default:
+        break;
+    }
 
-  const handleInputChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) =>
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setter(event.target.value);
-    };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    setStoreData((prevData) => ({
+      ...prevData,
+      sellerInformation: {
+        ...prevData.sellerInformation,
+        [field]: value,
+      },
+    }));
   };
 
+
   return (
-    <div className="flex-grow flex flex-col justify-center items-center">
+    <div className="flex-grow flex flex-col justify-center items-center ">
       <div className="w-[38rem]">
         <Text className="text-4xl font-medium mb-2 text-left font-lato text-black-500">
           {Labels[lang].step4.heading}
@@ -36,57 +57,57 @@ const Step8: React.FC<Step8Props> = ({ lang }) => {
           {Labels[lang].step4.desc}
         </Text>
       </div>
-      <form className="w-[38rem]" onSubmit={handleSubmit}>
+      <div className="w-[38rem]">
         <input
           type="text"
-          placeholder="Enter your Name"
+          placeholder={"Enter your Name"}
           value={name}
-          onChange={handleInputChange(setName)}
-          className="custom-name-style"
+          onChange={(e) => handleInputChange("name", e.target.value)}
+          className="custom-name-style "
         />
 
         <input
           type="text"
-          placeholder="Enter Company Name"
+          placeholder={"Enter Company Name"}
           value={companyName}
-          onChange={handleInputChange(setCompanyName)}
-          className="custom-input-style top"
+          onChange={(e) => handleInputChange("companyName", e.target.value)}
+          className="custom-input-style top "
         />
 
         <input
           type="text"
-          placeholder="Enter Aadhar number"
+          placeholder={"Enter Aadhar number"}
           value={aadhar}
-          onChange={handleInputChange(setAadhar)}
-          className="custom-input-style"
+          onChange={(e) => handleInputChange("aadhar", e.target.value)}
+          className="custom-input-style "
         />
 
         <input
           type="text"
-          placeholder="Enter Pan card number"
+          placeholder={"Enter Pan card number"}
           value={pan}
-          onChange={handleInputChange(setPan)}
-          className="custom-input-style"
+          onChange={(e) => handleInputChange("pan", e.target.value)}
+          className="custom-input-style "
         />
 
         <input
           type="text"
-          placeholder="Enter GSTIN number"
+          placeholder={"Enter GSTIN number"}
           value={gst}
-          onChange={handleInputChange(setGST)}
-          className="custom-input-style"
+          onChange={(e) => handleInputChange("gst", e.target.value)}
+          className="custom-input-style "
         />
 
         <div className="step4inputbottom">
           <input
             type="text"
-            placeholder="Enter FASSAI License"
+            placeholder={"Enter FASSAI License"}
             value={fassai}
-            onChange={handleInputChange(setFassai)}
+            onChange={(e) => handleInputChange("fassai", e.target.value)}
             className="custom-input-style bottom"
           />
         </div>
-      </form>
+      </div>
     </div>
   );
 };

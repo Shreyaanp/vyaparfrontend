@@ -13,8 +13,7 @@ declare global {
   }
 }
 
-const API_KEY =
-  "sk0Y4-IrxVJSOmP2V7umwEeUnxyWqCbvHSK4LzLRaAQ7yz4-_p6Mez3WTjD8-Bl0";
+const API_KEY = "sk0Y4-IrxVJSOmP2V7umwEeUnxyWqCbvHSK4LzLRaAQ7yz4-_p6Mez3WTjD8-Bl0";
 const LANGUAGES = [
   { sourceLanguage: "bn", name: "Bengali" },
   { sourceLanguage: "en", name: "English" },
@@ -41,35 +40,67 @@ const QUESTIONS: string[] = [
   "What is the price of the product?",
   "What is the product description?",
   "What are the product variations?",
+  "Please upload the company logo.",
+  "Please upload the product images."
 ];
 
 const aiUrl = (import.meta as any).env.VITE_BASE_AI_API;
+const backendUrl = (import.meta as any).env.VITE_BASE_API;
+const photAiApiKey = "667bd78dc03bdd1cb404e7a0_3668c766b56f00a1de05_apyhitools";
+const photoroomApi = "sandbox_bf94ab81f439e8cc7c75b8e42607c85d9d4345d5";
 
-const postData = async (productTitle: string) => {
+const postData = async (productTitle: string, productDescription: string, productVariation: string, pricing: string) => {
   try {
     const response = await axios.post(
       `${aiUrl}process/`,
       {
         prompt: productTitle,
-        description: "Description",
-        variation: "Variation",
-        pricing: 2500,
+        description: productDescription,
+        variation: productVariation,
+        pricing: pricing,
       },
       {
         headers: {
           "Content-Type": "application/json",
-          "User-Agent": "PostmanRuntime/7.39.0",
-          Accept: "*/*",
-          "Accept-Encoding": "gzip, deflate, br",
-          Connection: "keep-alive",
         },
       }
     );
     return response.data;
   } catch (error) {
-    console.error("Error in postData:", error);
+    console.error("Error in postData:", error.response?.data || error.message);
     throw error;
   }
+};
+
+const changeBackgroundImages = async (imageUrls: string[], prompt: string) => {
+  const newImages = await Promise.all(
+    imageUrls.map(async (url) => {
+      try {
+        const apiUrl = `https://image-api.photoroom.com/v2/edit?background.prompt=${encodeURIComponent(
+          prompt
+        )}&maxHeight=500&maxWidth=500&imageUrl=${encodeURIComponent(url)}`;
+
+        const response = await axios.get(apiUrl, {
+          headers: {
+            "x-api-key": photoroomApi,
+          },
+          responseType: "arraybuffer",
+        });
+
+        // Convert binary data to base64
+        const base64Image = Buffer.from(response.data, "binary").toString(
+          "base64"
+        );
+        const imageUrl = `data:image/png;base64,${base64Image}`;
+
+        return imageUrl; // Return the base64 image URL
+      } catch (error) {
+        console.error("Error changing background image:", error);
+        return null;
+      }
+    })
+  );
+  return newImages.filter((img) => img !== null);
 };
 
 const Voice: React.FC = () => {
@@ -84,6 +115,8 @@ const Voice: React.FC = () => {
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [nextAudio, setNextAudio] = useState<HTMLAudioElement | null>(null);
   const navigate = useNavigate();
+  const [companyLogoFile, setCompanyLogoFile] = useState<File | null>(null);
+  const [productImageFiles, setProductImageFiles] = useState<File[]>([]);
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value);
@@ -124,8 +157,7 @@ const Voice: React.FC = () => {
         }
       );
 
-      const translatedText =
-        translationResponse.data.pipelineResponse[0].output[0].target;
+      const translatedText = translationResponse.data.pipelineResponse[0].output[0].target;
 
       const ttsResponse = await axios.post(
         "https://dhruva-api.bhashini.gov.in/services/inference/pipeline",
@@ -155,8 +187,7 @@ const Voice: React.FC = () => {
         }
       );
 
-      const audioContent =
-        ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
+      const audioContent = ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
       if (audioContent) {
         const audio = new Audio(`data:audio/wav;base64,${audioContent}`);
         audioRef.current = audio;
@@ -204,8 +235,7 @@ const Voice: React.FC = () => {
         }
       );
 
-      const translatedText =
-        translationResponse.data.pipelineResponse[0].output[0].target;
+      const translatedText = translationResponse.data.pipelineResponse[0].output[0].target;
 
       const ttsResponse = await axios.post(
         "https://dhruva-api.bhashini.gov.in/services/inference/pipeline",
@@ -235,8 +265,7 @@ const Voice: React.FC = () => {
         }
       );
 
-      const audioContent =
-        ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
+      const audioContent = ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
       if (audioContent) {
         const audio = new Audio(`data:audio/wav;base64,${audioContent}`);
         setNextAudio(audio);
@@ -279,18 +308,76 @@ const Voice: React.FC = () => {
     } else {
       console.log("Collected Data:", JSON.stringify(responses));
       const productTitle = responses[5];
+      const productDescription = responses[7];
+      const productVariation = responses[8];
+      const pricing = responses[6];
+
+      if (!productTitle || !productDescription || !productVariation || !pricing) {
+        console.error("Required data is missing.");
+        return;
+      }
+
+      // Upload the company logo
+      let companyLogoUrl = "";
+      if (companyLogoFile) {
+        const formData = new FormData();
+        formData.append("file", companyLogoFile);
+        try {
+          const response = await axios.post(`${backendUrl}upload/s3`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          companyLogoUrl = response.data.s3_link;
+        } catch (error) {
+          console.error("Error uploading company logo:", error);
+        }
+      }
+
+      // Upload product images
+      let productImageUrls = [];
+      if (productImageFiles.length > 0) {
+        const formData = new FormData();
+        productImageFiles.forEach((file) => {
+          formData.append("files", file);
+        });
+        try {
+          const response = await axios.post(`${backendUrl}upload/s3/multiple`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          productImageUrls = response.data.s3_links;
+        } catch (error) {
+          console.error("Error uploading product images:", error);
+        }
+      }
+
       setLoading(true);
       try {
-        const response = await postData(productTitle);
+        const response = await postData(productTitle, productDescription, productVariation, pricing);
         console.log("Post response:", response);
-        navigate("/ProductPage", {
+
+        // Process the images using PhotAi API
+        const prompt = `Please change the background of the input Image such that they are Ecommerce ready. The product is called ${productTitle}`;
+        const newImages = await changeBackgroundImages(productImageUrls, prompt);
+
+        navigate("/product-page", {
           state: {
             productData: {
+              inputLanguage: language,
+              shopName: responses[1],
+              sellerState: responses[2],
+              productLanguage: responses[3],
+              productCategory: responses[4],
               productTitle,
-              productDescription: "Description",
-              productVariation: "Variation",
-              pricing: 2500,
-              response: response,
+              pricing,
+              productDescription,
+              productVariation,
+              response: { ...response, newImages },
+              companyLogo: companyLogoUrl,
+              images: productImageUrls,
+              prompt,
             },
           },
         });
@@ -304,8 +391,7 @@ const Voice: React.FC = () => {
 
   const startRecording = () => {
     setIsRecording(true);
-    const recognition = new (window.SpeechRecognition ||
-      window.webkitSpeechRecognition)();
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = language;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
@@ -334,6 +420,18 @@ const Voice: React.FC = () => {
     }
   };
 
+  const handleCompanyLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCompanyLogoFile(e.target.files[0]);
+    }
+  };
+
+  const handleProductImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setProductImageFiles(Array.from(e.target.files));
+    }
+  };
+
   return (
     <div className="h-screen flex justify-center items-center bg-[#FDE7A8]">
       {loading ? (
@@ -351,10 +449,7 @@ const Voice: React.FC = () => {
               ) : (
                 <>
                   {questionsHistory.map((question, index) => (
-                    <div
-                      key={`history-question-${index}`}
-                      className="chat-message"
-                    >
+                    <div key={`history-question-${index}`} className="chat-message">
                       <div className="chat-question">
                         <p>{question}</p>
                       </div>
@@ -376,6 +471,28 @@ const Voice: React.FC = () => {
                       )}
                     </div>
                   )}
+
+                  {currentQuestionIndex === 9 && (
+                    <div className="chat-message">
+                      <div className="chat-question">
+                        <p>{QUESTIONS[9]}</p>
+                      </div>
+                      <div className="chat-response ml-4">
+                        <input type="file" accept="image/*" onChange={handleCompanyLogoChange} />
+                      </div>
+                    </div>
+                  )}
+
+                  {currentQuestionIndex === 10 && (
+                    <div className="chat-message">
+                      <div className="chat-question">
+                        <p>{QUESTIONS[10]}</p>
+                      </div>
+                      <div className="chat-response ml-4">
+                        <input type="file" accept="image/*" multiple onChange={handleProductImagesChange} />
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -383,16 +500,10 @@ const Voice: React.FC = () => {
             {currentQuestionIndex >= 0 && (
               <div className="chat-input mt-4">
                 <div className="flex">
-                  <button
-                    onClick={startRecording}
-                    className="bg-primary text-white px-4 py-2 rounded mr-2"
-                  >
+                  <button onClick={startRecording} className="bg-primary text-white px-4 py-2 rounded mr-2">
                     Record
                   </button>
-                  <button
-                    onClick={handleNext}
-                    className="bg-secondary text-white px-4 py-2 rounded"
-                  >
+                  <button onClick={handleNext} className="bg-secondary text-white px-4 py-2 rounded">
                     Next
                   </button>
                 </div>
@@ -419,9 +530,7 @@ const Voice: React.FC = () => {
                 onClick={startConversation}
                 disabled={!language}
                 className={`bg-primary text-white px-4 py-1 rounded ${
-                  !language
-                    ? "disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    : "hover:bg-blue-700 hover:cursor-pointer"
+                  !language ? "disabled:bg-gray-400 disabled:cursor-not-allowed" : "hover:bg-blue-700 hover:cursor-pointer"
                 }`}
               >
                 Start

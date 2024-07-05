@@ -16,6 +16,7 @@ import Voice from "./Pages/Voice/Voice";
 import MyStore from "./Pages/MyStore/MyStore";
 import Inventory from "./Pages/Inventory/Inventory";
 import DefaultLayout from "./layout/DefaultLayout";
+import LivePage from "./Pages/LivePage/LivePage";
 
 const apiUrl = (import.meta as any).env.VITE_BASE_API;
 
@@ -132,6 +133,15 @@ function App() {
             <>
               <PageTitle title="Vyapar Launchpad" />
               <StoreOnboarding />
+            </>
+          }
+        />
+        <Route
+          path="/live"
+          element={
+            <>
+              <PageTitle title="Vyapar Launchpad" />
+              <LivePage />
             </>
           }
         />

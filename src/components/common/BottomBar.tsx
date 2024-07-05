@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AppContext } from "../../AppContext";
 
 interface BottomBarProps {
   step: number;
@@ -8,6 +10,8 @@ interface BottomBarProps {
 
 const BottomBar: React.FC<BottomBarProps> = ({ step, setStep }) => {
   const navigate = useNavigate();
+  const { user, storeData, setStoreData } = useContext(AppContext);
+
   const label = (step: number) => {
     if (step === 1) {
       return "Get Started";
@@ -18,24 +22,30 @@ const BottomBar: React.FC<BottomBarProps> = ({ step, setStep }) => {
     }
   };
 
-  const handleOnClick = (step: number) => {
-    // console.log("this is step:", step);
-    console.log("step", step);
-    if (step == 13) {
-      navigate("/dashboard");
+  const handleOnClick = async (step: number) => {
+    if (step === 13) {
+      // Include user ID in storeData
+      const updatedStoreData = { ...storeData, user_id: user?.id };
+      console.log("storeDataActual", updatedStoreData);
+
+      try {
+        await axios.post(`${(import.meta as any).env.VITE_BASE_API}store`, updatedStoreData);
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Error submitting store data:", error);
+      }
     } else {
       setStep(step + 1);
     }
   };
+
   return (
     <div
       className={`
         ${/*fixed bottom-0 bg-[#f6f6f6]*/ ""} 
-
         flex w-full
         border-t-[1px] border-[#ebebeb]
          ${step !== 1 ? "justify-between" : "justify-end"} 
-          
           py-4 px-8`}
     >
       <button
