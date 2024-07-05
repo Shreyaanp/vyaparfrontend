@@ -9,9 +9,10 @@ const Navbar: React.FC = () => {
         Vya<span className="text-[#FCBD01]">par</span> Launch
         <span className="text-[#FCBD01]">pad</span>
       </div>
-      <button 
-      onClick={() => navigate("/")}
-      className="px-4 py-2 bg-gray-200 rounded-full text-gray-700">
+      <button
+        onClick={() => navigate("/dashboard")}
+        className="px-4 py-2 bg-gray-200 rounded-full text-gray-700"
+      >
         Exit
       </button>
     </nav>

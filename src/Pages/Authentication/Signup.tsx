@@ -82,7 +82,7 @@ const SignUp: React.FC = () => {
         </h2>
         <p className="mb-4">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-500">
+          <a href="/signin" className="text-blue-500">
             Log in
           </a>
         </p>

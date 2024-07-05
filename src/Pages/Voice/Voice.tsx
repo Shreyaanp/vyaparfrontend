@@ -13,7 +13,8 @@ declare global {
   }
 }
 
-const API_KEY = "sk0Y4-IrxVJSOmP2V7umwEeUnxyWqCbvHSK4LzLRaAQ7yz4-_p6Mez3WTjD8-Bl0";
+const API_KEY =
+  "sk0Y4-IrxVJSOmP2V7umwEeUnxyWqCbvHSK4LzLRaAQ7yz4-_p6Mez3WTjD8-Bl0";
 const LANGUAGES = [
   { sourceLanguage: "bn", name: "Bengali" },
   { sourceLanguage: "en", name: "English" },
@@ -41,7 +42,7 @@ const QUESTIONS: string[] = [
   "What is the product description?",
   "What are the product variations?",
   "Please upload the company logo.",
-  "Please upload the product images."
+  "Please upload the product images.",
 ];
 
 const aiUrl = (import.meta as any).env.VITE_BASE_AI_API;
@@ -49,7 +50,12 @@ const backendUrl = (import.meta as any).env.VITE_BASE_API;
 const photAiApiKey = "667bd78dc03bdd1cb404e7a0_3668c766b56f00a1de05_apyhitools";
 const photoroomApi = "sandbox_bf94ab81f439e8cc7c75b8e42607c85d9d4345d5";
 
-const postData = async (productTitle: string, productDescription: string, productVariation: string, pricing: string) => {
+const postData = async (
+  productTitle: string,
+  productDescription: string,
+  productVariation: string,
+  pricing: string
+) => {
   try {
     const response = await axios.post(
       `${aiUrl}process/`,
@@ -157,7 +163,8 @@ const Voice: React.FC = () => {
         }
       );
 
-      const translatedText = translationResponse.data.pipelineResponse[0].output[0].target;
+      const translatedText =
+        translationResponse.data.pipelineResponse[0].output[0].target;
 
       const ttsResponse = await axios.post(
         "https://dhruva-api.bhashini.gov.in/services/inference/pipeline",
@@ -187,7 +194,8 @@ const Voice: React.FC = () => {
         }
       );
 
-      const audioContent = ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
+      const audioContent =
+        ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
       if (audioContent) {
         const audio = new Audio(`data:audio/wav;base64,${audioContent}`);
         audioRef.current = audio;
@@ -235,7 +243,8 @@ const Voice: React.FC = () => {
         }
       );
 
-      const translatedText = translationResponse.data.pipelineResponse[0].output[0].target;
+      const translatedText =
+        translationResponse.data.pipelineResponse[0].output[0].target;
 
       const ttsResponse = await axios.post(
         "https://dhruva-api.bhashini.gov.in/services/inference/pipeline",
@@ -265,7 +274,8 @@ const Voice: React.FC = () => {
         }
       );
 
-      const audioContent = ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
+      const audioContent =
+        ttsResponse.data.pipelineResponse[0].audio[0].audioContent;
       if (audioContent) {
         const audio = new Audio(`data:audio/wav;base64,${audioContent}`);
         setNextAudio(audio);
@@ -312,7 +322,12 @@ const Voice: React.FC = () => {
       const productVariation = responses[8];
       const pricing = responses[6];
 
-      if (!productTitle || !productDescription || !productVariation || !pricing) {
+      if (
+        !productTitle ||
+        !productDescription ||
+        !productVariation ||
+        !pricing
+      ) {
         console.error("Required data is missing.");
         return;
       }
@@ -323,11 +338,15 @@ const Voice: React.FC = () => {
         const formData = new FormData();
         formData.append("file", companyLogoFile);
         try {
-          const response = await axios.post(`${backendUrl}upload/s3`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
+          const response = await axios.post(
+            `${backendUrl}upload/s3`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
           companyLogoUrl = response.data.s3_link;
         } catch (error) {
           console.error("Error uploading company logo:", error);
@@ -342,11 +361,15 @@ const Voice: React.FC = () => {
           formData.append("files", file);
         });
         try {
-          const response = await axios.post(`${backendUrl}upload/s3/multiple`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
+          const response = await axios.post(
+            `${backendUrl}upload/s3/multiple`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
           productImageUrls = response.data.s3_links;
         } catch (error) {
           console.error("Error uploading product images:", error);
@@ -355,12 +378,20 @@ const Voice: React.FC = () => {
 
       setLoading(true);
       try {
-        const response = await postData(productTitle, productDescription, productVariation, pricing);
+        const response = await postData(
+          productTitle,
+          productDescription,
+          productVariation,
+          pricing
+        );
         console.log("Post response:", response);
 
         // Process the images using PhotAi API
         const prompt = `Please change the background of the input Image such that they are Ecommerce ready. The product is called ${productTitle}`;
-        const newImages = await changeBackgroundImages(productImageUrls, prompt);
+        const newImages = await changeBackgroundImages(
+          productImageUrls,
+          prompt
+        );
 
         navigate("/product-page", {
           state: {
@@ -391,7 +422,8 @@ const Voice: React.FC = () => {
 
   const startRecording = () => {
     setIsRecording(true);
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    const recognition = new (window.SpeechRecognition ||
+      window.webkitSpeechRecognition)();
     recognition.lang = language;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
@@ -426,7 +458,9 @@ const Voice: React.FC = () => {
     }
   };
 
-  const handleProductImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProductImagesChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.files) {
       setProductImageFiles(Array.from(e.target.files));
     }
@@ -449,7 +483,10 @@ const Voice: React.FC = () => {
               ) : (
                 <>
                   {questionsHistory.map((question, index) => (
-                    <div key={`history-question-${index}`} className="chat-message">
+                    <div
+                      key={`history-question-${index}`}
+                      className="chat-message"
+                    >
                       <div className="chat-question">
                         <p>{question}</p>
                       </div>
@@ -478,7 +515,11 @@ const Voice: React.FC = () => {
                         <p>{QUESTIONS[9]}</p>
                       </div>
                       <div className="chat-response ml-4">
-                        <input type="file" accept="image/*" onChange={handleCompanyLogoChange} />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleCompanyLogoChange}
+                        />
                       </div>
                     </div>
                   )}
@@ -489,7 +530,12 @@ const Voice: React.FC = () => {
                         <p>{QUESTIONS[10]}</p>
                       </div>
                       <div className="chat-response ml-4">
-                        <input type="file" accept="image/*" multiple onChange={handleProductImagesChange} />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleProductImagesChange}
+                        />
                       </div>
                     </div>
                   )}
@@ -500,10 +546,16 @@ const Voice: React.FC = () => {
             {currentQuestionIndex >= 0 && (
               <div className="chat-input mt-4">
                 <div className="flex">
-                  <button onClick={startRecording} className="bg-primary text-white px-4 py-2 rounded mr-2">
+                  <button
+                    onClick={startRecording}
+                    className="bg-primary text-white px-4 py-2 rounded mr-2"
+                  >
                     Record
                   </button>
-                  <button onClick={handleNext} className="bg-secondary text-white px-4 py-2 rounded">
+                  <button
+                    onClick={handleNext}
+                    className="bg-secondary text-white px-4 py-2 rounded"
+                  >
                     Next
                   </button>
                 </div>
@@ -530,7 +582,9 @@ const Voice: React.FC = () => {
                 onClick={startConversation}
                 disabled={!language}
                 className={`bg-primary text-white px-4 py-1 rounded ${
-                  !language ? "disabled:bg-gray-400 disabled:cursor-not-allowed" : "hover:bg-blue-700 hover:cursor-pointer"
+                  !language
+                    ? "disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    : "hover:bg-blue-700 hover:cursor-pointer"
                 }`}
               >
                 Start

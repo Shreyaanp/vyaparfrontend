@@ -69,6 +69,16 @@ function App() {
         />
 
         <Route
+          path="/signup"
+          element={
+            <>
+              <PageTitle title="Vyapar Launchpad" />
+              <SignUp />
+            </>
+          }
+        />
+
+        <Route
           path="/dashboard"
           element={
             <>
@@ -145,7 +155,6 @@ function App() {
             </>
           }
         />
-
       </Routes>
     </DefaultLayout>
   );

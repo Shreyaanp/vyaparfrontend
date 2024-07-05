@@ -228,10 +228,7 @@ const ProductPage = () => {
                     style={{ fontFamily: "poppins" }}
                   />
                 ) : (
-                  <p
-                    style={{ fontFamily: "poppins" }}
-                    className="productTitle"
-                  >
+                  <p style={{ fontFamily: "poppins" }} className="productTitle">
                     <Text>{productData.response.ProductName}</Text>
                   </p>
                 )}
@@ -507,7 +504,9 @@ const ProductPage = () => {
                   />
                 ) : (
                   <p className="txt mt-2" style={{ fontFamily: "poppins" }}>
-                    <Text>{productData.response.SeoFriendlyTags.join(", ")}</Text>
+                    <Text>
+                      {productData.response.SeoFriendlyTags.join(", ")}
+                    </Text>
                   </p>
                 )}
               </div>

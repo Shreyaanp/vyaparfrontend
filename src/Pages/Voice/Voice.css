@@ -1,5 +1,5 @@
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: rgb(255 233 169 / var(--tw-bg-opacity));
 }
 
@@ -7,24 +7,33 @@ body {
   max-height: 100%;
   overflow-y: auto;
   margin-bottom: 15px;
-  padding-right: 10px; /* Add some padding for scrollbar visibility */
+  padding-right: 10px;
 }
 
 .chat-message {
   margin-bottom: 15px;
+
+  display: flex;
+  justify-content: space-between;
 }
 
 .chat-question {
-  background-color: #f1f1f1;
+  /* background-color: #f2f4f5; */
+  background-color: #ffe9a9;
   border-radius: 15px;
+  border-top-left-radius: 0px;
   padding: 10px 15px;
   display: inline-block;
   max-width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chat-response {
-  background-color: #e0f7ff;
+  background-color: #fcbd01;
   border-radius: 15px;
+  border-bottom-right-radius: 0px;
   padding: 10px 15px;
   display: inline-block;
   max-width: 80%;
@@ -61,7 +70,8 @@ body {
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .rounded-lg {

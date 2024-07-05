@@ -14,7 +14,8 @@ const DefaultLayout = ({ children }) => {
     "/product-page",
     "/product-onboarding",
     "/signin",
-    "/"
+    "/signup",
+    "/",
   ];
 
   const isLiveRoute = pathname.startsWith("/live");
