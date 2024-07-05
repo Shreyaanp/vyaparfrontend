@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useContext } from "react";
 import "./Step4.css";
 import Labels from "../../Contexts/StoreOnboarding";

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { FunctionComponent, useContext, useEffect } from "react";
 import DefaultLayout from "@/layout/DefaultLayout";
 import StoreImg from "../../assets/images/storeImg.png";

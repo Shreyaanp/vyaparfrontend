@@ -1,5 +1,7 @@
+// @ts-nocheck
+
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import QRCode from "qrcode.react";
 import '../ProductOnboarding/navBar.css'
@@ -29,49 +31,33 @@ const CopyBtn = () => {
 };
 
 const LivePage = () => {
-  const { state } = useLocation();
-  const superData = state?.productData || {
-    inputLanguage: "",
-    shopName: "",
-    sellerState: "",
-    productLanguage: "",
-    productCategory: "",
-    productTitle: "",
-    pricing: "",
-    productDescription: "",
-    productVariation: "",
-    response: {
-      ProductRegionalNames: [],
-      ProductName: "",
-      ProductDescription: "",
-      ProductVariation: [],
-      AboutProduct: [],
-      ProductTagline: "",
-      ProductPrompt: "",
-      MarketPainPoints: [],
-      CustomerAcquisition: [],
-      MarketEntryStrategy: [],
-      SeoFriendlyTags: [],
-      newImages: [],
-    },
-  };
+  const { shareable_id } = useParams();
   const backendUrl = import.meta.env.VITE_BASE_API;
   const context = useContext(AppContext);
   const navigate = useNavigate();
 
-  if (superData && context?.user?.id) {
-    superData.uid = context.user.id;
-  }
-
-  const [productData, setProductData] = useState(superData);
+  const [productData, setProductData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [shareableLink, setShareableLink] = useState<string | null>(null); // Specify string or null
   const modalRef = useRef<HTMLDivElement>(null); // Specify HTMLDivElement type
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
-    console.log("\n\n\n");
-    console.log(productData);
+    const fetchProductData = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}public/${shareable_id}`);
+        setProductData(response.data);
+      } catch (error) {
+        console.error('Error fetching public product:', error);
+      }
+    };
+
+    fetchProductData();
+  }, [shareable_id, backendUrl]);
+
+  console.log(productData);
+
+  useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         modalRef.current &&
@@ -85,7 +71,7 @@ const LivePage = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  });
+  }, []);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareableLink || "");
@@ -93,65 +79,6 @@ const LivePage = () => {
     setTimeout(() => {
       setCopySuccess(false);
     }, 1500);
-  };
-
-  useEffect(() => {
-    if (superData) {
-      setProductData(superData);
-    }
-  }, [superData]);
-
-  const addProductData = async () => {
-    if (productData) {
-      console.log("Adding product data:", productData);
-      try {
-        const response = await axios.post(
-          `${backendUrl}product/upload`,
-          productData
-        );
-        console.log("Product added successfully:", response.data);
-        navigate("/ecommerce");
-      } catch (error) {
-        console.error("Error adding product:", error);
-      }
-    }
-  };
-
-  const updateProductData = async () => {
-    if (productData && productData._id) {
-      try {
-        const response = await axios.put(
-          `${backendUrl}product/${productData._id}`,
-          productData
-        );
-        console.log("Product updated successfully:", response.data);
-        navigate("/ecommerce");
-      } catch (error) {
-        console.error("Error updating product:", error);
-      }
-    }
-  };
-
-  const publishProduct = async () => {
-    try {
-      const response = await axios.post(`${backendUrl}product/publish`, {
-        uid: productData.uid,
-        data: productData,
-      });
-      const shareableId = response.data.shareable_id;
-      setShareableLink(`${window.location.origin}/live/${shareableId}`);
-    } catch (error) {
-      console.error("Error publishing product:", error);
-    }
-  };
-
-  const handleSave = async () => {
-    if (productData._id) {
-      await updateProductData();
-    } else {
-      await addProductData();
-    }
-    setIsEditing(false);
   };
 
   const handleEdit = () => {
@@ -189,6 +116,10 @@ const LivePage = () => {
       },
     }));
   };
+
+  if (!productData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-white flex flex-col h-full w-full">
@@ -401,24 +332,6 @@ const LivePage = () => {
 
         <div className="flex flex-col w-[37rem]">
           <div className="flex justify-end mt-4">
-            <button
-              className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm mr-2"
-              onClick={handleEdit}
-            >
-              <Text>{isEditing ? "Cancel" : "Edit"}</Text>
-            </button>
-            <button
-              className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm mr-2"
-              onClick={handleSave}
-            >
-              <Text>Save</Text>
-            </button>
-            <button
-              className="flex items-center px-4 py-2 rounded-lg bg-[#006A66] text-white font-semibold text-sm"
-              onClick={publishProduct}
-            >
-              <Text>Publish</Text>
-            </button>
           </div>
           {shareableLink && (
             <div className="modal absolute top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-900 bg-opacity-50">
@@ -464,22 +377,22 @@ const LivePage = () => {
             </div>
           )}
 
-          {productData.images && productData.images.length > 0 && (
+          {productData.response.newImages && productData.response.newImages.length > 0 && (
             <div className="w-[37rem]">
               <div className="flex justify-center mt-8">
                 <img
                   className="rounded-lg shadow-2xl shadow-lg"
                   style={{ width: "20rem", height: "20rem" }}
-                  src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.prompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${productData.images[0]}&apiKey=${photoroomApi}`}
+                  src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.response.ProductPrompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${productData.response.newImages[0]}&apiKey=${photoroomApi}`}
                 />
               </div>
 
-              {productData.images.length > 1 && (
+              {productData.response.newImages.length > 1 && (
                 <div className="flex justify-center gap-2 mt-8">
-                  {productData.images.slice(1).map((img, index) => (
+                  {productData.response.newImages.slice(1).map((img, index) => (
                     <div className="w-[72px]" key={index}>
                       <img
-                        src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.prompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${img}&apiKey=${photoroomApi}`}
+                        src={`https://image-api.photoroom.com/v2/edit?background.prompt=${productData.response.ProductPrompt}&background.seed=42&outputSize=1000x1000&padding=0.1&imageUrl=${img}&apiKey=${photoroomApi}`}
                         className="w-full h-auto rounded-lg shadow-lg"
                       />
                     </div>

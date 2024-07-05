@@ -16,6 +16,7 @@ const DefaultLayout = ({ children }) => {
     "/product-onboarding",
     "/signin",
     "/",
+    "/live"
   ];
 
   if (simpleRoutes.includes(pathname)) {

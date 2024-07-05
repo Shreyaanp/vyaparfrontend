@@ -137,7 +137,7 @@ function App() {
           }
         />
         <Route
-          path="/live"
+          path="/live/:shareable_id"
           element={
             <>
               <PageTitle title="Vyapar Launchpad" />
@@ -145,6 +145,7 @@ function App() {
             </>
           }
         />
+
       </Routes>
     </DefaultLayout>
   );

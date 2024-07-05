@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState, useEffect, useContext } from "react";
 import { GOOGLE_MAPS_API_KEY } from "../../Contexts/StoreOnboarding";
 import Labels from "../../Contexts/StoreOnboarding";

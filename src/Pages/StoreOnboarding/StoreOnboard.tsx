@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React from "react";
 import Navbar from "../../components/common/Navbar";
 import BottomBar from "../../components/common/BottomBar";

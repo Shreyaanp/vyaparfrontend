@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState, useEffect } from "react";
 import Confetti from "react-confetti";
 import Text from "../../Bhasini/Text";

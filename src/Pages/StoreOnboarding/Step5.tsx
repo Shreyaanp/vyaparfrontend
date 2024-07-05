@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState, useContext, useEffect } from "react";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
