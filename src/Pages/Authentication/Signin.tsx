@@ -32,7 +32,7 @@ const SignIn: React.FC = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(apiUrl + "auth/login", payload, {
+      const response = await axios.post(apiUrl + "auth/sigin", payload, {
         withCredentials: true,
       });
       setUser(response.data);
