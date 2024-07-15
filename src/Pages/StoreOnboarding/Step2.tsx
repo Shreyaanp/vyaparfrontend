@@ -1,10 +1,9 @@
 // @ts-nocheck
-
-import React from "react";
-import { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../AppContext";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
+import TextToSpeech from "../../TextToSpeech";
 
 interface CompProps {
   lang: string;
@@ -14,6 +13,9 @@ interface CompProps {
 
 const Step2: React.FC<CompProps> = ({ lang, proCat, setProCat }) => {
   const { storeData, setStoreData } = useContext(AppContext);
+  const [playText, setPlayText] = useState<string>(Labels[lang]["step2"].heading);
+
+
 
   const handleClick = (label: string) => {
     setStoreData((prevData: any) => ({
@@ -24,6 +26,7 @@ const Step2: React.FC<CompProps> = ({ lang, proCat, setProCat }) => {
 
   return (
     <div className="flex-grow flex flex-col items-center justify-center p-8 overflow-hidden">
+      <TextToSpeech text={playText} />
       <div className="mb-10 mt-4">
         <Text className="text-4xl font-medium text-center font-lato">
           {Labels[lang]["step2"].heading}

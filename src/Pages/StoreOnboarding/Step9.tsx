@@ -5,6 +5,7 @@ import photos from "../../assets/Icons/photos.svg";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 const Step9 = ({ lang }) => {
   const [aadharImages, setAadharImages] = useState([]);
@@ -98,6 +99,8 @@ const Step9 = ({ lang }) => {
 
   return (
     <div className="flex-grow flex flex-col justify-center items-center">
+      <TextToSpeech text="You'll have to upload the following documents to get your store
+          listed." />
       <div>
         <Text className="text-4xl font-medium mb-2 text-left">
           Upload Seller Documents

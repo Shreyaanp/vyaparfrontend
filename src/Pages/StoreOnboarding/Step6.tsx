@@ -5,6 +5,7 @@ import photos from "../../assets/Icons/photos.svg";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 const Step6 = ({ lang }) => {
   const [images, setImages] = useState([]);
@@ -52,6 +53,7 @@ const Step6 = ({ lang }) => {
 
   return (
     <div className="flex-grow flex flex-col justify-center items-center">
+      <TextToSpeech text={Labels[lang].step6.heading} />
       <div className="mt-[-20px]">
         <Text className="text-4xl font-medium mb-2 text-left">
           {Labels[lang].step6.heading}

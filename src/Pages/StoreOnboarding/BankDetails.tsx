@@ -4,6 +4,7 @@ import "./Step4.css";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 const BankDetails = ({ lang }) => {
   const [name, setName] = useState("");
@@ -44,6 +45,7 @@ const BankDetails = ({ lang }) => {
 
   return (
     <div className="flex-grow flex flex-col justify-center items-center ">
+      <TextToSpeech text="Enter Bank Details to get started with Vyapar Launchpad" />
       <div className="w-[38rem]">
         <Text className="text-4xl font-medium mb-2 text-left font-lato text-black-500">
           Enter Bank Details to get started with Vyapar Launchpad

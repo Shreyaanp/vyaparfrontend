@@ -4,6 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 const Step5 = ({ lang }) => {
   const [title, setTitle] = useState("");
@@ -21,6 +22,7 @@ const Step5 = ({ lang }) => {
 
   return (
     <div className="flex-grow flex flex-col justify-center items-center">
+      <TextToSpeech text={Labels[lang].step5.heading} />
       <div className="mt-[-20px]">
         <Text className="text-4xl font-medium mb-2 text-left font-lato">
           {Labels[lang].step5.heading}

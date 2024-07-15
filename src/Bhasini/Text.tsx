@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
+// Text.tsx
+
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AppContext } from "../AppContext";
 
 interface TextProps {
   children: string;
@@ -8,6 +11,7 @@ interface TextProps {
 }
 
 const Text: React.FC<TextProps> = ({ className, children, style }) => {
+  const { selectedLanguage } = useContext(AppContext);
   const [translated, setTranslated] = useState<string | null>(null);
 
   const axiosApiInstance = axios.create({
@@ -50,9 +54,7 @@ const Text: React.FC<TextProps> = ({ className, children, style }) => {
           config: {
             language: {
               sourceLanguage: "en",
-              targetLanguage: localStorage.getItem("languageCode")
-                ? localStorage.getItem("languageCode")
-                : "hi",
+              targetLanguage: selectedLanguage,
             },
             serviceId: "ai4bharat/indictrans-v2-all-gpu--t4",
           },
@@ -74,11 +76,10 @@ const Text: React.FC<TextProps> = ({ className, children, style }) => {
 
   useEffect(() => {
     textToTextTranslationNMT();
-  }, [children]);
+  }, [children, selectedLanguage]);
 
   return (
     <p style={style} className={className}>
-      {/* {children} */}
       {translated ? translated : children}
     </p>
   );

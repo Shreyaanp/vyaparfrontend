@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Confetti from "react-confetti";
 import Text from "../../Bhasini/Text";
+import TextToSpeech from "@/TextToSpeech";
 
 const ConfettiComponent = ({ duration = 5000 }) => {
   // duration in milliseconds
@@ -41,6 +42,7 @@ const Success = () => {
     <div className="flex-grow flex flex-col justify-center items-center">
       <ConfettiComponent duration={5000} /> {/* Show confetti for 5 seconds */}
       <div className="w-[38rem]">
+        <TextToSpeech text="Congratulations! You have successfully onboarded your store" />
         <Text className="text-6xl font-medium mb-2 text-left font-lato text-black-500">
           Congratulations! You have successfully onboarded your store
         </Text>

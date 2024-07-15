@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, ReactNode, useEffect, useRef } from 'react';
 
 interface User {
   id: string;
@@ -17,9 +17,12 @@ interface AppContextType {
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
   storeData: any;
-  setStoreData: (data : any) => void;
+  setStoreData: (data: any) => void;
   userStoreData: any;
-  setUserStoreData: (data : any) => void;
+  setUserStoreData: (data: any) => void;
+  selectedLanguage: string;
+  setSelectedLanguage: (language: string) => void;
+  stopAudioPlayback: () => void;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -30,6 +33,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [storeData, setStoreData] = useState<any>(null);
   const [userStoreData, setUserStoreData] = useState<any>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    localStorage.getItem("languageCode") || "en"
+  );
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
     const cachedUser = localStorage.getItem('user');
     if (cachedUser) {
@@ -38,8 +46,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("languageCode", selectedLanguage);
+  }, [selectedLanguage]);
+
+  const stopAudioPlayback = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+  };
+
   return (
-    <AppContext.Provider value={{ loading, setLoading, user, setUser, isEditing, setIsEditing , storeData, setStoreData, userStoreData, setUserStoreData}}>
+    <AppContext.Provider value={{
+      loading, setLoading, user, setUser, isEditing, setIsEditing, storeData, setStoreData,
+      userStoreData, setUserStoreData, selectedLanguage, setSelectedLanguage, stopAudioPlayback
+    }}>
       {children}
     </AppContext.Provider>
   );
