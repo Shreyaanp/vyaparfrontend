@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+// @ts-nocheck
+import React, { useContext, useEffect, useState } from "react";
 import img1 from "../../assets/images/onboard1.png";
 import img2 from "../../assets/images/onboard2.png";
 import img3 from "../../assets/images/onboard3.png";
@@ -22,9 +23,13 @@ const LANGUAGES = [
   { sourceLanguage: "ur", name: "Urdu" },
 ];
 
-const Step1: React.FC<{ stopAudio: boolean }> = ({ stopAudio }) => {
+const Step1: React.FC = () => {
   const { selectedLanguage, setSelectedLanguage } = useContext(AppContext);
   const [playText, setPlayText] = useState<string>("Get your store listed with Vyapaar Launchpad");
+
+  useEffect(() => {
+    setPlayText("Get your store listed with Vyapaar Launchpad");
+  }, []);
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedLanguage(e.target.value);
@@ -32,7 +37,7 @@ const Step1: React.FC<{ stopAudio: boolean }> = ({ stopAudio }) => {
 
   return (
     <div className="flex flex-col flex-grow md:flex-row mt-0 bg-white px-4">
-      <TextToSpeech text={playText} stopAudio={stopAudio} />
+      <TextToSpeech text={playText} />
       
       {/* Left Side */}
       <div className="md:w-1/2 p-8 flex flex-col justify-center items-center md:items-start">
