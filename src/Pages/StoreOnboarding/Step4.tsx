@@ -5,6 +5,7 @@ import "./Step4.css";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 const indianStates = [
   "Andhra Pradesh",
@@ -60,6 +61,7 @@ const Step4 = ({ lang }) => {
 
   return (
     <div className="flex-grow flex flex-col justify-center items-center ">
+      <TextToSpeech text={Labels[lang].step4.heading} />
       <div className="w-[38rem]">
         <Text className="text-4xl font-medium mb-2 text-left font-lato text-black-500">
           {Labels[lang].step4.heading}

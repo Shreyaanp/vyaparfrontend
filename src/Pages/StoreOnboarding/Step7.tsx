@@ -4,12 +4,14 @@ import React from "react";
 import Text from "../../Bhasini/Text";
 import { useContext } from "react";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 
 const Step7: React.FC = () => {
   const { storeData, setStoreData } = useContext(AppContext);
   return (
     <div className=" flex-grow flex flex-col md:flex-row items-center justify-between p-8 px-[88px] bg-white  overflow-hidden">
+      <TextToSpeech text="Congratulations! for getting this far" />
       {/* Left Side */}
       <div className="md:w-1/2 p-8 w-1/2">
         <Text variant="subtitle" className="text-xl font-semibold mb-2">

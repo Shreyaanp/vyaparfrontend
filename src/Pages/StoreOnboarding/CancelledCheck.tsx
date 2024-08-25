@@ -4,6 +4,7 @@ import photos from "../../assets/Icons/photos.svg";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 const CancelledCheck = ({ lang }) => {
   const [images, setImages] = useState([]);
@@ -48,6 +49,8 @@ const CancelledCheck = ({ lang }) => {
 
   return (
     <div className="flex-grow flex flex-col justify-center items-center">
+      <TextToSpeech text="Please upload a cancelled cheque/ bank statement/ passbook cover to
+          verify your bank details" />
       <div className="mt-[-20px]">
         <Text className="text-4xl font-medium mb-2 text-left">
           Upload Cancelled Bank Cheque

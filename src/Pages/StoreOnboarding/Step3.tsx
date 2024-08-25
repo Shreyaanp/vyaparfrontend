@@ -5,6 +5,7 @@ import { GOOGLE_MAPS_API_KEY } from "../../Contexts/StoreOnboarding";
 import Labels from "../../Contexts/StoreOnboarding";
 import Text from "../../Bhasini/Text";
 import { AppContext } from "../../AppContext";
+import TextToSpeech from "@/TextToSpeech";
 
 const Step3 = ({ lang }) => {
   const [address, setAddress] = useState("");
@@ -72,6 +73,7 @@ const Step3 = ({ lang }) => {
 
   return (
     <div className="flex justify-center items-center flex-col text-center flex-grow">
+      <TextToSpeech text={Labels[lang].step3.heading} />
       <Text className="text-4xl font-medium mb-2">
         {Labels[lang].step3.heading}
       </Text>

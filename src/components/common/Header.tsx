@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+// Header.tsx
+
+import React, { useContext } from "react";
 import Profile from "../../assets/images/profile.png";
 import Text from "../../Bhasini/Text";
+import { AppContext } from "../../AppContext";
 
 interface LanguageCode {
   language: string;
@@ -23,19 +26,10 @@ const Header: React.FC = () => {
     { language: "Malayalam", code: "ml" },
   ];
 
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(
-    localStorage.getItem("languageCode") || "en"
-  );
+  const { selectedLanguage, setSelectedLanguage } = useContext(AppContext);
 
-  useEffect(() => {
-    localStorage.setItem("languageCode", selectedLanguage);
-  }, [selectedLanguage]);
-
-  const handleLanguageChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedLanguage(event.target.value);
-    window.location.reload(); // Refresh the page
   };
 
   return (
